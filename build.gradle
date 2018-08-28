@@ -11,4 +11,5 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile "org.kohsuke:github-api:1.93"
+    compile "com.xenomachina:kotlin-argparser:2.0.7"
 }

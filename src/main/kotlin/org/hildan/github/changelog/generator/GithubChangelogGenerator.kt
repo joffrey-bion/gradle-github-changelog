@@ -1,29 +1,40 @@
 package org.hildan.github.changelog.generator
 
+import com.xenomachina.argparser.ArgParser
+import com.xenomachina.argparser.mainBody
 import org.kohsuke.github.GHIssue
 import org.kohsuke.github.GHIssueState
-import org.kohsuke.github.GitHub
+import org.kohsuke.github.GHRepository
 import java.time.Instant
 import java.util.Date
 
-fun main(args: Array<String>) {
-    val user = if (args.size > 0) args[0] else "joffrey-bion"
-    val repoName = if (args.size > 1) args[1] else "livedoc"
-
-    val github = GitHub.connect()
-    val repo = github.getRepository("$user/$repoName") ?: throw IllegalArgumentException("repo not found")
-
-    val tags = repo.listTags() ?: throw RuntimeException("could not get tags")
-    val datedTags = tags.map { DatedTag(it.name, it.commit.commitDate) }
-
-    val issues = repo.getIssues(GHIssueState.CLOSED) ?: throw RuntimeException("could not get issues")
-
-    val releases = createReleases(datedTags, issues)
-
-    println(releases.joinToString("\n\n"))
+class ArgsConfig(parser: ArgParser) : GitHubConfig {
+    override val user by parser.storing("-u", "--user", help = "username of the owner of the target GitHub repo")
+    override val token by parser.storing("-t", "--token", help = "the GitHub API key")
+    override val repo by parser.storing("-r", "--repo", help = "name of the target GitHub repo")
 }
 
-fun createReleases(tags: List<DatedTag>, issues: List<GHIssue>): List<Release> {
+fun main(args: Array<String>) = mainBody {
+    try {
+        val githubConfig = ArgParser(args).parseInto(::ArgsConfig)
+        val repo = githubConfig.fetchRepositoryInfo()
+        val releases = createReleases(repo)
+        println(releases.joinToString("\n\n"))
+    } catch (e: GitHubConfigException) {
+        System.err.println(e.message)
+        System.exit(1)
+    }
+}
+
+fun createReleases(repo: GHRepository): List<Release> {
+    val tags = repo.listTags()
+    val datedTags = tags.map { DatedTag(it.name, it.commit.commitDate) }
+    val issues = repo.getIssues(GHIssueState.CLOSED)
+
+    return splitIssues(datedTags, issues)
+}
+
+fun splitIssues(tags: List<DatedTag>, issues: List<GHIssue>): List<Release> {
     val releases = mutableListOf<Release>()
     var remainingIssues = issues
     for (tag in tags.sortedBy { it.date }) {
@@ -34,10 +45,7 @@ fun createReleases(tags: List<DatedTag>, issues: List<GHIssue>): List<Release> {
     return releases.sortedByDescending { it.date }
 }
 
-data class DatedTag(
-    val name: String,
-    val date: Date
-)
+data class DatedTag(val name: String, val date: Date)
 
 data class Release(
     val tag: String,
