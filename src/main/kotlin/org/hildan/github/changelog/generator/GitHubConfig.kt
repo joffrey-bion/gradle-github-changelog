@@ -5,10 +5,17 @@ import org.kohsuke.github.GHRepository
 import org.kohsuke.github.GitHub
 import org.kohsuke.github.HttpException
 
-interface GitHubConfig {
-    val user: String
-    val token: String
-    val repo: String
+data class GitHubConfig(
+    private val user: String,
+    private val token: String,
+    private val repo: String,
+    private val baseUrl: String = "https://github.com/$user/$repo",
+    private val releaseUrl: String = "$baseUrl/tree/%s"
+) {
+
+    fun releaseUrl(tag: String): String = String.format(releaseUrl, tag)
+
+    fun changelogUrl(fromTag: String, toTag: String): String = "$baseUrl/compare/$fromTag...$toTag"
 
     fun fetchRepositoryInfo(): GHRepository {
         try {
