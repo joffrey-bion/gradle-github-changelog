@@ -1,5 +1,6 @@
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.2.71"
+    id 'java-gradle-plugin'
 }
 
 repositories {
@@ -7,6 +8,7 @@ repositories {
 }
 
 dependencies {
+    compile gradleApi()
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile "org.kohsuke:github-api:1.93"
 }
