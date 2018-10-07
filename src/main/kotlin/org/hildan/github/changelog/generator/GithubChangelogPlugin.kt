@@ -6,16 +6,17 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskAction
 import java.io.File
+import javax.inject.Inject
 
-class GithubChangelogPlugin : Plugin<Project> {
+open class GithubChangelogPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val ext = project.extensions.create("changelog", GitHubChangelogExtension::class.java, project)
-        project.tasks.create("changelog", GenerateChangelogTask::class.java, ext)
+        project.tasks.create("generateChangelog", GenerateChangelogTask::class.java, ext)
     }
 }
 
-class GenerateChangelogTask(
+open class GenerateChangelogTask @Inject constructor(
     private val ext: GitHubChangelogExtension
 ) : DefaultTask() {
 
@@ -32,18 +33,16 @@ class GenerateChangelogTask(
     }
 }
 
-class GitHubChangelogExtension(
-    project: Project
-) {
+open class GitHubChangelogExtension(project: Project) {
+
     val github: GitHubInfo = project.objects.newInstance(GitHubInfo::class.java, project)
     var outputFile: File = File("${project.projectDir}/CHANGELOG.md")
 
     fun toConfig(): Configuration = Configuration(github.toGitHubConfig())
 }
 
-class GitHubInfo(
-    project: Project
-) {
+open class GitHubInfo @Inject constructor(project: Project) {
+
     var user: String? = project.getPropOrEnv("githubUser", "GITHUB_USER")
     var token: String? = project.getPropOrEnv("githubToken", "GITHUB_TOKEN")
     var repo: String = project.name
