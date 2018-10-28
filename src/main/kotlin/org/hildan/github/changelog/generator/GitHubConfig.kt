@@ -7,7 +7,7 @@ import org.kohsuke.github.HttpException
 
 data class GitHubConfig(
     private val user: String,
-    private val token: String,
+    private val token: String?,
     private val repo: String,
     private val baseUrl: String = "https://github.com/$user/$repo",
     private val releaseUrl: String = "$baseUrl/tree/%s"
@@ -19,7 +19,7 @@ data class GitHubConfig(
 
     fun fetchRepositoryInfo(): GHRepository {
         try {
-            val github = GitHub.connectUsingPassword(user, token)
+            val github = connect()
             val repoSlug = "$user/$repo"
             return github.getRepository(repoSlug) ?: throw IllegalArgumentException("repo not found")
         } catch (e: HttpException) {
@@ -28,6 +28,12 @@ data class GitHubConfig(
             throw GitHubConfigException("Could not find repository: ${e.cause?.message}")
         }
     }
+
+    private fun connect() = if (token == null) {
+        GitHub.connectAnonymously()
+    } else {
+        GitHub.connectUsingPassword(user, token)
+    }
 }
 
-class GitHubConfigException(message: String): RuntimeException(message)
+class GitHubConfigException(message: String) : RuntimeException(message)
