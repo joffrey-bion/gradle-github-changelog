@@ -33,6 +33,7 @@ open class GenerateChangelogTask @Inject constructor(
     @TaskAction
     fun generate() {
         val configuration = ext.toConfig()
+        project.logger.info("Generating changelog into ${ext.outputFile}...")
         val generator = GitHubChangelogGenerator(configuration, ext.outputFile)
         generator.generate()
     }
