@@ -43,7 +43,7 @@ open class GitHubChangelogExtension(project: Project) {
 
     var githubUser: String? = project.getPropOrEnv("githubUser", "GITHUB_USER")
     var githubToken: String? = project.getPropOrEnv("githubToken", "GITHUB_TOKEN")
-    var githubRepository: String = project.name
+    var githubRepository: String = project.rootProject.name
 
     var title: String = "Changelog"
     var unreleasedVersionTitle: String = "Unreleased"
