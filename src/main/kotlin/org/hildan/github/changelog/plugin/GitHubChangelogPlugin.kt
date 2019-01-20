@@ -77,8 +77,4 @@ open class GitHubChangelogExtension(project: Project) {
 }
 
 private fun Project.getPropOrEnv(propName: String, envVar: String? = null, defaultValue: String? = null): String? =
-    if (hasProperty(propName)) {
-        property(propName) as String
-    } else {
-        System.getenv(envVar) ?: defaultValue
-    }
+    findProperty(propName) as String? ?: System.getenv(envVar) ?: defaultValue
