@@ -5,7 +5,8 @@ import org.kohsuke.github.GHIssueState
 import org.kohsuke.github.GHPullRequest
 import org.kohsuke.github.GHRepository
 import java.io.File
-import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Date
 
 val DEFAULT_SECTIONS = listOf(
@@ -37,7 +38,7 @@ data class DatedTag(val name: String, val date: Date)
 class GithubChangelogGenerator(
     private val config: Configuration,
     private val outputFile: File? = null,
-    private val formatter: MarkdownFormatter = MarkdownFormatter(config)
+    private val formatter: MarkdownFormatter = MarkdownFormatter(config.unreleasedTitle)
 ) {
     private val sectionByLabel: Map<String, String> =
         config.sections.flatMap { s -> s.labels.map { it to s.title } }.toMap()
@@ -77,20 +78,31 @@ class GithubChangelogGenerator(
             val (closedBeforeTag, closedAfterTag) = remainingIssues.partition { it.closedAt <= tag.date }
             val sections = splitSections(closedBeforeTag)
             remainingIssues = closedAfterTag
-            releases.add(Release(tag.name, previousTag, tag.date.toInstant(), sections))
+            val release = createRelease(previousTag, tag, sections)
+            releases.add(release)
             previousTag = tag.name
         }
         if (remainingIssues.isNotEmpty() && config.showUnreleased) {
             val sections = splitSections(remainingIssues)
-            releases.add(Release(config.futureVersion, previousTag, Instant.now(), sections))
+            releases.add(Release(config.futureVersion, previousTag, LocalDate.now(), sections, null, null))
         }
         return releases.sortedByDescending { it.date }
     }
 
-    private fun splitSections(issues: List<GHIssue>): List<Section> =
-        issues.groupBy { findSection(it) }.map { (title, issues) -> Section(title, issues) }
+    private fun createRelease(previousTag: String?, tag: DatedTag, sections: List<Section>): Release {
+        val releaseUrl = config.github.releaseUrl(tag.name)
+        val changeLogUrl = previousTag?.let { config.github.changelogUrl(it, tag.name) }
+        val date = tag.date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        return Release(tag.name, previousTag, date, sections, releaseUrl, changeLogUrl)
+    }
 
-    private fun findSection(issue: GHIssue): String =
+    private fun splitSections(issues: List<GHIssue>): List<Section> =
+        issues.groupBy { findSectionTitle(it) }
+            .map { (title, issues) -> Section(title, issues.map { it.toIssue() }) }
+
+    private fun GHIssue.toIssue(): Issue = Issue(number, title, htmlUrl.toString(), user.login, this is GHPullRequest)
+
+    private fun findSectionTitle(issue: GHIssue): String =
         issue.labels.asSequence().mapNotNull { sectionByLabel[it.name] }.firstOrNull() ?: defaultSection(issue)
 
     private fun defaultSection(issue: GHIssue): String = when (issue) {

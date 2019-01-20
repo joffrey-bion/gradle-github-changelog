@@ -1,7 +1,6 @@
 package org.hildan.github.changelog.generator
 
-import org.kohsuke.github.GHIssue
-import java.time.Instant
+import java.time.LocalDate
 
 data class ChangeLog(
     val title: String,
@@ -9,19 +8,25 @@ data class ChangeLog(
 )
 
 data class Release(
-    /**
-     * The tag of this release. Null if this object represents unreleased issues.
-     */
+    /** The tag of this release. Null if this object represents unreleased issues. */
     val tag: String?,
-    /**
-     * The tag of the previous release. Null if this is the first release.
-     */
+    /** The tag of the previous release. Null if this is the first release. */
     val previousTag: String?,
-    val date: Instant,
-    val sections: List<Section>
+    val date: LocalDate,
+    val sections: List<Section>,
+    val releaseUrl: String?,
+    val changeLogUrl: String?
 )
 
 data class Section(
     val title: String,
-    val issues: List<GHIssue>
+    val issues: List<Issue>
+)
+
+data class Issue(
+    val number: Int,
+    val title: String,
+    val url: String,
+    val authorLogin: String,
+    val isPullRequest: Boolean
 )

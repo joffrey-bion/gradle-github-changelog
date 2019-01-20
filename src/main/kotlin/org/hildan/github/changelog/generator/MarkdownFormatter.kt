@@ -1,20 +1,17 @@
 package org.hildan.github.changelog.generator
 
-import org.kohsuke.github.GHIssue
-import org.kohsuke.github.GHPullRequest
 import java.time.format.DateTimeFormatter
 
 class MarkdownFormatter(
-    private val config: Configuration,
+    private val unreleasedTitle: String,
     private val tagTransform: (String) -> String = { it },
     private val dateFormat: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 ) {
     fun format(changelog: ChangeLog): String = """# Changelog
         |
-        |${formatReleases(changelog.releases)}
-        |""".trimMargin()
+        |${formatReleases(changelog.releases)}""".trimMargin()
 
-    protected fun formatReleases(releases: List<Release>): String = releases.joinToString("\n", transform = ::format)
+    protected fun formatReleases(releases: List<Release>): String = releases.joinToString("", transform = ::format)
 
     protected fun format(release: Release): String = """## ${formatTitle(release)}${formatChangelogLink(release)}
         |
@@ -22,16 +19,16 @@ class MarkdownFormatter(
         |""".trimMargin()
 
     protected fun formatChangelogLink(release: Release): String =
-        if (release.tag != null && release.previousTag != null) {
-            "\n[Full Changelog](${config.github.changelogUrl(release.previousTag, release.tag)})"
+        if (release.changeLogUrl != null) {
+            "\n[Full Changelog](${release.changeLogUrl})"
         } else {
             ""
         }
 
     protected fun formatTitle(release: Release): String = if (release.tag != null) {
-        "[${tagTransform(release.tag)}](${config.github.releaseUrl(release.tag)}) ${dateFormat.format(release.date)}"
+        "[${tagTransform(release.tag)}](${release.releaseUrl}) (${dateFormat.format(release.date)})"
     } else {
-        "${config.unreleasedTitle} ${dateFormat.format(release.date)}"
+        "$unreleasedTitle (${dateFormat.format(release.date)})"
     }
 
     protected fun formatGroups(groups: List<Section>): String = groups.joinToString("\n", transform = ::format)
@@ -39,18 +36,15 @@ class MarkdownFormatter(
     protected fun format(group: Section): String = with(group) {
         """**$title**
             |
-            | ${format(issues)}
-            | """.trimMargin()
+            |${format(issues)}
+            |""".trimMargin()
     }
 
-    protected fun format(issues: List<GHIssue>) = issues.joinToString("\n", transform = ::formatIssueOrPr)
+    protected fun format(issues: List<Issue>) = issues.joinToString("\n", transform = ::formatIssue)
 
-    private fun formatIssueOrPr(issue: GHIssue): String = when (issue) {
-        is GHPullRequest -> formatPullRequest(issue)
-        else -> formatIssue(issue)
+    protected fun formatIssue(issue: Issue): String = with(issue) {
+        " - $title [#$number]($url)${formatIssueSuffix(issue)}"
     }
 
-    protected fun formatIssue(issue: GHIssue): String = with(issue) { "- $title [#$number]($htmlUrl)" }
-
-    protected fun formatPullRequest(pr: GHPullRequest): String = "${formatIssue(pr)} (@${pr.user.login})"
+    protected fun formatIssueSuffix(issue: Issue): String = if (issue.isPullRequest) " (@${issue.authorLogin})" else ""
 }
