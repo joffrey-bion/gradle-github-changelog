@@ -7,7 +7,7 @@ class MarkdownFormatter(
     private val tagTransform: (String) -> String = { it },
     private val dateFormat: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 ) {
-    fun format(changelog: ChangeLog): String = """# Changelog
+    fun format(changelog: ChangeLog): String = """# ${changelog.title}
         |
         |${formatReleases(changelog.releases)}""".trimMargin()
 

@@ -56,7 +56,7 @@ class MarkdownFormatterTest {
         val formatter = MarkdownFormatter("Unreleased")
 
         val expected = """
-            # Changelog
+            # My Title
 
             ## Unreleased (2019-01-20)
 
