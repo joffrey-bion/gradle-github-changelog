@@ -47,14 +47,13 @@ open class GitHubChangelogExtension(project: Project) {
 
     var title: String = "Changelog"
     var unreleasedVersionTitle: String = "Unreleased"
-    val showUnreleased: Boolean = true
-    val futureVersion: String? = project.version.toString()
-    val sections: List<SectionDefinition> =
-        DEFAULT_SECTIONS
-    val defaultIssueSectionTitle: String = "Closed issue:"
-    val defaultPrSectionTitle: String = "Merged pull requests:"
-    val includeLabels: List<String> = emptyList()
-    val excludeLabels: List<String> = listOf("duplicate", "invalid", "question", "wontfix")
+    var showUnreleased: Boolean = true
+    var futureVersion: String? = project.version.toString()
+    var sections: List<SectionDefinition> = DEFAULT_SECTIONS
+    var defaultIssueSectionTitle: String = "Closed issue:"
+    var defaultPrSectionTitle: String = "Merged pull requests:"
+    var includeLabels: List<String> = emptyList()
+    var excludeLabels: List<String> = listOf("duplicate", "invalid", "question", "wontfix")
 
     var outputFile: File = File("${project.projectDir}/CHANGELOG.md")
 
