@@ -19,7 +19,7 @@ class GitHubChangelogPluginTest {
     @Before
     fun setUp() {
         project = ProjectBuilder.builder().build()
-        project.pluginManager.apply(GithubChangelogPlugin::class.java)
+        project.pluginManager.apply(GitHubChangelogPlugin::class.java)
     }
 
     @Test
@@ -39,7 +39,7 @@ class GitHubChangelogPluginTest {
         val buildFile = testProjectDir.newFile("build.gradle")
         buildFile.writeText("""
             plugins {
-                id 'org.hildan.github.changelog.generator'
+                id 'org.hildan.github.changelog'
             }
 
             changelog {

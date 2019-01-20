@@ -35,7 +35,7 @@ data class SectionDefinition(val title: String, val labels: List<String>)
 
 data class DatedTag(val name: String, val date: Date)
 
-class GithubChangelogGenerator(
+class GitHubChangelogGenerator(
     private val config: Configuration,
     private val outputFile: File? = null,
     private val formatter: MarkdownFormatter = MarkdownFormatter(config.unreleasedTitle)

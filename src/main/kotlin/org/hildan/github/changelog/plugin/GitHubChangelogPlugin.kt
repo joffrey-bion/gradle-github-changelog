@@ -8,12 +8,12 @@ import org.gradle.api.tasks.TaskAction
 import org.hildan.github.changelog.generator.Configuration
 import org.hildan.github.changelog.generator.DEFAULT_SECTIONS
 import org.hildan.github.changelog.generator.GitHubConfig
-import org.hildan.github.changelog.generator.GithubChangelogGenerator
+import org.hildan.github.changelog.generator.GitHubChangelogGenerator
 import org.hildan.github.changelog.generator.SectionDefinition
 import java.io.File
 import javax.inject.Inject
 
-open class GithubChangelogPlugin : Plugin<Project> {
+open class GitHubChangelogPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val ext = project.extensions.create("changelog", GitHubChangelogExtension::class.java, project)
@@ -33,7 +33,7 @@ open class GenerateChangelogTask @Inject constructor(
     @TaskAction
     fun generate() {
         val configuration = ext.toConfig()
-        val generator = GithubChangelogGenerator(configuration, ext.outputFile)
+        val generator = GitHubChangelogGenerator(configuration, ext.outputFile)
         generator.generate()
     }
 }

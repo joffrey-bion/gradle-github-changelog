@@ -1,4 +1,3 @@
-# Github Changelog Generator (Gradle plugin)
+# GitHub Changelog Generator (Gradle plugin)
 
-Generates a changelog from Github issues and pull-requests.
-
+Generates a changelog from GitHub issues and pull-requests.
