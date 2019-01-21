@@ -10,10 +10,9 @@ data class GitHubConfig(
     private val token: String?,
     private val repo: String,
     private val baseUrl: String = "https://github.com/$user/$repo",
-    private val releaseUrl: String = "$baseUrl/tree/%s"
+    private val releaseUrlTemplate: String = "$baseUrl/tree/%s"
 ) {
-
-    fun releaseUrl(tag: String): String = String.format(releaseUrl, tag)
+    fun releaseUrl(tag: String): String = String.format(releaseUrlTemplate, tag)
 
     fun changelogUrl(fromTag: String, toTag: String): String = "$baseUrl/compare/$fromTag...$toTag"
 

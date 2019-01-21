@@ -46,6 +46,7 @@ open class GitHubChangelogExtension(project: Project) {
     var githubRepository: String = project.rootProject.name
 
     var title: String = "Changelog"
+    var releaseUrlTemplate: String? = null
     var unreleasedVersionTitle: String = "Unreleased"
     var showUnreleased: Boolean = true
     var futureVersion: String? = project.version.toString()
@@ -59,11 +60,7 @@ open class GitHubChangelogExtension(project: Project) {
 
     fun toConfig(): Configuration =
         Configuration(
-            github = GitHubConfig(
-                githubUser ?: throw GradleException("you must specify your github username for changelog generation"),
-                githubToken,
-                githubRepository
-            ),
+            github = createGithubConfig(),
             globalHeader = title,
             unreleasedTitle = unreleasedVersionTitle,
             futureVersion = futureVersion,
@@ -74,6 +71,15 @@ open class GitHubChangelogExtension(project: Project) {
             includeLabels = includeLabels,
             excludeLabels = excludeLabels
         )
+
+    private fun createGithubConfig(): GitHubConfig {
+        val githubConfig = GitHubConfig(
+            githubUser ?: throw GradleException("you must specify your github username for changelog generation"),
+            githubToken,
+            githubRepository
+        )
+        return releaseUrlTemplate?.let { githubConfig.copy(releaseUrlTemplate = it) } ?: githubConfig
+    }
 }
 
 private fun Project.getPropOrEnv(propName: String, envVar: String? = null, defaultValue: String? = null): String? =

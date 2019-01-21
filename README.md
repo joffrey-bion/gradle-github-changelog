@@ -45,6 +45,7 @@ changelog {
     githubRepository = rootProject.name
 
     title = "Changelog"
+    releaseUrlTemplate = null // defaults to "https://github.com/$user/$repo/tree/%s"
     unreleasedVersionTitle = "Unreleased"
     showUnreleased = true
     futureVersion = "$version"
@@ -58,3 +59,6 @@ changelog {
 ```
 
 The GitHub API token is not necessary, but removes the limit of API calls this plugin can make to your project's GitHub.
+
+The `releaseUrlTemplate` option allows to customize the release URL by providing a `%s` placeholder for the tag. 
+By default, it points to the source code of the git repository at the given tag.
