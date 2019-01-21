@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/joffrey-bion/gradle-github-changelog.svg?branch=master)](https://travis-ci.org/joffrey-bion/gradle-github-changelog)
+[![image](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/org/hildan/github/changelog/org.hildan.github.changelog.gradle.plugin/maven-metadata.xml.svg?label=gradle)](https://plugins.gradle.org/plugin/org.hildan.github.changelog)
 
 # GitHub Changelog Generator (Gradle plugin)
 
@@ -10,13 +11,11 @@ as a Gradle plugin.
 
 ### Applying the plugin
 
-**NOTE: the plugin is currently pending approval, it is not yet published to the Gradle plugin portal.**
-
 Simply add the following line to your `plugins` block:
 
 ```groovy
 plugins {
-    id 'org.hildan.github.changelog' version '0.1.0'
+    id 'org.hildan.github.changelog' version '0.1.1'
 }
 ```
 
@@ -24,7 +23,7 @@ Or if you're using the Gradle Kotlin DSL:
 
 ```kotlin
 plugins {
-    id("org.hildan.github.changelog") version "0.1.0"
+    id("org.hildan.github.changelog") version "0.1.1"
 }
 ```
 
