@@ -9,7 +9,7 @@ class MarkdownFormatterTest {
     @Test
     fun format() {
 
-        val now = LocalDate.now()
+        val now = LocalDate.of(2019, 1, 3)
         val date2 = now.minusDays(1)
         val date1 = now.minusDays(2)
 
@@ -58,13 +58,13 @@ class MarkdownFormatterTest {
         val expected = """
             # My Title
 
-            ## Unreleased (2019-01-20)
+            ## Unreleased (2019-01-03)
 
             **Pull requests**
 
              - Latest PR [#5](http://github.com/issues/5) (@bob)
 
-            ## [2.0.0](http://github.com/tree/2.0.0) (2019-01-19)
+            ## [2.0.0](http://github.com/tree/2.0.0) (2019-01-02)
             [Full Changelog](http://github.com/compare/1.0.0...2.0.0)
 
             **Pull requests**
@@ -75,7 +75,7 @@ class MarkdownFormatterTest {
 
              - Some bug [#3](http://github.com/issues/3)
 
-            ## [1.0.0](http://github.com/tree/1.0.0) (2019-01-18)
+            ## [1.0.0](http://github.com/tree/1.0.0) (2019-01-01)
 
             **Pull requests**
 
