@@ -5,7 +5,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskAction
-import org.hildan.github.changelog.generator.Configuration
+import org.hildan.github.changelog.generator.ChangelogConfig
 import org.hildan.github.changelog.generator.DEFAULT_SECTIONS
 import org.hildan.github.changelog.generator.GitHubConfig
 import org.hildan.github.changelog.generator.GitHubChangelogGenerator
@@ -34,8 +34,7 @@ open class GenerateChangelogTask @Inject constructor(
     fun generate() {
         val configuration = ext.toConfig()
         project.logger.info("Generating changelog into ${ext.outputFile}...")
-        val generator = GitHubChangelogGenerator(configuration, ext.outputFile)
-        generator.generate()
+        GitHubChangelogGenerator(configuration).generate(ext.outputFile)
     }
 }
 
@@ -46,7 +45,6 @@ open class GitHubChangelogExtension(project: Project) {
     var githubRepository: String = project.rootProject.name
 
     var title: String = "Changelog"
-    var releaseUrlTemplate: String? = null
     var unreleasedVersionTitle: String = "Unreleased"
     var showUnreleased: Boolean = true
     var futureVersion: String? = project.version.toString()
@@ -55,30 +53,33 @@ open class GitHubChangelogExtension(project: Project) {
     var defaultPrSectionTitle: String = "Merged pull requests:"
     var includeLabels: List<String> = emptyList()
     var excludeLabels: List<String> = listOf("duplicate", "invalid", "question", "wontfix")
+    var releaseUrlTemplate: String? = null
+    var diffUrlTemplate: String? = null
 
     var outputFile: File = File("${project.projectDir}/CHANGELOG.md")
 
-    fun toConfig(): Configuration =
-        Configuration(
+    fun toConfig(): ChangelogConfig =
+        ChangelogConfig(
             github = createGithubConfig(),
             globalHeader = title,
+            showUnreleased = showUnreleased,
             unreleasedTitle = unreleasedVersionTitle,
             futureVersion = futureVersion,
             sections = sections,
-            showUnreleased = showUnreleased,
             defaultIssueSectionTitle = defaultIssueSectionTitle,
             defaultPrSectionTitle = defaultPrSectionTitle,
             includeLabels = includeLabels,
-            excludeLabels = excludeLabels
+            excludeLabels = excludeLabels,
+            customReleaseUrlTemplate = releaseUrlTemplate,
+            customDiffUrlTemplate = diffUrlTemplate
         )
 
     private fun createGithubConfig(): GitHubConfig {
-        val githubConfig = GitHubConfig(
+        return GitHubConfig(
             githubUser ?: throw GradleException("you must specify your github username for changelog generation"),
-            githubToken,
-            githubRepository
+            githubRepository,
+            githubToken
         )
-        return releaseUrlTemplate?.let { githubConfig.copy(releaseUrlTemplate = it) } ?: githubConfig
     }
 }
 

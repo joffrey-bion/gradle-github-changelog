@@ -2,10 +2,8 @@ package org.hildan.github.changelog.generator
 
 import java.time.format.DateTimeFormatter
 
-class MarkdownFormatter(
-    private val unreleasedTitle: String,
-    private val tagTransform: (String) -> String = { it },
-    private val dateFormat: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
+open class MarkdownFormatter(
+    protected val dateFormat: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 ) {
     fun format(changelog: ChangeLog): String = """# ${changelog.title}
         |
@@ -13,22 +11,22 @@ class MarkdownFormatter(
 
     protected fun formatReleases(releases: List<Release>): String = releases.joinToString("", transform = ::format)
 
-    protected fun format(release: Release): String = """## ${formatTitle(release)}${formatChangelogLink(release)}
+    protected fun format(release: Release): String = """## ${formatTitle(release)}${formatDiffUrl(release.diffUrl)}
         |
         |${formatGroups(release.sections)}
         |""".trimMargin()
 
-    protected fun formatChangelogLink(release: Release): String =
-        if (release.changeLogUrl != null) {
-            "\n[Full Changelog](${release.changeLogUrl})"
+    protected fun formatDiffUrl(diffUrl: String?): String =
+        if (diffUrl != null) {
+            "\n[Full Changelog]($diffUrl)"
         } else {
             ""
         }
 
-    protected fun formatTitle(release: Release): String = if (release.tag != null) {
-        "[${tagTransform(release.tag)}](${release.releaseUrl}) (${dateFormat.format(release.date)})"
+    protected fun formatTitle(release: Release): String = if (release.releaseUrl != null) {
+        "[${release.title}](${release.releaseUrl}) (${dateFormat.format(release.date)})"
     } else {
-        "$unreleasedTitle (${dateFormat.format(release.date)})"
+        "${release.title} (${dateFormat.format(release.date)})"
     }
 
     protected fun formatGroups(groups: List<Section>): String = groups.joinToString("\n", transform = ::format)

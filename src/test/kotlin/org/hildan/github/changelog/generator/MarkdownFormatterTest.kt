@@ -2,14 +2,16 @@ package org.hildan.github.changelog.generator
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 class MarkdownFormatterTest {
 
     @Test
     fun format() {
 
-        val now = LocalDate.of(2019, 1, 3)
+        val now = LocalDate.of(2019, 1, 3).atTime(10, 0)
         val date2 = now.minusDays(1)
         val date1 = now.minusDays(2)
 
@@ -17,17 +19,17 @@ class MarkdownFormatterTest {
         val tag1 = "1.0.0"
 
         val prs3 = listOf(
-            Issue(5, "Latest PR", "http://github.com/issues/5", "bob", true)
+            Issue(5, "Latest PR", Instant.now(), emptyList(), "http://github.com/issues/5", "bob", true)
         )
         val sectionsNext = listOf(
             Section("Pull requests", prs3)
         )
 
         val prs2 = listOf(
-            Issue(4, "Some other PR", "http://github.com/issues/4", "bob", true)
+            Issue(4, "Some other PR", Instant.now(), emptyList(), "http://github.com/issues/4", "bob", true)
         )
         val bugs2 = listOf(
-            Issue(3, "Some bug", "http://github.com/issues/3", "alex", false)
+            Issue(3, "Some bug", Instant.now(), emptyList(), "http://github.com/issues/3", "alex", false)
         )
         val sections2 = listOf(
             Section("Pull requests", prs2),
@@ -35,25 +37,30 @@ class MarkdownFormatterTest {
         )
 
         val prs1 = listOf(
-                Issue(2, "Some PR", "http://github.com/issues/2", "lee", true)
+                Issue(2, "Some PR", Instant.now(), emptyList(), "http://github.com/issues/2", "lee", true)
         )
         val enhancements1 = listOf(
-                Issue(1, "Some feature", "http://github.com/issues/1", "bob", false)
+                Issue(1, "Some feature", Instant.now(), emptyList(), "http://github.com/issues/1", "bob", false)
         )
         val sections1 = listOf(
             Section("Pull requests", prs1),
             Section("Enhancements", enhancements1)
         )
 
-        val unreleased = Release(null, tag2, now, sectionsNext, null, null)
-        val release2 = Release(tag2, tag1, date2, sections2, "http://github.com/tree/$tag2",
-            "http://github.com/compare/$tag1...$tag2")
-        val release1 = Release(tag1, null, date1, sections1, "http://github.com/tree/$tag1", null)
+        val unreleased = Release("Unreleased", now, sectionsNext, null, null)
+        val release2 = Release(
+            tag2,
+            date2,
+            sections2,
+            "http://github.com/tree/$tag2",
+            "http://github.com/compare/$tag1...$tag2"
+        )
+        val release1 = Release(tag1, date1, sections1, "http://github.com/tree/$tag1", null)
 
         val releases = listOf(unreleased, release2, release1)
         val changelog = ChangeLog("My Title", releases)
 
-        val formatter = MarkdownFormatter("Unreleased")
+        val formatter = MarkdownFormatter()
 
         val expected = """
             # My Title
