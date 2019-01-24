@@ -38,16 +38,15 @@ open class GenerateChangelogTask @Inject constructor(
     }
 }
 
-open class GitHubChangelogExtension(project: Project) {
+open class GitHubChangelogExtension(private val project: Project) {
 
-    var githubUser: String? = project.getPropOrEnv("githubUser", "GITHUB_USER")
-    var githubToken: String? = project.getPropOrEnv("githubToken", "GITHUB_TOKEN")
-    var githubRepository: String = project.rootProject.name
+    var githubUser: String? = null
+    var githubToken: String? = null
+    var githubRepository: String? = null
 
     var title: String = "Changelog"
-    var unreleasedVersionTitle: String = "Unreleased"
     var showUnreleased: Boolean = true
-    var futureVersion: String? = project.version.toString()
+    var unreleasedVersionTitle: String? = null
     var sections: List<SectionDefinition> = DEFAULT_SECTIONS
     var defaultIssueSectionTitle: String = "Closed issue:"
     var defaultPrSectionTitle: String = "Merged pull requests:"
@@ -63,8 +62,7 @@ open class GitHubChangelogExtension(project: Project) {
             github = createGithubConfig(),
             globalHeader = title,
             showUnreleased = showUnreleased,
-            unreleasedTitle = unreleasedVersionTitle,
-            futureVersion = futureVersion,
+            futureVersion = unreleasedVersionTitle ?: project.versionOrNull() ?: "Unreleased",
             sections = sections,
             defaultIssueSectionTitle = defaultIssueSectionTitle,
             defaultPrSectionTitle = defaultPrSectionTitle,
@@ -75,11 +73,17 @@ open class GitHubChangelogExtension(project: Project) {
         )
 
     private fun createGithubConfig(): GitHubConfig {
-        return GitHubConfig(
-            githubUser ?: throw GradleException("you must specify your github username for changelog generation"),
-            githubRepository,
-            githubToken
-        )
+        val user = githubUser ?: project.getPropOrEnv("githubUser", "GITHUB_USER")
+            ?: throw GradleException("you must specify your github username for changelog generation")
+        val repo = githubRepository ?: project.rootProject.name
+        val token = githubToken ?: project.getPropOrEnv("githubToken", "GITHUB_TOKEN")
+
+        return GitHubConfig(user, repo, token)
+    }
+
+    private fun Project.versionOrNull(): String? {
+        val versionStr = version.toString()
+        return if (versionStr == "unspecified") null else versionStr
     }
 }
 

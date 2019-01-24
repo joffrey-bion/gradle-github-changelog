@@ -38,7 +38,7 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
 
     private fun createFutureRelease(issues: List<Issue>): Release {
         val sections = dispatchInSections(issues)
-        val title = config.futureVersion ?: config.unreleasedTitle
+        val title = config.futureVersion
         return Release(title, LocalDateTime.now(), sections, null, null)
     }
 

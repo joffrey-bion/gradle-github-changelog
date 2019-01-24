@@ -45,15 +45,15 @@ changelog {
     githubRepository = rootProject.name
 
     title = "Changelog"
-    releaseUrlTemplate = null // defaults to "https://github.com/$user/$repo/tree/%s"
-    unreleasedVersionTitle = "Unreleased"
     showUnreleased = true
-    futureVersion = "$version"
+    unreleasedVersionTitle = "$version"
     defaultIssueSectionTitle = "Closed issue:"
     defaultPrSectionTitle = "Merged pull requests:"
     includeLabels = []
     excludeLabels = ["duplicate", "invalid", "question", "wontfix"]
-
+    releaseUrlTemplate = null // defaults to "https://github.com/$user/$repo/tree/%s"
+    diffUrlTemplate = null // defaults to "https://github.com/$user/$repo/compare/%s...%s"
+    
     outputFile = file("${projectDir}/CHANGELOG.md")
 }
 ```
