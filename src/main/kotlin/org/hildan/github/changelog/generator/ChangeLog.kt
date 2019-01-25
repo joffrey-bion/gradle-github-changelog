@@ -9,6 +9,7 @@ data class ChangeLog(
 )
 
 data class Release(
+    val tag: String?,
     val title: String,
     val date: LocalDateTime,
     val sections: List<Section>,

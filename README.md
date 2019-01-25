@@ -51,6 +51,7 @@ changelog {
     defaultPrSectionTitle = "Merged pull requests:"
     includeLabels = []
     excludeLabels = ["duplicate", "invalid", "question", "wontfix"]
+    sinceTag = null
     releaseUrlTemplate = null // defaults to "https://github.com/$user/$repo/tree/%s"
     diffUrlTemplate = null // defaults to "https://github.com/$user/$repo/compare/%s...%s"
     

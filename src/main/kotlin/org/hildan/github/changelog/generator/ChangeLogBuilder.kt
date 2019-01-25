@@ -10,7 +10,14 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
 
     fun createChangeLog(issues: List<Issue>, tags: List<Tag>): ChangeLog {
         val releases = createReleases(issues, tags)
-        return ChangeLog(config.globalHeader, releases)
+        val displayedReleases = filterReleases(releases)
+        return ChangeLog(config.globalHeader, displayedReleases)
+    }
+
+    private fun filterReleases(releases: List<Release>): List<Release> = if (config.sinceTag != null) {
+        releases.dropLastWhile { it.tag != config.sinceTag }
+    } else {
+        releases
     }
 
     private fun createReleases(issues: List<Issue>, tags: List<Tag>): List<Release> {
@@ -39,7 +46,7 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
     private fun createFutureRelease(issues: List<Issue>): Release {
         val sections = dispatchInSections(issues)
         val title = config.futureVersion
-        return Release(title, LocalDateTime.now(), sections, null, null)
+        return Release(null, title, LocalDateTime.now(), sections, null, null)
     }
 
     private fun createRelease(tag: Tag, previousTagName: String?, issues: List<Issue>): Release {
@@ -47,7 +54,7 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
         val releaseUrl = releaseUrl(tag.name)
         val diffUrl = previousTagName?.let { diffUrl(it, tag.name) }
         val date = tag.date.atZone(ZoneId.systemDefault()).toLocalDateTime()
-        return Release(tag.name, date, sections, releaseUrl, diffUrl)
+        return Release(tag.name, tag.name, date, sections, releaseUrl, diffUrl)
     }
 
     private fun dispatchInSections(issues: List<Issue>): List<Section> =

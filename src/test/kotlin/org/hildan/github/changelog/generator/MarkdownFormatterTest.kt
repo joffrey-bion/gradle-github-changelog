@@ -4,13 +4,11 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 class MarkdownFormatterTest {
 
     @Test
     fun format() {
-
         val now = LocalDate.of(2019, 1, 3).atTime(10, 0)
         val date2 = now.minusDays(1)
         val date1 = now.minusDays(2)
@@ -47,15 +45,16 @@ class MarkdownFormatterTest {
             Section("Enhancements", enhancements1)
         )
 
-        val unreleased = Release("Unreleased", now, sectionsNext, null, null)
+        val unreleased = Release(null, "Unreleased", now, sectionsNext, null, null)
         val release2 = Release(
+            tag2,
             tag2,
             date2,
             sections2,
             "http://github.com/tree/$tag2",
             "http://github.com/compare/$tag1...$tag2"
         )
-        val release1 = Release(tag1, date1, sections1, "http://github.com/tree/$tag1", null)
+        val release1 = Release(tag1, tag1, date1, sections1, "http://github.com/tree/$tag1", null)
 
         val releases = listOf(unreleased, release2, release1)
         val changelog = ChangeLog("My Title", releases)

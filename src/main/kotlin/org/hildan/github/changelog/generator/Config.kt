@@ -19,6 +19,7 @@ data class ChangelogConfig(
     val defaultPrSectionTitle: String = "Merged pull requests:",
     val includeLabels: List<String> = emptyList(),
     val excludeLabels: List<String> = listOf("duplicate", "invalid", "question", "wontfix"),
+    val sinceTag: String? = null,
     val customReleaseUrlTemplate: String? = null,
     val customDiffUrlTemplate: String? = null
 ) {

@@ -52,6 +52,7 @@ open class GitHubChangelogExtension(private val project: Project) {
     var defaultPrSectionTitle: String = "Merged pull requests:"
     var includeLabels: List<String> = emptyList()
     var excludeLabels: List<String> = listOf("duplicate", "invalid", "question", "wontfix")
+    var sinceTag: String? = null
     var releaseUrlTemplate: String? = null
     var diffUrlTemplate: String? = null
 
@@ -68,6 +69,7 @@ open class GitHubChangelogExtension(private val project: Project) {
             defaultPrSectionTitle = defaultPrSectionTitle,
             includeLabels = includeLabels,
             excludeLabels = excludeLabels,
+            sinceTag = sinceTag,
             customReleaseUrlTemplate = releaseUrlTemplate,
             customDiffUrlTemplate = diffUrlTemplate
         )
