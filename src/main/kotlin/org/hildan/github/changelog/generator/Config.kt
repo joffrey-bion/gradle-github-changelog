@@ -20,6 +20,7 @@ data class ChangelogConfig(
     val includeLabels: List<String> = emptyList(),
     val excludeLabels: List<String> = listOf("duplicate", "invalid", "question", "wontfix"),
     val sinceTag: String? = null,
+    val skipTags: List<String> = emptyList(),
     val customReleaseUrlTemplate: String? = null,
     val customDiffUrlTemplate: String? = null
 ) {

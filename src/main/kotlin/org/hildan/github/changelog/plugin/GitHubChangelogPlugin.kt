@@ -53,6 +53,7 @@ open class GitHubChangelogExtension(private val project: Project) {
     var includeLabels: List<String> = emptyList()
     var excludeLabels: List<String> = listOf("duplicate", "invalid", "question", "wontfix")
     var sinceTag: String? = null
+    var skipTags: List<String> = emptyList()
     var releaseUrlTemplate: String? = null
     var diffUrlTemplate: String? = null
 
@@ -70,6 +71,7 @@ open class GitHubChangelogExtension(private val project: Project) {
             includeLabels = includeLabels,
             excludeLabels = excludeLabels,
             sinceTag = sinceTag,
+            skipTags = skipTags,
             customReleaseUrlTemplate = releaseUrlTemplate,
             customDiffUrlTemplate = diffUrlTemplate
         )

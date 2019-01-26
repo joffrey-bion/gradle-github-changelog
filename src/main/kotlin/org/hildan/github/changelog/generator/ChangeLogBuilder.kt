@@ -14,10 +14,13 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
         return ChangeLog(config.globalHeader, displayedReleases)
     }
 
-    private fun filterReleases(releases: List<Release>): List<Release> = if (config.sinceTag != null) {
-        releases.dropLastWhile { it.tag != config.sinceTag }
-    } else {
-        releases
+    private fun filterReleases(releases: List<Release>): List<Release> {
+        val nonSkippedReleases = releases.filterNot { it.tag in config.skipTags }
+        return if (config.sinceTag != null) {
+            nonSkippedReleases.dropLastWhile { it.tag != config.sinceTag }
+        } else {
+            nonSkippedReleases
+        }
     }
 
     private fun createReleases(issues: List<Issue>, tags: List<Tag>): List<Release> {
