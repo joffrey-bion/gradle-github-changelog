@@ -8,7 +8,22 @@ import kotlin.test.assertEquals
 class MarkdownFormatterTest {
 
     @Test
-    fun format() {
+    fun `format empty change log`() {
+        val changelog = ChangeLog(title = DEFAULT_CHANGELOG_TITLE, releases = emptyList())
+
+        val formatter = MarkdownFormatter()
+
+        val expected = """
+            # $DEFAULT_CHANGELOG_TITLE
+
+            *Nothing much happened so far, actually...*
+        """.trimIndent()
+
+        assertEquals(expected, formatter.format(changelog))
+    }
+
+    @Test
+    fun `format standard case`() {
         val now = LocalDate.of(2019, 1, 3).atTime(10, 0)
         val date2 = now.minusDays(1)
         val date1 = now.minusDays(2)

@@ -11,7 +11,11 @@ open class MarkdownFormatter(
         |
         |${formatReleases(changelog.releases)}""".trimMargin()
 
-    protected fun formatReleases(releases: List<Release>): String = releases.joinToString("", transform = ::format)
+    protected fun formatReleases(releases: List<Release>): String = if (releases.isEmpty()) {
+        "*Nothing much happened so far, actually...*"
+    } else {
+        releases.joinToString("",transform =::format)
+    }
 
     protected fun format(release: Release): String = """## ${formatTitle(release)}${formatDiffUrl(release.diffUrl)}
         |
