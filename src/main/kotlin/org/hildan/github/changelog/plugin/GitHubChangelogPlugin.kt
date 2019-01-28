@@ -6,18 +6,29 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskAction
 import org.hildan.github.changelog.generator.ChangelogConfig
+import org.hildan.github.changelog.generator.DEFAULT_CHANGELOG_TITLE
+import org.hildan.github.changelog.generator.DEFAULT_EXCLUDED_LABELS
+import org.hildan.github.changelog.generator.DEFAULT_INCLUDED_LABELS
+import org.hildan.github.changelog.generator.DEFAULT_ISSUES_SECTION_TITLE
+import org.hildan.github.changelog.generator.DEFAULT_PR_SECTION_TITLE
 import org.hildan.github.changelog.generator.DEFAULT_SECTIONS
+import org.hildan.github.changelog.generator.DEFAULT_SHOW_UNRELEASED
+import org.hildan.github.changelog.generator.DEFAULT_SKIPPED_TAGS
+import org.hildan.github.changelog.generator.DEFAULT_UNRELEASED_VERSION_TITLE
 import org.hildan.github.changelog.generator.GitHubConfig
 import org.hildan.github.changelog.generator.GitHubChangelogGenerator
 import org.hildan.github.changelog.generator.SectionDefinition
 import java.io.File
 import javax.inject.Inject
 
+const val EXTENSION_NAME = "changelog"
+const val TASK_NAME = "generateChangelog"
+
 open class GitHubChangelogPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        val ext = project.extensions.create("changelog", GitHubChangelogExtension::class.java, project)
-        project.tasks.create("generateChangelog", GenerateChangelogTask::class.java, ext)
+        val ext = project.extensions.create(EXTENSION_NAME, GitHubChangelogExtension::class.java, project)
+        project.tasks.create(TASK_NAME, GenerateChangelogTask::class.java, ext)
     }
 }
 
@@ -33,8 +44,9 @@ open class GenerateChangelogTask @Inject constructor(
     @TaskAction
     fun generate() {
         val configuration = ext.toConfig()
-        project.logger.info("Generating changelog into ${ext.outputFile}...")
-        GitHubChangelogGenerator(configuration).generate(ext.outputFile)
+        val outFile = ext.outputFile
+        project.logger.info("Generating changelog into $outFile...")
+        GitHubChangelogGenerator(configuration).generate(outFile)
     }
 }
 
@@ -44,16 +56,16 @@ open class GitHubChangelogExtension(private val project: Project) {
     var githubToken: String? = null
     var githubRepository: String? = null
 
-    var title: String = "Changelog"
-    var showUnreleased: Boolean = true
+    var title: String = DEFAULT_CHANGELOG_TITLE
+    var showUnreleased: Boolean = DEFAULT_SHOW_UNRELEASED
     var unreleasedVersionTitle: String? = null
     var sections: List<SectionDefinition> = DEFAULT_SECTIONS
-    var defaultIssueSectionTitle: String = "Closed issue:"
-    var defaultPrSectionTitle: String = "Merged pull requests:"
-    var includeLabels: List<String> = emptyList()
-    var excludeLabels: List<String> = listOf("duplicate", "invalid", "question", "wontfix")
+    var defaultIssueSectionTitle: String = DEFAULT_ISSUES_SECTION_TITLE
+    var defaultPrSectionTitle: String = DEFAULT_PR_SECTION_TITLE
+    var includeLabels: List<String> = DEFAULT_INCLUDED_LABELS
+    var excludeLabels: List<String> = DEFAULT_EXCLUDED_LABELS
     var sinceTag: String? = null
-    var skipTags: List<String> = emptyList()
+    var skipTags: List<String> = DEFAULT_SKIPPED_TAGS
     var releaseUrlTemplate: String? = null
     var diffUrlTemplate: String? = null
 
@@ -64,7 +76,7 @@ open class GitHubChangelogExtension(private val project: Project) {
             github = createGithubConfig(),
             globalHeader = title,
             showUnreleased = showUnreleased,
-            futureVersion = unreleasedVersionTitle ?: project.versionOrNull() ?: "Unreleased",
+            futureVersion = unreleasedVersionTitle ?: project.versionOrNull() ?: DEFAULT_UNRELEASED_VERSION_TITLE,
             sections = sections,
             defaultIssueSectionTitle = defaultIssueSectionTitle,
             defaultPrSectionTitle = defaultPrSectionTitle,

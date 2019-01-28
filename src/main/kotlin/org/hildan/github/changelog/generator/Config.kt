@@ -1,5 +1,15 @@
 package org.hildan.github.changelog.generator
 
+const val DEFAULT_CHANGELOG_TITLE = "Changelog"
+const val DEFAULT_SHOW_UNRELEASED = true
+const val DEFAULT_UNRELEASED_VERSION_TITLE = "Unreleased"
+const val DEFAULT_ISSUES_SECTION_TITLE = "Closed issues:"
+const val DEFAULT_PR_SECTION_TITLE = "Merged pull requests:"
+
+val DEFAULT_INCLUDED_LABELS = emptyList<String>()
+val DEFAULT_EXCLUDED_LABELS = listOf("duplicate", "invalid", "question", "wontfix")
+val DEFAULT_SKIPPED_TAGS = emptyList<String>()
+
 val DEFAULT_SECTIONS = listOf(
     SectionDefinition("Breaking changes:", listOf("backwards-incompatible", "breaking")),
     SectionDefinition("Implemented enhancements:", listOf("enhancement", "Enhancement")),
@@ -11,16 +21,16 @@ val DEFAULT_SECTIONS = listOf(
 
 data class ChangelogConfig(
     val github: GitHubConfig,
-    val globalHeader: String = "Changelog",
-    val showUnreleased: Boolean = true,
-    val futureVersion: String = "Unreleased",
+    val globalHeader: String = DEFAULT_CHANGELOG_TITLE,
+    val showUnreleased: Boolean = DEFAULT_SHOW_UNRELEASED,
+    val futureVersion: String = DEFAULT_UNRELEASED_VERSION_TITLE,
     val sections: List<SectionDefinition> = DEFAULT_SECTIONS,
-    val defaultIssueSectionTitle: String = "Closed issues:",
-    val defaultPrSectionTitle: String = "Merged pull requests:",
-    val includeLabels: List<String> = emptyList(),
-    val excludeLabels: List<String> = listOf("duplicate", "invalid", "question", "wontfix"),
+    val defaultIssueSectionTitle: String = DEFAULT_ISSUES_SECTION_TITLE,
+    val defaultPrSectionTitle: String = DEFAULT_PR_SECTION_TITLE,
+    val includeLabels: List<String> = DEFAULT_INCLUDED_LABELS,
+    val excludeLabels: List<String> = DEFAULT_EXCLUDED_LABELS,
     val sinceTag: String? = null,
-    val skipTags: List<String> = emptyList(),
+    val skipTags: List<String> = DEFAULT_SKIPPED_TAGS,
     val customReleaseUrlTemplate: String? = null,
     val customDiffUrlTemplate: String? = null
 ) {
