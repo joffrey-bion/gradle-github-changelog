@@ -24,7 +24,15 @@ class MarkdownFormatterTest {
         )
 
         val prs2 = listOf(
-            Issue(4, "Some other PR", Instant.now(), emptyList(), "http://github.com/issues/4", "bob", true)
+            Issue(
+                4,
+                "Some PR with <Things> *to* [escape]",
+                Instant.now(),
+                emptyList(),
+                "http://github.com/issues/4",
+                "bob",
+                true
+            )
         )
         val bugs2 = listOf(
             Issue(3, "Some bug", Instant.now(), emptyList(), "http://github.com/issues/3", "alex", false)
@@ -68,28 +76,28 @@ class MarkdownFormatterTest {
 
             **Pull requests**
 
-             - Latest PR [#5](http://github.com/issues/5) (@bob)
+            - Latest PR [\#5](http://github.com/issues/5) (@bob)
 
             ## [2.0.0](http://github.com/tree/2.0.0) (2019-01-02)
             [Full Changelog](http://github.com/compare/1.0.0...2.0.0)
 
             **Pull requests**
 
-             - Some other PR [#4](http://github.com/issues/4) (@bob)
+            - Some PR with \<Things\> \*to\* \[escape\] [\#4](http://github.com/issues/4) (@bob)
 
             **Bug fixes**
 
-             - Some bug [#3](http://github.com/issues/3)
+            - Some bug [\#3](http://github.com/issues/3)
 
             ## [1.0.0](http://github.com/tree/1.0.0) (2019-01-01)
 
             **Pull requests**
 
-             - Some PR [#2](http://github.com/issues/2) (@lee)
+            - Some PR [\#2](http://github.com/issues/2) (@lee)
 
             **Enhancements**
 
-             - Some feature [#1](http://github.com/issues/1)
+            - Some feature [\#1](http://github.com/issues/1)
 
         """.trimIndent()
 
