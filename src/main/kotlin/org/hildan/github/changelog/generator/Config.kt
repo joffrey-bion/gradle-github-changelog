@@ -11,12 +11,8 @@ val DEFAULT_EXCLUDED_LABELS = listOf("duplicate", "invalid", "question", "wontfi
 val DEFAULT_SKIPPED_TAGS = emptyList<String>()
 
 val DEFAULT_SECTIONS = listOf(
-    SectionDefinition("Breaking changes:", listOf("backwards-incompatible", "breaking")),
-    SectionDefinition("Implemented enhancements:", listOf("enhancement", "Enhancement")),
-    SectionDefinition("Fixed bugs:", listOf("bug", "Bug")),
-    SectionDefinition("Deprecated:", listOf("deprecated", "Deprecated")),
-    SectionDefinition("Removed:", listOf("removed", "Removed")),
-    SectionDefinition("Security fixes:", listOf("security", "Security"))
+    SectionDefinition("Implemented enhancements:", listOf("enhancement")),
+    SectionDefinition("Fixed bugs:", listOf("bug"))
 )
 
 data class ChangelogConfig(
