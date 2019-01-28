@@ -68,18 +68,22 @@ class ChangeLogBuilderTest {
         val builder = ChangeLogBuilder(clConfig)
 
         val actualChangeLog = builder.createChangeLog(emptyList(), emptyList())
-        val expectedChangeLog = ChangeLog(title = "Changelog", releases = emptyList())
+        val expectedChangeLog = ChangeLog(title = DEFAULT_CHANGELOG_TITLE, releases = emptyList())
 
         assertEquals(expectedChangeLog, actualChangeLog)
     }
 
     @Test
     fun `custom changelog title`() {
-        val clConfig = ChangelogConfig(GitHubConfig(user = "someuser", repo = "somerepo"), globalHeader = "Custom")
+        val customGlobalTitle = "Custom"
+        val clConfig = ChangelogConfig(
+            github = GitHubConfig(user = "someuser", repo = "somerepo"),
+            globalHeader = customGlobalTitle
+        )
         val builder = ChangeLogBuilder(clConfig)
 
         val actualChangeLog = builder.createChangeLog(emptyList(), emptyList())
-        val expectedChangeLog = ChangeLog(title = "Custom", releases = emptyList())
+        val expectedChangeLog = ChangeLog(title = customGlobalTitle, releases = emptyList())
 
         assertEquals(expectedChangeLog, actualChangeLog)
     }
@@ -92,11 +96,11 @@ class ChangeLogBuilderTest {
         val issues = listOf(issue42, issue43, pr45)
         val actualChangeLog = builder.createChangeLog(issues, emptyList())
         val expectedChangeLog = ChangeLog(
-            title = "Changelog",
+            title = DEFAULT_CHANGELOG_TITLE,
             releases = listOf(
                 Release(
                     tag = null,
-                    title = "Unreleased",
+                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
                     date = fakeNow,
                     diffUrl = null,
                     releaseUrl = null,
@@ -118,17 +122,17 @@ class ChangeLogBuilderTest {
         val issues = listOf(nonLabeledIssue, pr45)
         val actualChangeLog = builder.createChangeLog(issues, emptyList())
         val expectedChangeLog = ChangeLog(
-            title = "Changelog",
+            title = DEFAULT_CHANGELOG_TITLE,
             releases = listOf(
                 Release(
                     tag = null,
-                    title = "Unreleased",
+                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
                     date = fakeNow,
                     diffUrl = null,
                     releaseUrl = null,
                     sections = listOf(
-                        Section("Closed issues:", listOf(nonLabeledIssue)),
-                        Section("Merged pull requests:", listOf(pr45))
+                        Section(DEFAULT_ISSUES_SECTION_TITLE, listOf(nonLabeledIssue)),
+                        Section(DEFAULT_PR_SECTION_TITLE, listOf(pr45))
                     )
                 )
             )
@@ -138,27 +142,29 @@ class ChangeLogBuilderTest {
 
     @Test
     fun `custom default issues and PR section titles`() {
+        val customIssuesSectionTitle = "Issues:"
+        val customPrSectionTitle = "PRs:"
         val clConfig = ChangelogConfig(
             GitHubConfig(user = "someuser", repo = "somerepo"),
-            defaultIssueSectionTitle = "Issues:",
-            defaultPrSectionTitle = "PRs:"
+            defaultIssueSectionTitle = customIssuesSectionTitle,
+            defaultPrSectionTitle = customPrSectionTitle
         )
         val builder = ChangeLogBuilder(clConfig)
 
         val issues = listOf(nonLabeledIssue, pr45)
         val actualChangeLog = builder.createChangeLog(issues, emptyList())
         val expectedChangeLog = ChangeLog(
-            title = "Changelog",
+            title = DEFAULT_CHANGELOG_TITLE,
             releases = listOf(
                 Release(
                     tag = null,
-                    title = "Unreleased",
+                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
                     date = fakeNow,
                     diffUrl = null,
                     releaseUrl = null,
                     sections = listOf(
-                        Section("Issues:", listOf(nonLabeledIssue)),
-                        Section("PRs:", listOf(pr45))
+                        Section(customIssuesSectionTitle, listOf(nonLabeledIssue)),
+                        Section(customPrSectionTitle, listOf(pr45))
                     )
                 )
             )
@@ -168,17 +174,21 @@ class ChangeLogBuilderTest {
 
     @Test
     fun `custom future version title`() {
-        val clConfig = ChangelogConfig(GitHubConfig(user = "someuser", repo = "somerepo"), futureVersion = "Coming up")
+        val customFutureVersionTitle = "Coming up"
+        val clConfig = ChangelogConfig(
+            github = GitHubConfig(user = "someuser", repo = "somerepo"),
+            futureVersion = customFutureVersionTitle
+        )
         val builder = ChangeLogBuilder(clConfig)
 
         val issues = listOf(issue42)
         val actualChangeLog = builder.createChangeLog(issues, emptyList())
         val expectedChangeLog = ChangeLog(
-            title = "Changelog",
+            title = DEFAULT_CHANGELOG_TITLE,
             releases = listOf(
                 Release(
                     tag = null,
-                    title = "Coming up",
+                    title = customFutureVersionTitle,
                     date = fakeNow,
                     diffUrl = null,
                     releaseUrl = null,
@@ -203,15 +213,15 @@ class ChangeLogBuilderTest {
 
 
         val expectedChangeLog = ChangeLog(
-            title = "Changelog",
+            title = DEFAULT_CHANGELOG_TITLE,
             releases = listOf(
                 Release(
                     tag = null,
-                    title = "Unreleased",
+                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
                     date = fakeNow,
                     diffUrl = null,
                     releaseUrl = null,
-                    sections = listOf(Section("Merged pull requests:", listOf(pr45)))
+                    sections = listOf(Section(DEFAULT_PR_SECTION_TITLE, listOf(pr45)))
                 ),
                 Release(
                     tag = "2.0.0",
@@ -235,7 +245,7 @@ class ChangeLogBuilderTest {
                     date = LocalDate.of(2018, 5, 6).atTime(11, 0),
                     diffUrl = null,
                     releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.0",
-                    sections = listOf(Section("Closed issues:", listOf(nonLabeledIssue)))
+                    sections = listOf(Section(DEFAULT_ISSUES_SECTION_TITLE, listOf(nonLabeledIssue)))
                 )
             )
         )
@@ -256,15 +266,15 @@ class ChangeLogBuilderTest {
 
 
         val expectedChangeLog = ChangeLog(
-            title = "Changelog",
+            title = DEFAULT_CHANGELOG_TITLE,
             releases = listOf(
                 Release(
                     tag = null,
-                    title = "Unreleased",
+                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
                     date = fakeNow,
                     diffUrl = null,
                     releaseUrl = null,
-                    sections = listOf(Section("Merged pull requests:", listOf(pr45)))
+                    sections = listOf(Section(DEFAULT_PR_SECTION_TITLE, listOf(pr45)))
                 ),
                 Release(
                     tag = "2.0.0",
@@ -301,15 +311,15 @@ class ChangeLogBuilderTest {
 
 
         val expectedChangeLog = ChangeLog(
-            title = "Changelog",
+            title = DEFAULT_CHANGELOG_TITLE,
             releases = listOf(
                 Release(
                     tag = null,
-                    title = "Unreleased",
+                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
                     date = fakeNow,
                     diffUrl = null,
                     releaseUrl = null,
-                    sections = listOf(Section("Merged pull requests:", listOf(pr45)))
+                    sections = listOf(Section(DEFAULT_PR_SECTION_TITLE, listOf(pr45)))
                 ),
                 Release(
                     tag = "1.8.2",
@@ -325,7 +335,7 @@ class ChangeLogBuilderTest {
                     date = LocalDate.of(2018, 5, 6).atTime(11, 0),
                     diffUrl = null,
                     releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.0",
-                    sections = listOf(Section("Closed issues:", listOf(nonLabeledIssue)))
+                    sections = listOf(Section(DEFAULT_ISSUES_SECTION_TITLE, listOf(nonLabeledIssue)))
                 )
             )
         )

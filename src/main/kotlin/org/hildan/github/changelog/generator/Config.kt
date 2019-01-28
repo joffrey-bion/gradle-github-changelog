@@ -1,6 +1,6 @@
 package org.hildan.github.changelog.generator
 
-const val DEFAULT_CHANGELOG_TITLE = "Changelog"
+const val DEFAULT_CHANGELOG_TITLE = "Change Log"
 const val DEFAULT_SHOW_UNRELEASED = true
 const val DEFAULT_UNRELEASED_VERSION_TITLE = "Unreleased"
 const val DEFAULT_ISSUES_SECTION_TITLE = "Closed issues:"
