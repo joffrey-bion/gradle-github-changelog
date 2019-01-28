@@ -1,8 +1,8 @@
 package org.hildan.github.changelog.plugin
 
 import org.gradle.testfixtures.ProjectBuilder
-import org.junit.Assert.assertNotNull
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import kotlin.test.assertNotNull
 
 class GitHubChangelogPluginTest {
 

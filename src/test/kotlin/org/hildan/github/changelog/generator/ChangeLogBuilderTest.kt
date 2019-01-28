@@ -2,10 +2,9 @@ package org.hildan.github.changelog.generator
 
 import io.mockk.every
 import io.mockk.mockkStatic
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import java.time.Instant
-
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.TimeZone
@@ -55,7 +54,7 @@ class ChangeLogBuilderTest {
 
     private val fakeNow = LocalDate.of(2019, 1, 20).atTime(10, 0)
 
-    @Before
+    @BeforeEach
     fun setUpFakeNow() {
         mockkStatic(LocalDateTime::class)
         every { LocalDateTime.now() } returns fakeNow

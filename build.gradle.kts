@@ -18,7 +18,7 @@ dependencies {
     implementation("org.kohsuke:github-api:1.93")
 
     testImplementation(kotlin("test"))
-    testImplementation(kotlin("test-junit"))
+    testImplementation(kotlin("test-junit5"))
     testImplementation("io.mockk:mockk:1.9")
 }
 
