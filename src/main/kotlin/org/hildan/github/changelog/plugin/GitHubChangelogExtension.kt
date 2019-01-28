@@ -35,8 +35,8 @@ open class GitHubChangelogExtension(private val project: Project) {
     var skipTags: List<String> = DEFAULT_SKIPPED_TAGS
     var releaseUrlTemplate: String? = null
     var diffUrlTemplate: String? = null
-    val releaseUrlTagTransform: (String) -> String = { it }
-    val diffUrlTagTransform: (String) -> String = { it }
+    var releaseUrlTagTransform: (String) -> String = { it }
+    var diffUrlTagTransform: (String) -> String = { it }
 
     var outputFile: File = File("${project.projectDir}/CHANGELOG.md")
 
