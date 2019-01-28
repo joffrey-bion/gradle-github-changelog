@@ -30,11 +30,11 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
         for (tag in tags.sortedBy { it.date }) {
             val (closedBeforeTag, closedAfterTag) = remainingIssues.partition { it.closedAt <= tag.date }
             remainingIssues = closedAfterTag
-            releases.add(createRelease(tag, previousTag, closedBeforeTag))
+            releases.add(createExistingRelease(tag, previousTag, closedBeforeTag))
             previousTag = tag.name
         }
         if (remainingIssues.isNotEmpty() && config.showUnreleased) {
-            releases.add(createFutureRelease(remainingIssues))
+            releases.add(createFutureRelease(previousTag, remainingIssues))
         }
         return releases.sortedByDescending { it.date }
     }
@@ -46,18 +46,25 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
 
     private fun isExcluded(issue: Issue) = issue.labels.any { config.excludeLabels.contains(it) }
 
-    private fun createFutureRelease(issues: List<Issue>): Release {
-        val sections = dispatchInSections(issues)
-        val title = config.futureVersion
-        return Release(null, title, LocalDateTime.now(), sections, null, null)
+    private fun createExistingRelease(tag: Tag, previousTagName: String?, issues: List<Issue>): Release {
+        val tagName = tag.name
+        val date = tag.date.atZone(ZoneId.systemDefault()).toLocalDateTime()
+        return createRelease(tagName, previousTagName, date, issues)
     }
 
-    private fun createRelease(tag: Tag, previousTagName: String?, issues: List<Issue>): Release {
+    private fun createFutureRelease(previousTagName: String?, issues: List<Issue>): Release =
+        if (config.futureVersionTag != null) {
+            createRelease(config.futureVersionTag, previousTagName, LocalDateTime.now(), issues)
+        } else {
+            val sections = dispatchInSections(issues)
+            Release(null, config.unreleasedVersionTitle, LocalDateTime.now(), sections, null, null)
+        }
+
+    private fun createRelease(tagName: String, previousTagName: String?, date: LocalDateTime, issues: List<Issue>): Release {
         val sections = dispatchInSections(issues)
-        val releaseUrl = releaseUrl(tag.name)
-        val diffUrl = previousTagName?.let { diffUrl(it, tag.name) }
-        val date = tag.date.atZone(ZoneId.systemDefault()).toLocalDateTime()
-        return Release(tag.name, tag.name, date, sections, releaseUrl, diffUrl)
+        val releaseUrl = releaseUrl(tagName)
+        val diffUrl = previousTagName?.let { diffUrl(it, tagName) }
+        return Release(tagName, tagName, date, sections, releaseUrl, diffUrl)
     }
 
     private fun dispatchInSections(issues: List<Issue>): List<Section> =

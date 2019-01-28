@@ -172,11 +172,11 @@ class ChangeLogBuilderTest {
     }
 
     @Test
-    fun `custom future version title`() {
-        val customFutureVersionTitle = "Coming up"
+    fun `custom unreleased version title`() {
+        val customUnreleasedVersionTitle = "Coming up"
         val clConfig = ChangelogConfig(
             github = GitHubConfig(user = "someuser", repo = "somerepo"),
-            futureVersion = customFutureVersionTitle
+            unreleasedVersionTitle = customUnreleasedVersionTitle
         )
         val builder = ChangeLogBuilder(clConfig)
 
@@ -187,10 +187,37 @@ class ChangeLogBuilderTest {
             releases = listOf(
                 Release(
                     tag = null,
-                    title = customFutureVersionTitle,
+                    title = customUnreleasedVersionTitle,
                     date = fakeNow,
                     diffUrl = null,
                     releaseUrl = null,
+                    sections = listOf(Section("Fixed bugs:", listOf(issue42)))
+                )
+            )
+        )
+        assertEquals(expectedChangeLog, actualChangeLog)
+    }
+
+    @Test
+    fun `custom future version title`() {
+        val customFutureVersionTag = "1.0.0"
+        val clConfig = ChangelogConfig(
+            github = GitHubConfig(user = "someuser", repo = "somerepo"),
+            futureVersionTag = customFutureVersionTag
+        )
+        val builder = ChangeLogBuilder(clConfig)
+
+        val issues = listOf(issue42)
+        val actualChangeLog = builder.createChangeLog(issues, emptyList())
+        val expectedChangeLog = ChangeLog(
+            title = DEFAULT_CHANGELOG_TITLE,
+            releases = listOf(
+                Release(
+                    tag = customFutureVersionTag,
+                    title = customFutureVersionTag,
+                    date = fakeNow,
+                    diffUrl = null,
+                    releaseUrl = "https://github.com/someuser/somerepo/tree/1.0.0",
                     sections = listOf(Section("Fixed bugs:", listOf(issue42)))
                 )
             )

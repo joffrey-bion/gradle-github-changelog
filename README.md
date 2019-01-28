@@ -43,17 +43,22 @@ changelog {
     githubUser = // [mandatory] project property "githubUser" or env variable "GITHUB_USER"
     githubToken = null // [optional] project property "githubToken" or env variable "GITHUB_TOKEN"
     githubRepository = rootProject.name
-
-    title = "Changelog"
+    
+    title = "Change Log"
     showUnreleased = true
-    unreleasedVersionTitle = "$version"
-    defaultIssueSectionTitle = "Closed issue:"
+    unreleasedVersionTitle = "Unreleased"
+    futureVersionTag = null
+    sections = [] // no custom sections by default, but default sections are appended
+    defaultIssueSectionTitle = "Closed issues:"
     defaultPrSectionTitle = "Merged pull requests:"
     includeLabels = []
     excludeLabels = ["duplicate", "invalid", "question", "wontfix"]
     sinceTag = null
+    skipTags = []
     releaseUrlTemplate = null // defaults to "https://github.com/$user/$repo/tree/%s"
     diffUrlTemplate = null // defaults to "https://github.com/$user/$repo/compare/%s...%s"
+    releaseUrlTagTransform = { it }
+    diffUrlTagTransform = { it }
     
     outputFile = file("${projectDir}/CHANGELOG.md")
 }

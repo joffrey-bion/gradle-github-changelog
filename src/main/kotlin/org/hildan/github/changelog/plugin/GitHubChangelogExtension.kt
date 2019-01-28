@@ -24,7 +24,8 @@ open class GitHubChangelogExtension(private val project: Project) {
 
     var title: String = DEFAULT_CHANGELOG_TITLE
     var showUnreleased: Boolean = DEFAULT_SHOW_UNRELEASED
-    var unreleasedVersionTitle: String? = null
+    var futureVersionTag: String? = null
+    var unreleasedVersionTitle: String = DEFAULT_UNRELEASED_VERSION_TITLE
     var sections: List<SectionDefinition> = emptyList()
     var defaultIssueSectionTitle: String = DEFAULT_ISSUES_SECTION_TITLE
     var defaultPrSectionTitle: String = DEFAULT_PR_SECTION_TITLE
@@ -44,7 +45,8 @@ open class GitHubChangelogExtension(private val project: Project) {
             github = createGithubConfig(),
             globalHeader = title,
             showUnreleased = showUnreleased,
-            futureVersion = unreleasedVersionTitle ?: project.versionOrNull() ?: DEFAULT_UNRELEASED_VERSION_TITLE,
+            futureVersionTag = futureVersionTag,
+            unreleasedVersionTitle = unreleasedVersionTitle,
             sections = sections + DEFAULT_SECTIONS,
             defaultIssueSectionTitle = defaultIssueSectionTitle,
             defaultPrSectionTitle = defaultPrSectionTitle,
@@ -66,11 +68,6 @@ open class GitHubChangelogExtension(private val project: Project) {
         val token = githubToken ?: project.getPropOrEnv("githubToken", "GITHUB_TOKEN")
 
         return GitHubConfig(user, repo, token)
-    }
-
-    private fun Project.versionOrNull(): String? {
-        val versionStr = version.toString()
-        return if (versionStr == "unspecified") null else versionStr
     }
 }
 
