@@ -2,11 +2,11 @@ plugins {
     kotlin("jvm") version "1.3.10"
     id("java-gradle-plugin")
     id("com.gradle.plugin-publish") version "0.10.0"
-    id("org.hildan.github.changelog") version "0.4.0"
+    id("org.hildan.github.changelog") version "0.5.0"
 }
 
 group = "org.hildan.gradle"
-version = "0.5.0"
+version = "0.5.1"
 
 repositories {
     jcenter()
@@ -37,4 +37,8 @@ gradlePlugin {
             implementationClass = "org.hildan.github.changelog.plugin.GitHubChangelogPlugin"
         }
     }
+}
+
+changelog {
+    futureVersionTag = project.version.toString()
 }

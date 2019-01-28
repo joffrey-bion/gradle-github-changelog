@@ -1,6 +1,14 @@
 # Change Log
 
-## 0.5.0 (2019-01-29)
+## [0.5.1](https://github.com/joffrey-bion/github-changelog-generator/tree/0.5.1) (2019-01-29)
+[Full Changelog](https://github.com/joffrey-bion/github-changelog-generator/compare/0.5.0...0.5.1)
+
+**Fixed bugs:**
+
+- releaseUrlTagTransform / diffUrlTagTransform are read only and cannot be configured [\#15](https://github.com/joffrey-bion/gradle-github-changelog/issues/15)
+
+## [0.5.0](https://github.com/joffrey-bion/github-changelog-generator/tree/0.5.0) (2019-01-29)
+[Full Changelog](https://github.com/joffrey-bion/github-changelog-generator/compare/0.4.0...0.5.0)
 
 **Implemented enhancements:**
 
