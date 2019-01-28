@@ -72,7 +72,8 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
         config.defaultIssueSectionTitle
     }
 
-    private fun releaseUrl(tag: String) = String.format(config.releaseUrlTemplate, tag)
+    private fun releaseUrl(tag: String) = String.format(config.releaseUrlTemplate, config.releaseUrlTagTransform(tag))
 
-    private fun diffUrl(fromTag: String, toTag: String) = String.format(config.diffUrlTemplate, fromTag, toTag)
+    private fun diffUrl(fromTag: String, toTag: String) =
+        String.format(config.diffUrlTemplate, config.diffUrlTagTransform(fromTag), config.diffUrlTagTransform(toTag))
 }

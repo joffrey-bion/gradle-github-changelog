@@ -32,7 +32,9 @@ data class ChangelogConfig(
     val sinceTag: String? = null,
     val skipTags: List<String> = DEFAULT_SKIPPED_TAGS,
     val customReleaseUrlTemplate: String? = null,
-    val customDiffUrlTemplate: String? = null
+    val customDiffUrlTemplate: String? = null,
+    val releaseUrlTagTransform: (String) -> String = { it },
+    val diffUrlTagTransform: (String) -> String = { it }
 ) {
     val releaseUrlTemplate: String = customReleaseUrlTemplate ?: github.releaseUrlTemplate
     val diffUrlTemplate: String = customDiffUrlTemplate ?: github.diffUrlTemplate

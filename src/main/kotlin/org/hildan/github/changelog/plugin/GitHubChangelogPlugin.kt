@@ -15,8 +15,8 @@ import org.hildan.github.changelog.generator.DEFAULT_SECTIONS
 import org.hildan.github.changelog.generator.DEFAULT_SHOW_UNRELEASED
 import org.hildan.github.changelog.generator.DEFAULT_SKIPPED_TAGS
 import org.hildan.github.changelog.generator.DEFAULT_UNRELEASED_VERSION_TITLE
-import org.hildan.github.changelog.generator.GitHubConfig
 import org.hildan.github.changelog.generator.GitHubChangelogGenerator
+import org.hildan.github.changelog.generator.GitHubConfig
 import org.hildan.github.changelog.generator.SectionDefinition
 import java.io.File
 import javax.inject.Inject
@@ -68,6 +68,8 @@ open class GitHubChangelogExtension(private val project: Project) {
     var skipTags: List<String> = DEFAULT_SKIPPED_TAGS
     var releaseUrlTemplate: String? = null
     var diffUrlTemplate: String? = null
+    val releaseUrlTagTransform: (String) -> String = { it }
+    val diffUrlTagTransform: (String) -> String = { it }
 
     var outputFile: File = File("${project.projectDir}/CHANGELOG.md")
 
@@ -85,7 +87,9 @@ open class GitHubChangelogExtension(private val project: Project) {
             sinceTag = sinceTag,
             skipTags = skipTags,
             customReleaseUrlTemplate = releaseUrlTemplate,
-            customDiffUrlTemplate = diffUrlTemplate
+            customDiffUrlTemplate = diffUrlTemplate,
+            releaseUrlTagTransform = releaseUrlTagTransform,
+            diffUrlTagTransform = diffUrlTagTransform
         )
 
     private fun createGithubConfig(): GitHubConfig {
