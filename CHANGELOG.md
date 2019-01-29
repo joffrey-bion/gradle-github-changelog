@@ -1,5 +1,16 @@
 # Change Log
 
+## [0.6.0](https://github.com/joffrey-bion/github-changelog-generator/tree/0.6.0) (2019-01-29)
+[Full Changelog](https://github.com/joffrey-bion/github-changelog-generator/compare/0.5.2...0.6.0)
+
+**Fixed bugs:**
+
+- Custom sections don't override default ones for "bug" and "enhancement" labels [\#19](https://github.com/joffrey-bion/gradle-github-changelog/issues/19)
+
+**Implemented enhancements:**
+
+- Make section order deterministic \(sorted alphabetically\) [\#18](https://github.com/joffrey-bion/gradle-github-changelog/issues/18)
+
 ## [0.5.2](https://github.com/joffrey-bion/github-changelog-generator/tree/0.5.2) (2019-01-29)
 [Full Changelog](https://github.com/joffrey-bion/github-changelog-generator/compare/0.5.1...0.5.2)
 

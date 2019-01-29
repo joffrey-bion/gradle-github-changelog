@@ -2,11 +2,11 @@ plugins {
     kotlin("jvm") version "1.3.10"
     id("java-gradle-plugin")
     id("com.gradle.plugin-publish") version "0.10.0"
-    id("org.hildan.github.changelog") version "0.5.1"
+    id("org.hildan.github.changelog") version "0.5.2"
 }
 
 group = "org.hildan.gradle"
-version = "0.5.2"
+version = "0.6.0"
 
 repositories {
     jcenter()
