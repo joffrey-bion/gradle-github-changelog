@@ -24,19 +24,40 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
     }
 
     private fun createReleases(issues: List<Issue>, tags: List<Tag>): List<Release> {
+        val (regularIssues, overriddenIssuesByTag) = sortIssues(issues)
+
+        var remainingIssues = regularIssues
         val releases = mutableListOf<Release>()
-        var remainingIssues = issues.filter(this::shouldInclude)
         var previousTag: String? = null
         for (tag in tags.sortedBy { it.date }) {
             val (closedBeforeTag, closedAfterTag) = remainingIssues.partition { it.closedAt <= tag.date }
+
+            val tagOverriddenIssues = overriddenIssuesByTag[tag.name] ?: emptyList()
+            val issuesForTag = closedBeforeTag + tagOverriddenIssues
+
+            releases.add(createExistingRelease(tag, previousTag, issuesForTag))
+
             remainingIssues = closedAfterTag
-            releases.add(createExistingRelease(tag, previousTag, closedBeforeTag))
             previousTag = tag.name
         }
         if (remainingIssues.isNotEmpty() && config.showUnreleased) {
             releases.add(createFutureRelease(previousTag, remainingIssues))
         }
         return releases.sortedByDescending { it.date }
+    }
+
+    private data class SortedIssues(
+        val regularIssues: List<Issue>,
+        val overriddenIssuesByTag: Map<String, List<Issue>>
+    )
+
+    private fun sortIssues(issues: List<Issue>): SortedIssues {
+        val (overriddenIssues, regularIssues) = issues
+            .filter(this::shouldInclude)
+            .partition { config.customTagByIssueNumber.containsKey(it.number) }
+        val issuesByTag = overriddenIssues
+            .groupBy { config.customTagByIssueNumber.getValue(it.number) }
+        return SortedIssues(regularIssues, issuesByTag)
     }
 
     private fun shouldInclude(issue: Issue) = !isExcluded(issue) && isIncluded(issue)

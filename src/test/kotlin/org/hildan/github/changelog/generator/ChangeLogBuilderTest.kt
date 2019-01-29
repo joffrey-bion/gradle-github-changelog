@@ -343,4 +343,24 @@ class ChangeLogBuilderTest {
         )
         assertEquals(expectedChangeLog, actualChangeLog)
     }
+
+    @Test
+    fun `customIssueReleaseAssociations option should move arbitrary issues in specified tag`() {
+        val clConfig = ChangelogConfig(
+            github = someGithubConfig,
+            customTagByIssueNumber = mapOf(44 to "1.8.2", 46 to "1.8.2")
+        )
+        val builder = ChangeLogBuilder(clConfig)
+
+        val actualChangeLog = builder.createChangeLog(issues, tags)
+
+        val expectedChangeLog = expectedChangeLog.copy(
+            releases = listOf(
+                release200.copy(sections = listOf(bugsSection)),
+                release182.copy(sections = listOf(enhancementsSection, unlabeledPrsSection)),
+                release180
+            )
+        )
+        assertEquals(expectedChangeLog, actualChangeLog)
+    }
 }

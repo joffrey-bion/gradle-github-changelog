@@ -59,6 +59,7 @@ changelog {
     diffUrlTemplate = null // defaults to "https://github.com/$user/$repo/compare/%s...%s"
     releaseUrlTagTransform = { it }
     diffUrlTagTransform = { it }
+    customTagByIssueNumber = []
     
     outputFile = file("${projectDir}/CHANGELOG.md")
 }

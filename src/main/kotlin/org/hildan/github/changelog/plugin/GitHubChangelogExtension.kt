@@ -4,10 +4,13 @@ import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.hildan.github.changelog.generator.ChangelogConfig
 import org.hildan.github.changelog.generator.DEFAULT_CHANGELOG_TITLE
+import org.hildan.github.changelog.generator.DEFAULT_CUSTOM_TAG_BY_ISSUE_NUMBER
+import org.hildan.github.changelog.generator.DEFAULT_DIFF_URL_TAG_TRANSFORM
 import org.hildan.github.changelog.generator.DEFAULT_EXCLUDED_LABELS
 import org.hildan.github.changelog.generator.DEFAULT_INCLUDED_LABELS
 import org.hildan.github.changelog.generator.DEFAULT_ISSUES_SECTION_TITLE
 import org.hildan.github.changelog.generator.DEFAULT_PR_SECTION_TITLE
+import org.hildan.github.changelog.generator.DEFAULT_RELEASE_URL_TAG_TRANSFORM
 import org.hildan.github.changelog.generator.DEFAULT_SECTIONS
 import org.hildan.github.changelog.generator.DEFAULT_SHOW_UNRELEASED
 import org.hildan.github.changelog.generator.DEFAULT_SKIPPED_TAGS
@@ -35,8 +38,9 @@ open class GitHubChangelogExtension(private val project: Project) {
     var skipTags: List<String> = DEFAULT_SKIPPED_TAGS
     var releaseUrlTemplate: String? = null
     var diffUrlTemplate: String? = null
-    var releaseUrlTagTransform: (String) -> String = { it }
-    var diffUrlTagTransform: (String) -> String = { it }
+    var releaseUrlTagTransform: (String) -> String = DEFAULT_RELEASE_URL_TAG_TRANSFORM
+    var diffUrlTagTransform: (String) -> String = DEFAULT_DIFF_URL_TAG_TRANSFORM
+    var customTagByIssueNumber: Map<Int, String> = DEFAULT_CUSTOM_TAG_BY_ISSUE_NUMBER
 
     var outputFile: File = File("${project.projectDir}/CHANGELOG.md")
 
@@ -57,7 +61,8 @@ open class GitHubChangelogExtension(private val project: Project) {
             customReleaseUrlTemplate = releaseUrlTemplate,
             customDiffUrlTemplate = diffUrlTemplate,
             releaseUrlTagTransform = releaseUrlTagTransform,
-            diffUrlTagTransform = diffUrlTagTransform
+            diffUrlTagTransform = diffUrlTagTransform,
+            customTagByIssueNumber = customTagByIssueNumber
         )
 
     private fun createGithubConfig(): GitHubConfig {

@@ -14,6 +14,9 @@ val DEFAULT_SECTIONS = listOf(
     SectionDefinition("Implemented enhancements:", listOf("enhancement")),
     SectionDefinition("Fixed bugs:", listOf("bug"))
 )
+val DEFAULT_RELEASE_URL_TAG_TRANSFORM: (String) -> String = { it }
+val DEFAULT_DIFF_URL_TAG_TRANSFORM: (String) -> String = { it }
+val DEFAULT_CUSTOM_TAG_BY_ISSUE_NUMBER: Map<Int, String> = emptyMap()
 
 data class ChangelogConfig(
     val github: GitHubConfig,
@@ -30,8 +33,9 @@ data class ChangelogConfig(
     val skipTags: List<String> = DEFAULT_SKIPPED_TAGS,
     val customReleaseUrlTemplate: String? = null,
     val customDiffUrlTemplate: String? = null,
-    val releaseUrlTagTransform: (String) -> String = { it },
-    val diffUrlTagTransform: (String) -> String = { it }
+    val releaseUrlTagTransform: (String) -> String = DEFAULT_RELEASE_URL_TAG_TRANSFORM,
+    val diffUrlTagTransform: (String) -> String = DEFAULT_DIFF_URL_TAG_TRANSFORM,
+    val customTagByIssueNumber: Map<Int, String> = DEFAULT_CUSTOM_TAG_BY_ISSUE_NUMBER
 ) {
     val releaseUrlTemplate: String = customReleaseUrlTemplate ?: github.releaseUrlTemplate
     val diffUrlTemplate: String = customDiffUrlTemplate ?: github.diffUrlTemplate
