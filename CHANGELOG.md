@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.5.2](https://github.com/joffrey-bion/github-changelog-generator/tree/0.5.2) (2019-01-29)
+[Full Changelog](https://github.com/joffrey-bion/github-changelog-generator/compare/0.5.1...0.5.2)
+
+**Fixed bugs:**
+
+- Pull\-Requests seen as regular issues [\#17](https://github.com/joffrey-bion/gradle-github-changelog/issues/17)
+
 ## [0.5.1](https://github.com/joffrey-bion/github-changelog-generator/tree/0.5.1) (2019-01-29)
 [Full Changelog](https://github.com/joffrey-bion/github-changelog-generator/compare/0.5.0...0.5.1)
 
