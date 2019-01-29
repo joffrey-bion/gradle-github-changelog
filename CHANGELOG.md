@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.7.0](https://github.com/joffrey-bion/github-changelog-generator/tree/0.7.0) (2019-01-30)
+[Full Changelog](https://github.com/joffrey-bion/github-changelog-generator/compare/0.6.0...0.7.0)
+
+**Implemented enhancements:**
+
+- Make issue order deterministic within a section [\#20](https://github.com/joffrey-bion/gradle-github-changelog/issues/20)
+- Allow manually specifying which release an issue belongs to [\#16](https://github.com/joffrey-bion/gradle-github-changelog/issues/16)
+
 ## [0.6.0](https://github.com/joffrey-bion/github-changelog-generator/tree/0.6.0) (2019-01-29)
 [Full Changelog](https://github.com/joffrey-bion/github-changelog-generator/compare/0.5.2...0.6.0)
 
