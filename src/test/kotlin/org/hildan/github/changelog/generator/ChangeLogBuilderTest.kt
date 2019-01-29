@@ -12,17 +12,31 @@ import kotlin.test.assertEquals
 
 class ChangeLogBuilderTest {
 
-    private val pr45 = Issue(
-        number = 45,
-        title = "Fixed problem 45",
-        authorLogin = "mike",
-        closedAt = Instant.parse("2018-08-10T10:15:30.00Z"),
-        isPullRequest = true,
+    private val someGithubConfig = GitHubConfig(user = "someuser", repo = "somerepo")
+
+    private val fakeNow = LocalDate.of(2019, 1, 20).atTime(10, 0)
+
+    private val issue1unlabeled = Issue(
+        number = 1,
+        title = "No label for me",
+        authorLogin = "hipster",
+        closedAt = Instant.parse("2018-05-01T08:00:00.00Z"),
+        isPullRequest = false,
         labels = emptyList(),
-        url = "https://some.host/issue/45"
+        url = "https://some.host/issue/1"
     )
 
-    private val issue42 = Issue(
+    private val issue2bug = Issue(
+        number = 2,
+        title = "Issue 2",
+        authorLogin = "hipster",
+        closedAt = Instant.parse("2018-05-02T15:20:00.00Z"),
+        isPullRequest = false,
+        labels = listOf("bug"),
+        url = "https://some.host/issue/2"
+    )
+
+    private val issue42bug = Issue(
         number = 42,
         title = "Fixed problem 42",
         authorLogin = "bob",
@@ -32,7 +46,7 @@ class ChangeLogBuilderTest {
         url = "https://some.host/issue/42"
     )
 
-    private val issue43 = Issue(
+    private val issue43bug = Issue(
         number = 43,
         title = "Fixed problem 43",
         authorLogin = "bob",
@@ -42,17 +56,94 @@ class ChangeLogBuilderTest {
         url = "https://some.host/issue/43"
     )
 
-    private val nonLabeledIssue = Issue(
-        number = 99,
-        title = "No label for me",
-        authorLogin = "hipster",
-        closedAt = Instant.parse("2018-05-01T08:00:00.00Z"),
+    private val issue44enhancement = Issue(
+        number = 44,
+        title = "Add thing 44",
+        authorLogin = "bob",
+        closedAt = Instant.parse("2018-08-06T10:30:00.00Z"),
         isPullRequest = false,
-        labels = emptyList(),
-        url = "https://some.host/issue/99"
+        labels = listOf("enhancement"),
+        url = "https://some.host/issue/44"
     )
 
-    private val fakeNow = LocalDate.of(2019, 1, 20).atTime(10, 0)
+    private val pr45bugfix = Issue(
+        number = 45,
+        title = "Fixed problem 45",
+        authorLogin = "mike",
+        closedAt = Instant.parse("2018-08-09T10:15:30.00Z"),
+        isPullRequest = true,
+        labels = listOf("bug"),
+        url = "https://some.host/issue/45"
+    )
+
+    private val pr46unlabeled = Issue(
+        number = 46,
+        title = "Fixed problem 46",
+        authorLogin = "mike",
+        closedAt = Instant.parse("2018-08-10T10:15:30.00Z"),
+        isPullRequest = true,
+        labels = emptyList(),
+        url = "https://some.host/issue/46"
+    )
+
+    // unordered on purpose
+    private val issues = listOf(
+        pr46unlabeled, issue42bug, issue2bug, issue43bug, issue1unlabeled, pr45bugfix, issue44enhancement
+    )
+
+    private val oldBugsSection = Section("Fixed bugs:", listOf(issue2bug))
+    private val bugsSection = Section("Fixed bugs:", listOf(pr45bugfix, issue43bug, issue42bug))
+    private val enhancementsSection = Section("Implemented enhancements:", listOf(issue44enhancement))
+    private val unlabeledIssuesSection = Section(DEFAULT_ISSUES_SECTION_TITLE, listOf(issue1unlabeled))
+    private val unlabeledPrsSection = Section(DEFAULT_PR_SECTION_TITLE, listOf(pr46unlabeled))
+
+    private val tag180 = Tag("1.8.0", Instant.parse("2018-05-06T11:00:00.00Z"))
+    private val tag182 = Tag("1.8.2", Instant.parse("2018-07-07T11:00:00.00Z"))
+    private val tag200 = Tag("2.0.0", Instant.parse("2018-08-10T10:00:00.00Z"))
+
+    // unordered on purpose
+    private val tags = listOf(tag180, tag200, tag182)
+
+    private val release180 = Release(
+        tag = "1.8.0",
+        title = "1.8.0",
+        date = LocalDate.of(2018, 5, 6).atTime(11, 0),
+        diffUrl = null,
+        releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.0",
+        sections = listOf(unlabeledIssuesSection, oldBugsSection)
+    )
+
+    private val release182 = Release(
+        tag = "1.8.2",
+        title = "1.8.2",
+        date = LocalDate.of(2018, 7, 7).atTime(11, 0),
+        diffUrl = "https://github.com/someuser/somerepo/compare/1.8.0...1.8.2",
+        releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.2",
+        sections = emptyList()
+    )
+
+    private val release200 = Release(
+        tag = "2.0.0",
+        title = "2.0.0",
+        date = LocalDate.of(2018, 8, 10).atTime(10, 0),
+        diffUrl = "https://github.com/someuser/somerepo/compare/1.8.2...2.0.0",
+        releaseUrl = "https://github.com/someuser/somerepo/tree/2.0.0",
+        sections = listOf(bugsSection, enhancementsSection)
+    )
+
+    private val releaseUnreleased = Release(
+        tag = null,
+        title = DEFAULT_UNRELEASED_VERSION_TITLE,
+        date = fakeNow,
+        diffUrl = null,
+        releaseUrl = null,
+        sections = listOf(unlabeledPrsSection)
+    )
+
+    private val expectedChangeLog = ChangeLog(
+        title = DEFAULT_CHANGELOG_TITLE,
+        releases = listOf(releaseUnreleased, release200, release182, release180)
+    )
 
     @BeforeEach
     fun setUpFakeNow() {
@@ -63,7 +154,7 @@ class ChangeLogBuilderTest {
 
     @Test
     fun `no tags and no issues yield empty changelog`() {
-        val clConfig = ChangelogConfig(GitHubConfig(user = "someuser", repo = "somerepo"))
+        val clConfig = ChangelogConfig(someGithubConfig)
         val builder = ChangeLogBuilder(clConfig)
 
         val actualChangeLog = builder.createChangeLog(emptyList(), emptyList())
@@ -73,69 +164,51 @@ class ChangeLogBuilderTest {
     }
 
     @Test
+    fun `unreleased issues only - no tags`() {
+        val clConfig = ChangelogConfig(someGithubConfig)
+        val builder = ChangeLogBuilder(clConfig)
+
+        val actualChangeLog = builder.createChangeLog(issues, emptyList())
+        val expectedChangeLog = ChangeLog(
+            title = DEFAULT_CHANGELOG_TITLE,
+            releases = listOf(
+                Release(
+                    tag = null,
+                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
+                    date = fakeNow,
+                    diffUrl = null,
+                    releaseUrl = null,
+                    sections = listOf(
+                        unlabeledIssuesSection,
+                        bugsSection.copy(issues = bugsSection.issues + oldBugsSection.issues),
+                        enhancementsSection,
+                        unlabeledPrsSection
+                    )
+                )
+            )
+        )
+        assertEquals(expectedChangeLog, actualChangeLog)
+    }
+
+    @Test
+    fun `standard case with default config`() {
+        val clConfig = ChangelogConfig(someGithubConfig)
+        val builder = ChangeLogBuilder(clConfig)
+
+        val actualChangeLog = builder.createChangeLog(issues, tags)
+
+        assertEquals(expectedChangeLog, actualChangeLog)
+    }
+
+    @Test
     fun `custom changelog title`() {
         val customGlobalTitle = "Custom"
-        val clConfig = ChangelogConfig(
-            github = GitHubConfig(user = "someuser", repo = "somerepo"),
-            globalHeader = customGlobalTitle
-        )
+        val clConfig = ChangelogConfig(github = someGithubConfig, globalHeader = customGlobalTitle)
         val builder = ChangeLogBuilder(clConfig)
 
-        val actualChangeLog = builder.createChangeLog(emptyList(), emptyList())
-        val expectedChangeLog = ChangeLog(title = customGlobalTitle, releases = emptyList())
+        val actualChangeLog = builder.createChangeLog(issues, tags)
 
-        assertEquals(expectedChangeLog, actualChangeLog)
-    }
-
-    @Test
-    fun `unreleased issues only`() {
-        val clConfig = ChangelogConfig(GitHubConfig(user = "someuser", repo = "somerepo"))
-        val builder = ChangeLogBuilder(clConfig)
-
-        val issues = listOf(issue42, issue43, pr45)
-        val actualChangeLog = builder.createChangeLog(issues, emptyList())
-        val expectedChangeLog = ChangeLog(
-            title = DEFAULT_CHANGELOG_TITLE,
-            releases = listOf(
-                Release(
-                    tag = null,
-                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
-                    date = fakeNow,
-                    diffUrl = null,
-                    releaseUrl = null,
-                    sections = listOf(
-                        Section("Fixed bugs:", listOf(issue42, issue43)),
-                        Section("Merged pull requests:", listOf(pr45))
-                    )
-                )
-            )
-        )
-        assertEquals(expectedChangeLog, actualChangeLog)
-    }
-
-    @Test
-    fun `default issue section`() {
-        val clConfig = ChangelogConfig(GitHubConfig(user = "someuser", repo = "somerepo"))
-        val builder = ChangeLogBuilder(clConfig)
-
-        val issues = listOf(nonLabeledIssue, pr45)
-        val actualChangeLog = builder.createChangeLog(issues, emptyList())
-        val expectedChangeLog = ChangeLog(
-            title = DEFAULT_CHANGELOG_TITLE,
-            releases = listOf(
-                Release(
-                    tag = null,
-                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
-                    date = fakeNow,
-                    diffUrl = null,
-                    releaseUrl = null,
-                    sections = listOf(
-                        Section(DEFAULT_ISSUES_SECTION_TITLE, listOf(nonLabeledIssue)),
-                        Section(DEFAULT_PR_SECTION_TITLE, listOf(pr45))
-                    )
-                )
-            )
-        )
+        val expectedChangeLog = expectedChangeLog.copy(title = customGlobalTitle)
         assertEquals(expectedChangeLog, actualChangeLog)
     }
 
@@ -144,26 +217,27 @@ class ChangeLogBuilderTest {
         val customIssuesSectionTitle = "Issues:"
         val customPrSectionTitle = "PRs:"
         val clConfig = ChangelogConfig(
-            GitHubConfig(user = "someuser", repo = "somerepo"),
+            someGithubConfig,
             defaultIssueSectionTitle = customIssuesSectionTitle,
             defaultPrSectionTitle = customPrSectionTitle
         )
         val builder = ChangeLogBuilder(clConfig)
 
-        val issues = listOf(nonLabeledIssue, pr45)
-        val actualChangeLog = builder.createChangeLog(issues, emptyList())
-        val expectedChangeLog = ChangeLog(
-            title = DEFAULT_CHANGELOG_TITLE,
+        val actualChangeLog = builder.createChangeLog(issues, tags)
+
+        val expectedChangeLog = expectedChangeLog.copy(
             releases = listOf(
-                Release(
-                    tag = null,
-                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
-                    date = fakeNow,
-                    diffUrl = null,
-                    releaseUrl = null,
+                releaseUnreleased.copy(
                     sections = listOf(
-                        Section(customIssuesSectionTitle, listOf(nonLabeledIssue)),
-                        Section(customPrSectionTitle, listOf(pr45))
+                        unlabeledPrsSection.copy(title = customPrSectionTitle)
+                    )
+                ),
+                release200,
+                release182,
+                release180.copy(
+                    sections = listOf(
+                        oldBugsSection,
+                        unlabeledIssuesSection.copy(title = customIssuesSectionTitle)
                     )
                 )
             )
@@ -174,105 +248,41 @@ class ChangeLogBuilderTest {
     @Test
     fun `custom unreleased version title`() {
         val customUnreleasedVersionTitle = "Coming up"
-        val clConfig = ChangelogConfig(
-            github = GitHubConfig(user = "someuser", repo = "somerepo"),
-            unreleasedVersionTitle = customUnreleasedVersionTitle
-        )
+        val clConfig = ChangelogConfig(github = someGithubConfig, unreleasedVersionTitle = customUnreleasedVersionTitle)
         val builder = ChangeLogBuilder(clConfig)
 
-        val issues = listOf(issue42)
-        val actualChangeLog = builder.createChangeLog(issues, emptyList())
-        val expectedChangeLog = ChangeLog(
-            title = DEFAULT_CHANGELOG_TITLE,
-            releases = listOf(
-                Release(
-                    tag = null,
-                    title = customUnreleasedVersionTitle,
-                    date = fakeNow,
-                    diffUrl = null,
-                    releaseUrl = null,
-                    sections = listOf(Section("Fixed bugs:", listOf(issue42)))
-                )
-            )
-        )
-        assertEquals(expectedChangeLog, actualChangeLog)
-    }
-
-    @Test
-    fun `custom future version title`() {
-        val customFutureVersionTag = "1.0.0"
-        val clConfig = ChangelogConfig(
-            github = GitHubConfig(user = "someuser", repo = "somerepo"),
-            futureVersionTag = customFutureVersionTag
-        )
-        val builder = ChangeLogBuilder(clConfig)
-
-        val issues = listOf(issue42)
-        val actualChangeLog = builder.createChangeLog(issues, emptyList())
-        val expectedChangeLog = ChangeLog(
-            title = DEFAULT_CHANGELOG_TITLE,
-            releases = listOf(
-                Release(
-                    tag = customFutureVersionTag,
-                    title = customFutureVersionTag,
-                    date = fakeNow,
-                    diffUrl = null,
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/1.0.0",
-                    sections = listOf(Section("Fixed bugs:", listOf(issue42)))
-                )
-            )
-        )
-        assertEquals(expectedChangeLog, actualChangeLog)
-    }
-
-    @Test
-    fun `standard case`() {
-        val clConfig = ChangelogConfig(GitHubConfig(user = "someuser", repo = "somerepo"))
-        val builder = ChangeLogBuilder(clConfig)
-
-        val issues = listOf(pr45, issue42, issue43, nonLabeledIssue) // unordered on purpose
-        val tag180 = Tag("1.8.0", Instant.parse("2018-05-06T11:00:00.00Z"))
-        val tag182 = Tag("1.8.2", Instant.parse("2018-07-07T11:00:00.00Z"))
-        val tag200 = Tag("2.0.0", Instant.parse("2018-08-10T10:00:00.00Z"))
-        val tags = listOf(tag180, tag200, tag182) // unordered on purpose
         val actualChangeLog = builder.createChangeLog(issues, tags)
 
-
-        val expectedChangeLog = ChangeLog(
-            title = DEFAULT_CHANGELOG_TITLE,
+        val expectedChangeLog = expectedChangeLog.copy(
             releases = listOf(
-                Release(
-                    tag = null,
-                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
-                    date = fakeNow,
-                    diffUrl = null,
-                    releaseUrl = null,
-                    sections = listOf(Section(DEFAULT_PR_SECTION_TITLE, listOf(pr45)))
+                releaseUnreleased.copy(title = customUnreleasedVersionTitle),
+                release200,
+                release182,
+                release180
+            )
+        )
+        assertEquals(expectedChangeLog, actualChangeLog)
+    }
+
+    @Test
+    fun `futureVersionTag option should change the unreleased title and URLs`() {
+        val customFutureVersionTag = "3.0.0"
+        val clConfig = ChangelogConfig(github = someGithubConfig, futureVersionTag = customFutureVersionTag)
+        val builder = ChangeLogBuilder(clConfig)
+
+        val actualChangeLog = builder.createChangeLog(issues, tags)
+
+        val expectedChangeLog = expectedChangeLog.copy(
+            releases = listOf(
+                releaseUnreleased.copy(
+                    tag = customFutureVersionTag,
+                    title = customFutureVersionTag,
+                    releaseUrl = "https://github.com/someuser/somerepo/tree/$customFutureVersionTag",
+                    diffUrl = "https://github.com/someuser/somerepo/compare/2.0.0...$customFutureVersionTag"
                 ),
-                Release(
-                    tag = "2.0.0",
-                    title = "2.0.0",
-                    date = LocalDate.of(2018, 8, 10).atTime(10, 0),
-                    diffUrl = "https://github.com/someuser/somerepo/compare/1.8.2...2.0.0",
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/2.0.0",
-                    sections = listOf(Section("Fixed bugs:", listOf(issue42, issue43)))
-                ),
-                Release(
-                    tag = "1.8.2",
-                    title = "1.8.2",
-                    date = LocalDate.of(2018, 7, 7).atTime(11, 0),
-                    diffUrl = "https://github.com/someuser/somerepo/compare/1.8.0...1.8.2",
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.2",
-                    sections = emptyList()
-                ),
-                Release(
-                    tag = "1.8.0",
-                    title = "1.8.0",
-                    date = LocalDate.of(2018, 5, 6).atTime(11, 0),
-                    diffUrl = null,
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.0",
-                    sections = listOf(Section(DEFAULT_ISSUES_SECTION_TITLE, listOf(nonLabeledIssue)))
-                )
+                release200,
+                release182,
+                release180
             )
         )
         assertEquals(expectedChangeLog, actualChangeLog)
@@ -280,90 +290,26 @@ class ChangeLogBuilderTest {
 
     @Test
     fun `sinceTag option should limit the output releases`() {
-        val clConfig = ChangelogConfig(GitHubConfig(user = "someuser", repo = "somerepo"), sinceTag = "1.8.2")
+        val clConfig = ChangelogConfig(someGithubConfig, sinceTag = "1.8.2")
         val builder = ChangeLogBuilder(clConfig)
 
-        val issues = listOf(pr45, issue42, issue43, nonLabeledIssue) // unordered on purpose
-        val tag180 = Tag("1.8.0", Instant.parse("2018-05-06T11:00:00.00Z"))
-        val tag182 = Tag("1.8.2", Instant.parse("2018-07-07T11:00:00.00Z"))
-        val tag200 = Tag("2.0.0", Instant.parse("2018-08-10T10:00:00.00Z"))
-        val tags = listOf(tag180, tag200, tag182) // unordered on purpose
         val actualChangeLog = builder.createChangeLog(issues, tags)
 
-
-        val expectedChangeLog = ChangeLog(
-            title = DEFAULT_CHANGELOG_TITLE,
-            releases = listOf(
-                Release(
-                    tag = null,
-                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
-                    date = fakeNow,
-                    diffUrl = null,
-                    releaseUrl = null,
-                    sections = listOf(Section(DEFAULT_PR_SECTION_TITLE, listOf(pr45)))
-                ),
-                Release(
-                    tag = "2.0.0",
-                    title = "2.0.0",
-                    date = LocalDate.of(2018, 8, 10).atTime(10, 0),
-                    diffUrl = "https://github.com/someuser/somerepo/compare/1.8.2...2.0.0",
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/2.0.0",
-                    sections = listOf(Section("Fixed bugs:", listOf(issue42, issue43)))
-                ),
-                Release(
-                    tag = "1.8.2",
-                    title = "1.8.2",
-                    date = LocalDate.of(2018, 7, 7).atTime(11, 0),
-                    diffUrl = "https://github.com/someuser/somerepo/compare/1.8.0...1.8.2",
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.2",
-                    sections = emptyList()
-                )
-            )
+        val expectedChangeLog = expectedChangeLog.copy(
+            releases = listOf(releaseUnreleased, release200, release182)
         )
         assertEquals(expectedChangeLog, actualChangeLog)
     }
 
     @Test
     fun `skipTags option should limit the output releases`() {
-        val clConfig = ChangelogConfig(GitHubConfig(user = "someuser", repo = "somerepo"), skipTags = listOf("2.0.0"))
+        val clConfig = ChangelogConfig(someGithubConfig, skipTags = listOf("2.0.0"))
         val builder = ChangeLogBuilder(clConfig)
 
-        val issues = listOf(pr45, issue42, issue43, nonLabeledIssue) // unordered on purpose
-        val tag180 = Tag("1.8.0", Instant.parse("2018-05-06T11:00:00.00Z"))
-        val tag182 = Tag("1.8.2", Instant.parse("2018-07-07T11:00:00.00Z"))
-        val tag200 = Tag("2.0.0", Instant.parse("2018-08-10T10:00:00.00Z"))
-        val tags = listOf(tag180, tag200, tag182) // unordered on purpose
         val actualChangeLog = builder.createChangeLog(issues, tags)
 
-
-        val expectedChangeLog = ChangeLog(
-            title = DEFAULT_CHANGELOG_TITLE,
-            releases = listOf(
-                Release(
-                    tag = null,
-                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
-                    date = fakeNow,
-                    diffUrl = null,
-                    releaseUrl = null,
-                    sections = listOf(Section(DEFAULT_PR_SECTION_TITLE, listOf(pr45)))
-                ),
-                Release(
-                    tag = "1.8.2",
-                    title = "1.8.2",
-                    date = LocalDate.of(2018, 7, 7).atTime(11, 0),
-                    diffUrl = "https://github.com/someuser/somerepo/compare/1.8.0...1.8.2",
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.2",
-                    sections = emptyList()
-                ),
-                Release(
-                    tag = "1.8.0",
-                    title = "1.8.0",
-                    date = LocalDate.of(2018, 5, 6).atTime(11, 0),
-                    diffUrl = null,
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.0",
-                    sections = listOf(Section(DEFAULT_ISSUES_SECTION_TITLE, listOf(nonLabeledIssue)))
-                )
-            )
+        val expectedChangeLog = expectedChangeLog.copy(
+            releases = listOf(releaseUnreleased, release182, release180)
         )
         assertEquals(expectedChangeLog, actualChangeLog)
     }
@@ -371,47 +317,27 @@ class ChangeLogBuilderTest {
     @Test
     fun `tag transforms options should change the release and diff URLs`() {
         val clConfig = ChangelogConfig(
-            github = GitHubConfig(user = "someuser", repo = "somerepo"),
-            skipTags = listOf("2.0.0"),
+            github = someGithubConfig,
             releaseUrlTagTransform = { "tag-prefix-$it" },
             diffUrlTagTransform = { "$it-suffix" }
         )
         val builder = ChangeLogBuilder(clConfig)
 
-        val issues = listOf(pr45, issue42, issue43, nonLabeledIssue) // unordered on purpose
-        val tag180 = Tag("1.8.0", Instant.parse("2018-05-06T11:00:00.00Z"))
-        val tag182 = Tag("1.8.2", Instant.parse("2018-07-07T11:00:00.00Z"))
-        val tag200 = Tag("2.0.0", Instant.parse("2018-08-10T10:00:00.00Z"))
-        val tags = listOf(tag180, tag200, tag182) // unordered on purpose
         val actualChangeLog = builder.createChangeLog(issues, tags)
 
-
-        val expectedChangeLog = ChangeLog(
-            title = DEFAULT_CHANGELOG_TITLE,
+        val expectedChangeLog = expectedChangeLog.copy(
             releases = listOf(
-                Release(
-                    tag = null,
-                    title = DEFAULT_UNRELEASED_VERSION_TITLE,
-                    date = fakeNow,
-                    diffUrl = null,
-                    releaseUrl = null,
-                    sections = listOf(Section(DEFAULT_PR_SECTION_TITLE, listOf(pr45)))
+                releaseUnreleased,
+                release200.copy(
+                    diffUrl = "https://github.com/someuser/somerepo/compare/1.8.2-suffix...2.0.0-suffix",
+                    releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-2.0.0"
                 ),
-                Release(
-                    tag = "1.8.2",
-                    title = "1.8.2",
-                    date = LocalDate.of(2018, 7, 7).atTime(11, 0),
+                release182.copy(
                     diffUrl = "https://github.com/someuser/somerepo/compare/1.8.0-suffix...1.8.2-suffix",
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-1.8.2",
-                    sections = emptyList()
+                    releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-1.8.2"
                 ),
-                Release(
-                    tag = "1.8.0",
-                    title = "1.8.0",
-                    date = LocalDate.of(2018, 5, 6).atTime(11, 0),
-                    diffUrl = null,
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-1.8.0",
-                    sections = listOf(Section(DEFAULT_ISSUES_SECTION_TITLE, listOf(nonLabeledIssue)))
+                release180.copy(
+                    releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-1.8.0"
                 )
             )
         )
