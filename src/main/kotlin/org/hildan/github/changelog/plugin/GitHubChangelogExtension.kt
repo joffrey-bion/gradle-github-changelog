@@ -47,7 +47,7 @@ open class GitHubChangelogExtension(private val project: Project) {
             showUnreleased = showUnreleased,
             futureVersionTag = futureVersionTag,
             unreleasedVersionTitle = unreleasedVersionTitle,
-            sections = sections + DEFAULT_SECTIONS,
+            sections = DEFAULT_SECTIONS + sections,
             defaultIssueSectionTitle = defaultIssueSectionTitle,
             defaultPrSectionTitle = defaultPrSectionTitle,
             includeLabels = includeLabels,
