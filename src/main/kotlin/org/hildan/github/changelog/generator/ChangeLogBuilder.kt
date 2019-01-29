@@ -69,7 +69,7 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
 
     private fun dispatchInSections(issues: List<Issue>): List<Section> =
         issues.groupBy { findSectionTitle(it) }
-            .map { (title, issues) -> Section(title, issues) }
+            .map { (title, issues) -> Section(title, issues.sortedByDescending { it.closedAt }) }
             .sortedBy { it.title }
 
     private fun findSectionTitle(issue: Issue): String =
