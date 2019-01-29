@@ -3,7 +3,6 @@ package org.hildan.github.changelog.generator
 import org.kohsuke.github.GHFileNotFoundException
 import org.kohsuke.github.GHIssue
 import org.kohsuke.github.GHIssueState
-import org.kohsuke.github.GHPullRequest
 import org.kohsuke.github.GHRepository
 import org.kohsuke.github.GHTag
 import org.kohsuke.github.GitHub
@@ -62,7 +61,7 @@ private fun GHIssue.toIssue(): Issue = Issue(
     labels = labels.map { it.name },
     url = htmlUrl.toString(),
     authorLogin = user.login,
-    isPullRequest = this is GHPullRequest
+    isPullRequest = isPullRequest
 )
 
 class GitHubConfigException(message: String) : RuntimeException(message)
