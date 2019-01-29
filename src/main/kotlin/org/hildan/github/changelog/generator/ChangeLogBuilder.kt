@@ -68,7 +68,9 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
     }
 
     private fun dispatchInSections(issues: List<Issue>): List<Section> =
-        issues.groupBy { findSectionTitle(it) }.map { (title, issues) -> Section(title, issues) }
+        issues.groupBy { findSectionTitle(it) }
+            .map { (title, issues) -> Section(title, issues) }
+            .sortedBy { it.title }
 
     private fun findSectionTitle(issue: Issue): String =
         issue.labels.asSequence().mapNotNull { sectionByLabel[it] }.firstOrNull() ?: defaultSection(issue)
