@@ -19,7 +19,7 @@ class MarkdownFormatterTest {
             *Nothing much happened so far, actually...*
         """.trimIndent()
 
-        assertEquals(expected, formatter.format(changelog))
+        assertEquals(expected, formatter.formatChangeLog(changelog))
     }
 
     @Test
@@ -31,8 +31,12 @@ class MarkdownFormatterTest {
         val tag2 = "2.0.0"
         val tag1 = "1.0.0"
 
+        val bob = User("bob", "http://github.com/bob")
+        val alex = User("alex", "http://github.com/alex")
+        val lee = User("lee", "http://github.com/lee")
+
         val prs3 = listOf(
-            Issue(5, "Latest PR", Instant.now(), emptyList(), "http://github.com/issues/5", "bob", true)
+            Issue(5, "Latest PR", Instant.now(), emptyList(), "http://github.com/issues/5", bob, true)
         )
         val sectionsNext = listOf(
             Section("Pull requests", prs3)
@@ -44,13 +48,12 @@ class MarkdownFormatterTest {
                 "Some PR with <Things> *to* [escape]",
                 Instant.now(),
                 emptyList(),
-                "http://github.com/issues/4",
-                "bob",
+                "http://github.com/issues/4", bob,
                 true
             )
         )
         val bugs2 = listOf(
-            Issue(3, "Some bug", Instant.now(), emptyList(), "http://github.com/issues/3", "alex", false)
+            Issue(3, "Some bug", Instant.now(), emptyList(), "http://github.com/issues/3", alex, false)
         )
         val sections2 = listOf(
             Section("Pull requests", prs2),
@@ -58,10 +61,10 @@ class MarkdownFormatterTest {
         )
 
         val prs1 = listOf(
-                Issue(2, "Some PR", Instant.now(), emptyList(), "http://github.com/issues/2", "lee", true)
+                Issue(2, "Some PR", Instant.now(), emptyList(), "http://github.com/issues/2", lee, true)
         )
         val enhancements1 = listOf(
-                Issue(1, "Some feature", Instant.now(), emptyList(), "http://github.com/issues/1", "bob", false)
+                Issue(1, "Some feature", Instant.now(), emptyList(), "http://github.com/issues/1", bob, false)
         )
         val sections1 = listOf(
             Section("Pull requests", prs1),
@@ -91,14 +94,14 @@ class MarkdownFormatterTest {
 
             **Pull requests**
 
-            - Latest PR [\#5](http://github.com/issues/5) (@bob)
+            - Latest PR [\#5](http://github.com/issues/5) ([@bob](http://github.com/bob))
 
             ## [2.0.0](http://github.com/tree/2.0.0) (2019-01-02)
             [Full Changelog](http://github.com/compare/1.0.0...2.0.0)
 
             **Pull requests**
 
-            - Some PR with \<Things\> \*to\* \[escape\] [\#4](http://github.com/issues/4) (@bob)
+            - Some PR with \<Things\> \*to\* \[escape\] [\#4](http://github.com/issues/4) ([@bob](http://github.com/bob))
 
             **Bug fixes**
 
@@ -108,7 +111,7 @@ class MarkdownFormatterTest {
 
             **Pull requests**
 
-            - Some PR [\#2](http://github.com/issues/2) (@lee)
+            - Some PR [\#2](http://github.com/issues/2) ([@lee](http://github.com/lee))
 
             **Enhancements**
 
@@ -116,6 +119,6 @@ class MarkdownFormatterTest {
 
         """.trimIndent()
 
-        assertEquals(expected, formatter.format(changelog))
+        assertEquals(expected, formatter.formatChangeLog(changelog))
     }
 }

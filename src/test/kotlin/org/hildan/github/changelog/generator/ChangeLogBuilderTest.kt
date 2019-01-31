@@ -19,7 +19,7 @@ class ChangeLogBuilderTest {
     private val issue1unlabeled = Issue(
         number = 1,
         title = "No label for me",
-        authorLogin = "hipster",
+        author = User("hipster", "http://github.com/hipster"),
         closedAt = Instant.parse("2018-05-01T08:00:00.00Z"),
         isPullRequest = false,
         labels = emptyList(),
@@ -29,7 +29,7 @@ class ChangeLogBuilderTest {
     private val issue2bug = Issue(
         number = 2,
         title = "Issue 2",
-        authorLogin = "hipster",
+        author = User("hipster", "http://github.com/hipster"),
         closedAt = Instant.parse("2018-05-02T15:20:00.00Z"),
         isPullRequest = false,
         labels = listOf("bug"),
@@ -39,7 +39,7 @@ class ChangeLogBuilderTest {
     private val issue42bug = Issue(
         number = 42,
         title = "Fixed problem 42",
-        authorLogin = "bob",
+        author = User("bob", "http://github.com/bob"),
         closedAt = Instant.parse("2018-08-05T10:15:30.00Z"),
         isPullRequest = false,
         labels = listOf("bug"),
@@ -49,7 +49,7 @@ class ChangeLogBuilderTest {
     private val issue43bug = Issue(
         number = 43,
         title = "Fixed problem 43",
-        authorLogin = "bob",
+        author = User("bob", "http://github.com/bob"),
         closedAt = Instant.parse("2018-08-06T10:15:30.00Z"),
         isPullRequest = false,
         labels = listOf("bug"),
@@ -59,7 +59,7 @@ class ChangeLogBuilderTest {
     private val issue44enhancement = Issue(
         number = 44,
         title = "Add thing 44",
-        authorLogin = "bob",
+        author = User("bob", "http://github.com/bob"),
         closedAt = Instant.parse("2018-08-06T10:30:00.00Z"),
         isPullRequest = false,
         labels = listOf("enhancement"),
@@ -69,7 +69,7 @@ class ChangeLogBuilderTest {
     private val pr45bugfix = Issue(
         number = 45,
         title = "Fixed problem 45",
-        authorLogin = "mike",
+        author = User("mike", "http://github.com/mike"),
         closedAt = Instant.parse("2018-08-09T10:15:30.00Z"),
         isPullRequest = true,
         labels = listOf("bug"),
@@ -79,7 +79,7 @@ class ChangeLogBuilderTest {
     private val pr46unlabeled = Issue(
         number = 46,
         title = "Fixed problem 46",
-        authorLogin = "mike",
+        author = User("mike", "http://github.com/mike"),
         closedAt = Instant.parse("2018-08-10T10:15:30.00Z"),
         isPullRequest = true,
         labels = emptyList(),

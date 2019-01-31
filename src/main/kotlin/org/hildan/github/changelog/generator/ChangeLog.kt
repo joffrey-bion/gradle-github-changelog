@@ -28,8 +28,13 @@ data class Issue(
     val closedAt: Instant,
     val labels: List<String>,
     val url: String,
-    val authorLogin: String,
+    val author: User,
     val isPullRequest: Boolean
+)
+
+data class User(
+    val login: String,
+    val profileUrl: String
 )
 
 data class Tag(
