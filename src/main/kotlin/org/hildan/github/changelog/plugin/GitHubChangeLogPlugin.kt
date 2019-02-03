@@ -4,7 +4,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskAction
-import org.hildan.github.changelog.generator.GitHubChangelogGenerator
+import org.hildan.github.changelog.GitHubChangeLogGenerator
 import javax.inject.Inject
 
 const val EXTENSION_NAME = "changelog"
@@ -18,9 +18,7 @@ open class GitHubChangelogPlugin : Plugin<Project> {
     }
 }
 
-open class GenerateChangelogTask @Inject constructor(
-    private val ext: GitHubChangelogExtension
-) : DefaultTask() {
+open class GenerateChangelogTask @Inject constructor(private val ext: GitHubChangelogExtension) : DefaultTask() {
 
     init {
         group = "documentation"
@@ -32,7 +30,7 @@ open class GenerateChangelogTask @Inject constructor(
         val configuration = ext.toConfig()
         val outFile = ext.outputFile
         project.logger.info("Generating changelog into $outFile...")
-        GitHubChangelogGenerator(configuration).generate(outFile)
+        GitHubChangeLogGenerator(configuration).generate(outFile)
     }
 }
 

@@ -1,4 +1,4 @@
-package org.hildan.github.changelog.generator
+package org.hildan.github.changelog.builder
 
 const val DEFAULT_CHANGELOG_TITLE = "Change Log"
 const val DEFAULT_SHOW_UNRELEASED = true
@@ -19,7 +19,6 @@ val DEFAULT_DIFF_URL_TAG_TRANSFORM: (String) -> String = { it }
 val DEFAULT_CUSTOM_TAG_BY_ISSUE_NUMBER: Map<Int, String> = emptyMap()
 
 data class ChangelogConfig(
-    val github: GitHubConfig,
     val globalHeader: String = DEFAULT_CHANGELOG_TITLE,
     val showUnreleased: Boolean = DEFAULT_SHOW_UNRELEASED,
     val futureVersionTag: String? = null,
@@ -31,23 +30,11 @@ data class ChangelogConfig(
     val excludeLabels: List<String> = DEFAULT_EXCLUDED_LABELS,
     val sinceTag: String? = null,
     val skipTags: List<String> = DEFAULT_SKIPPED_TAGS,
-    val customReleaseUrlTemplate: String? = null,
-    val customDiffUrlTemplate: String? = null,
+    val releaseUrlTemplate: String,
+    val diffUrlTemplate: String,
     val releaseUrlTagTransform: (String) -> String = DEFAULT_RELEASE_URL_TAG_TRANSFORM,
     val diffUrlTagTransform: (String) -> String = DEFAULT_DIFF_URL_TAG_TRANSFORM,
     val customTagByIssueNumber: Map<Int, String> = DEFAULT_CUSTOM_TAG_BY_ISSUE_NUMBER
-) {
-    val releaseUrlTemplate: String = customReleaseUrlTemplate ?: github.releaseUrlTemplate
-    val diffUrlTemplate: String = customDiffUrlTemplate ?: github.diffUrlTemplate
-}
-
-data class GitHubConfig(
-    val user: String,
-    val repo: String,
-    val token: String? = null
-) {
-    val releaseUrlTemplate: String = "https://github.com/$user/$repo/tree/%s"
-    val diffUrlTemplate: String = "https://github.com/$user/$repo/compare/%s...%s"
-}
+)
 
 data class SectionDefinition(val title: String, val labels: List<String>)

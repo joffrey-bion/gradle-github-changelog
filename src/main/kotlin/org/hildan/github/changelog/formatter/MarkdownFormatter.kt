@@ -1,5 +1,10 @@
-package org.hildan.github.changelog.generator
+package org.hildan.github.changelog.formatter
 
+import org.hildan.github.changelog.builder.ChangeLog
+import org.hildan.github.changelog.builder.Issue
+import org.hildan.github.changelog.builder.Release
+import org.hildan.github.changelog.builder.Section
+import org.hildan.github.changelog.builder.User
 import java.time.format.DateTimeFormatter
 
 open class MarkdownFormatter(

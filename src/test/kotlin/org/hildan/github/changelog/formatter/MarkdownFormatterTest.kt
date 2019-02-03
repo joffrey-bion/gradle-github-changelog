@@ -1,5 +1,11 @@
-package org.hildan.github.changelog.generator
+package org.hildan.github.changelog.formatter
 
+import org.hildan.github.changelog.builder.ChangeLog
+import org.hildan.github.changelog.builder.DEFAULT_CHANGELOG_TITLE
+import org.hildan.github.changelog.builder.Issue
+import org.hildan.github.changelog.builder.Release
+import org.hildan.github.changelog.builder.Section
+import org.hildan.github.changelog.builder.User
 import org.junit.jupiter.api.Test
 import java.time.Instant
 import java.time.LocalDate
@@ -9,7 +15,10 @@ class MarkdownFormatterTest {
 
     @Test
     fun `format empty change log`() {
-        val changelog = ChangeLog(title = DEFAULT_CHANGELOG_TITLE, releases = emptyList())
+        val changelog = ChangeLog(
+            title = DEFAULT_CHANGELOG_TITLE,
+            releases = emptyList()
+        )
 
         val formatter = MarkdownFormatter()
 
@@ -36,7 +45,15 @@ class MarkdownFormatterTest {
         val lee = User("lee", "http://github.com/lee")
 
         val prs3 = listOf(
-            Issue(5, "Latest PR", Instant.now(), emptyList(), "http://github.com/issues/5", bob, true)
+            Issue(
+                5,
+                "Latest PR",
+                Instant.now(),
+                emptyList(),
+                "http://github.com/issues/5",
+                bob,
+                true
+            )
         )
         val sectionsNext = listOf(
             Section("Pull requests", prs3)
@@ -48,12 +65,21 @@ class MarkdownFormatterTest {
                 "Some PR with <Things> *to* [escape]",
                 Instant.now(),
                 emptyList(),
-                "http://github.com/issues/4", bob,
+                "http://github.com/issues/4",
+                bob,
                 true
             )
         )
         val bugs2 = listOf(
-            Issue(3, "Some bug", Instant.now(), emptyList(), "http://github.com/issues/3", alex, false)
+            Issue(
+                3,
+                "Some bug",
+                Instant.now(),
+                emptyList(),
+                "http://github.com/issues/3",
+                alex,
+                false
+            )
         )
         val sections2 = listOf(
             Section("Pull requests", prs2),
@@ -61,10 +87,26 @@ class MarkdownFormatterTest {
         )
 
         val prs1 = listOf(
-                Issue(2, "Some PR", Instant.now(), emptyList(), "http://github.com/issues/2", lee, true)
+            Issue(
+                2,
+                "Some PR",
+                Instant.now(),
+                emptyList(),
+                "http://github.com/issues/2",
+                lee,
+                true
+            )
         )
         val enhancements1 = listOf(
-                Issue(1, "Some feature", Instant.now(), emptyList(), "http://github.com/issues/1", bob, false)
+            Issue(
+                1,
+                "Some feature",
+                Instant.now(),
+                emptyList(),
+                "http://github.com/issues/1",
+                bob,
+                false
+            )
         )
         val sections1 = listOf(
             Section("Pull requests", prs1),
@@ -73,14 +115,16 @@ class MarkdownFormatterTest {
 
         val unreleased = Release(null, "Unreleased", now, sectionsNext, null, null)
         val release2 = Release(
-            tag2,
-            tag2,
-            date2,
-            sections2,
-            "http://github.com/tree/$tag2",
-            "http://github.com/compare/$tag1...$tag2"
+            tag2, tag2, date2, sections2, "http://github.com/tree/$tag2", "http://github.com/compare/$tag1...$tag2"
         )
-        val release1 = Release(tag1, tag1, date1, sections1, "http://github.com/tree/$tag1", null)
+        val release1 = Release(
+            tag1,
+            tag1,
+            date1,
+            sections1,
+            "http://github.com/tree/$tag1",
+            null
+        )
 
         val releases = listOf(unreleased, release2, release1)
         val changelog = ChangeLog("My Title", releases)

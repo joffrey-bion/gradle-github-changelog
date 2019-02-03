@@ -1,4 +1,4 @@
-package org.hildan.github.changelog.generator
+package org.hildan.github.changelog.builder
 
 import java.time.Instant
 import java.time.LocalDateTime

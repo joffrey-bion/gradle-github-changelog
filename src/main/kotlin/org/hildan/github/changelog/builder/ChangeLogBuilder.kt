@@ -1,4 +1,4 @@
-package org.hildan.github.changelog.generator
+package org.hildan.github.changelog.builder
 
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -78,7 +78,14 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
             createRelease(config.futureVersionTag, previousTagName, LocalDateTime.now(), issues)
         } else {
             val sections = dispatchInSections(issues)
-            Release(null, config.unreleasedVersionTitle, LocalDateTime.now(), sections, null, null)
+            Release(
+                null,
+                config.unreleasedVersionTitle,
+                LocalDateTime.now(),
+                sections,
+                null,
+                null
+            )
         }
 
     private fun createRelease(tagName: String, previousTagName: String?, date: LocalDateTime, issues: List<Issue>): Release {
@@ -90,7 +97,11 @@ class ChangeLogBuilder(private val config: ChangelogConfig) {
 
     private fun dispatchInSections(issues: List<Issue>): List<Section> =
         issues.groupBy { findSectionTitle(it) }
-            .map { (title, issues) -> Section(title, issues.sortedByDescending { it.closedAt }) }
+            .map { (title, issues) ->
+                Section(
+                    title,
+                    issues.sortedByDescending { it.closedAt })
+            }
             .sortedBy { it.title }
 
     private fun findSectionTitle(issue: Issue): String =
