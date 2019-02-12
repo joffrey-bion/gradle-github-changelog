@@ -15,7 +15,7 @@ Simply add the following line to your `plugins` block:
 
 ```groovy
 plugins {
-    id 'org.hildan.github.changelog' version '0.7.0'
+    id 'org.hildan.github.changelog' version '0.8.0'
 }
 ```
 
@@ -23,7 +23,7 @@ Or if you're using the Gradle Kotlin DSL:
 
 ```kotlin
 plugins {
-    id("org.hildan.github.changelog") version "0.7.0"
+    id("org.hildan.github.changelog") version "0.8.0"
 }
 ```
 
