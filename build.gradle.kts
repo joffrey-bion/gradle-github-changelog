@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm") version "1.3.61"
     id("java-gradle-plugin")
     id("com.gradle.plugin-publish") version "0.10.1"
-    id("org.hildan.github.changelog") version "0.7.0"
+    id("org.hildan.github.changelog") version "0.8.0"
 }
 
 group = "org.hildan.gradle"
