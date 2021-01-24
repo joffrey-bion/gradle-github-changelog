@@ -7,8 +7,8 @@ import org.gradle.api.tasks.TaskAction
 import org.hildan.github.changelog.GitHubChangeLogGenerator
 import javax.inject.Inject
 
-const val EXTENSION_NAME = "changelog"
-const val TASK_NAME = "generateChangelog"
+private const val EXTENSION_NAME = "changelog"
+private const val TASK_NAME = "generateChangelog"
 
 open class GitHubChangelogPlugin : Plugin<Project> {
 
