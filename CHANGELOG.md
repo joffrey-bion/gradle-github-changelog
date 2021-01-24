@@ -1,11 +1,18 @@
 # Change Log
 
+## [1.3.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.3.0) (2021-01-24)
+[Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.2.0...1.3.0)
+
+**Implemented enhancements:**
+
+- Add default section for new features \(linked to "feature" label\) [\#27](https://github.com/joffrey-bion/gradle-github-changelog/issues/27)
+
 ## [1.2.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.2.0) (2021-01-24)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.1.0...1.2.0)
 
 **Implemented enhancements:**
 
-- Exclude issues with doc or documentation tag by default [\#26](https://github.com/joffrey-bion/gradle-github-changelog/issues/26)
+- Exclude issues with doc or documentation label by default [\#26](https://github.com/joffrey-bion/gradle-github-changelog/issues/26)
 
 ## [1.1.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.1.0) (2021-01-24)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.0.0...1.1.0)
