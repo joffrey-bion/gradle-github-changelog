@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.1.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.1.0) (2021-01-24)
+[Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.0.0...1.1.0)
+
+**Implemented enhancements:**
+
+- Make timezone used for local dates more stable and/or configurable [\#25](https://github.com/joffrey-bion/gradle-github-changelog/issues/25)
+
 ## [1.0.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.0.0) (2021-01-24)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.8.0...1.0.0)
 
