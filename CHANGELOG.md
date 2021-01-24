@@ -1,5 +1,17 @@
 # Change Log
 
+## [1.0.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.0.0) (2021-01-24)
+[Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.8.0...1.0.0)
+
+**Closed issues:**
+
+- Add documentation for every option [\#22](https://github.com/joffrey-bion/gradle-github-changelog/issues/22)
+
+**Implemented enhancements:**
+
+- Upgrade to Kotlin 1.4.20 [\#24](https://github.com/joffrey-bion/gradle-github-changelog/issues/24)
+- Cleanup class names to align changeLog \-\> changelog [\#23](https://github.com/joffrey-bion/gradle-github-changelog/issues/23)
+
 ## [0.8.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.8.0) (2019-01-31)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.7.0...0.8.0)
 
@@ -7,7 +19,7 @@
 
 - Turn PR authors' names into links to their profile [\#21](https://github.com/joffrey-bion/gradle-github-changelog/issues/21)
 
-## [0.7.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.7.0) (2019-01-30)
+## [0.7.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.7.0) (2019-01-29)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.6.0...0.7.0)
 
 **Implemented enhancements:**
@@ -33,14 +45,14 @@
 
 - Pull\-Requests seen as regular issues [\#17](https://github.com/joffrey-bion/gradle-github-changelog/issues/17)
 
-## [0.5.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.5.1) (2019-01-29)
+## [0.5.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.5.1) (2019-01-28)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.5.0...0.5.1)
 
 **Fixed bugs:**
 
 - releaseUrlTagTransform / diffUrlTagTransform are read only and cannot be configured [\#15](https://github.com/joffrey-bion/gradle-github-changelog/issues/15)
 
-## [0.5.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.5.0) (2019-01-29)
+## [0.5.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.5.0) (2019-01-28)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.4.0...0.5.0)
 
 **Implemented enhancements:**
@@ -70,7 +82,7 @@
 - Add "skip tags" option [\#7](https://github.com/joffrey-bion/gradle-github-changelog/issues/7)
 - Add "since tag" option [\#5](https://github.com/joffrey-bion/gradle-github-changelog/issues/5)
 
-## [0.2.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.2.1) (2019-01-25)
+## [0.2.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.2.1) (2019-01-24)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.2.0...0.2.1)
 
 **Fixed bugs:**
