@@ -20,7 +20,7 @@ plugins {
 }
 ```
 
-Where `<version>` is the desired version (see badge above) without `v` prefix (e.g. `1.0.0`).
+Where `<version>` is the desired version (see badge above) without `v` prefix (e.g. `1.3.0`).
 
 ### Usage
 
