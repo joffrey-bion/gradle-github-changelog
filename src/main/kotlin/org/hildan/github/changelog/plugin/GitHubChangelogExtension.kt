@@ -3,22 +3,10 @@ package org.hildan.github.changelog.plugin
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.hildan.github.changelog.GitHubChangelogGeneratorConfig
-import org.hildan.github.changelog.builder.ChangelogConfig
-import org.hildan.github.changelog.builder.DEFAULT_CHANGELOG_TITLE
-import org.hildan.github.changelog.builder.DEFAULT_CUSTOM_TAG_BY_ISSUE_NUMBER
-import org.hildan.github.changelog.builder.DEFAULT_DIFF_URL_TAG_TRANSFORM
-import org.hildan.github.changelog.builder.DEFAULT_EXCLUDED_LABELS
-import org.hildan.github.changelog.builder.DEFAULT_INCLUDED_LABELS
-import org.hildan.github.changelog.builder.DEFAULT_ISSUES_SECTION_TITLE
-import org.hildan.github.changelog.builder.DEFAULT_PR_SECTION_TITLE
-import org.hildan.github.changelog.builder.DEFAULT_RELEASE_URL_TAG_TRANSFORM
-import org.hildan.github.changelog.builder.DEFAULT_SECTIONS
-import org.hildan.github.changelog.builder.DEFAULT_SHOW_UNRELEASED
-import org.hildan.github.changelog.builder.DEFAULT_SKIPPED_TAGS
-import org.hildan.github.changelog.builder.DEFAULT_UNRELEASED_VERSION_TITLE
-import org.hildan.github.changelog.builder.SectionDefinition
+import org.hildan.github.changelog.builder.*
 import org.hildan.github.changelog.github.GitHubConfig
 import java.io.File
+import java.time.ZoneId
 
 open class GitHubChangelogExtension(private val project: Project) {
 
@@ -42,6 +30,7 @@ open class GitHubChangelogExtension(private val project: Project) {
     var releaseUrlTagTransform: (String) -> String = DEFAULT_RELEASE_URL_TAG_TRANSFORM
     var diffUrlTagTransform: (String) -> String = DEFAULT_DIFF_URL_TAG_TRANSFORM
     var customTagByIssueNumber: Map<Int, String> = DEFAULT_CUSTOM_TAG_BY_ISSUE_NUMBER
+    var timezone: ZoneId = DEFAULT_TIMEZONE
 
     var outputFile: File = File("${project.projectDir}/CHANGELOG.md")
 
@@ -79,7 +68,8 @@ open class GitHubChangelogExtension(private val project: Project) {
         diffUrlTemplate = diffUrlTemplate ?: gitHub.diffUrlTemplate,
         releaseUrlTagTransform = releaseUrlTagTransform,
         diffUrlTagTransform = diffUrlTagTransform,
-        customTagByIssueNumber = customTagByIssueNumber
+        customTagByIssueNumber = customTagByIssueNumber,
+        timezone = timezone,
     )
 }
 

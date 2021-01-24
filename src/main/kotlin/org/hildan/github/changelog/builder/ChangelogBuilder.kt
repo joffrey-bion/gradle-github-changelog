@@ -69,7 +69,7 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
 
     private fun createExistingRelease(tag: Tag, previousTagName: String?, issues: List<Issue>): Release {
         val tagName = tag.name
-        val date = tag.date.atZone(ZoneId.systemDefault()).toLocalDateTime()
+        val date = tag.date.atZone(config.timezone).toLocalDateTime()
         return createRelease(tagName, previousTagName, date, issues)
     }
 

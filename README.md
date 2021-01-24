@@ -69,6 +69,7 @@ changelog {
     releaseUrlTagTransform = { it }
     diffUrlTagTransform = { it }
     customTagByIssueNumber = [:]
+    timezone = ZoneId.of("GMT")
     
     outputFile = file("${projectDir}/CHANGELOG.md")
 }
@@ -130,5 +131,7 @@ instance.
 - `customTagByIssueNumber`: a mapping from issue numbers to tags. An issue may be incorrectly classified due to late 
 closing date or other timing problems. If this is the case, use this map to override the tag to use for a particular 
 issue.
+
+- `timezone`: the timezone used to convert the tags timestamps to local dates for releases (defaults to GMT).
 
 - `outputFile`: the file to write the change log to.
