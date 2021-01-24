@@ -1,7 +1,7 @@
 plugins {
-    kotlin("jvm") version "1.3.61"
+    kotlin("jvm") version "1.4.20" // aligned with Gradle 6.8.1
     id("java-gradle-plugin")
-    id("com.gradle.plugin-publish") version "0.10.1"
+    id("com.gradle.plugin-publish") version "0.12.0"
     id("org.hildan.github.changelog") version "0.8.0"
 }
 
