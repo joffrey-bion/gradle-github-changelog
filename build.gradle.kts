@@ -6,7 +6,6 @@ plugins {
 }
 
 group = "org.hildan.gradle"
-version = "0.8.0"
 
 repositories {
     jcenter()
