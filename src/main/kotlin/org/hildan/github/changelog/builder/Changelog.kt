@@ -3,7 +3,7 @@ package org.hildan.github.changelog.builder
 import java.time.Instant
 import java.time.LocalDateTime
 
-data class ChangeLog(
+data class Changelog(
     val title: String,
     val releases: List<Release>
 )

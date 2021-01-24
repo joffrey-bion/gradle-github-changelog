@@ -151,7 +151,7 @@ class ChangeLogBuilderTest {
         sections = listOf(unlabeledPrsSection)
     )
 
-    private val expectedChangeLog = ChangeLog(
+    private val expectedChangeLog = Changelog(
         title = DEFAULT_CHANGELOG_TITLE,
         releases = listOf(releaseUnreleased, release200, release182, release180)
     )
@@ -165,10 +165,10 @@ class ChangeLogBuilderTest {
 
     @Test
     fun `no tags and no issues yield empty changelog`() {
-        val builder = ChangeLogBuilder(defaultConfig)
+        val builder = ChangelogBuilder(defaultConfig)
 
         val actualChangeLog = builder.createChangeLog(emptyList(), emptyList())
-        val expectedChangeLog = ChangeLog(
+        val expectedChangeLog = Changelog(
             title = DEFAULT_CHANGELOG_TITLE,
             releases = emptyList()
         )
@@ -178,10 +178,10 @@ class ChangeLogBuilderTest {
 
     @Test
     fun `unreleased issues only - no tags`() {
-        val builder = ChangeLogBuilder(defaultConfig)
+        val builder = ChangelogBuilder(defaultConfig)
 
         val actualChangeLog = builder.createChangeLog(issues, emptyList())
-        val expectedChangeLog = ChangeLog(
+        val expectedChangeLog = Changelog(
             title = DEFAULT_CHANGELOG_TITLE, releases = listOf(
                 Release(
                     tag = null,
@@ -203,7 +203,7 @@ class ChangeLogBuilderTest {
 
     @Test
     fun `standard case with default config`() {
-        val builder = ChangeLogBuilder(defaultConfig)
+        val builder = ChangelogBuilder(defaultConfig)
 
         val actualChangeLog = builder.createChangeLog(issues, tags)
 
@@ -214,7 +214,7 @@ class ChangeLogBuilderTest {
     fun `custom changelog title`() {
         val customGlobalTitle = "Custom"
         val clConfig = defaultConfig.copy(globalHeader = customGlobalTitle)
-        val builder = ChangeLogBuilder(clConfig)
+        val builder = ChangelogBuilder(clConfig)
 
         val actualChangeLog = builder.createChangeLog(issues, tags)
 
@@ -230,7 +230,7 @@ class ChangeLogBuilderTest {
             defaultIssueSectionTitle = customIssuesSectionTitle,
             defaultPrSectionTitle = customPrSectionTitle
         )
-        val builder = ChangeLogBuilder(clConfig)
+        val builder = ChangelogBuilder(clConfig)
 
         val actualChangeLog = builder.createChangeLog(issues, tags)
 
@@ -258,7 +258,7 @@ class ChangeLogBuilderTest {
     fun `custom unreleased version title`() {
         val customUnreleasedVersionTitle = "Coming up"
         val clConfig = defaultConfig.copy(unreleasedVersionTitle = customUnreleasedVersionTitle)
-        val builder = ChangeLogBuilder(clConfig)
+        val builder = ChangelogBuilder(clConfig)
 
         val actualChangeLog = builder.createChangeLog(issues, tags)
 
@@ -277,7 +277,7 @@ class ChangeLogBuilderTest {
     fun `futureVersionTag option should change the unreleased title and URLs`() {
         val customFutureVersionTag = "3.0.0"
         val clConfig = defaultConfig.copy(futureVersionTag = customFutureVersionTag)
-        val builder = ChangeLogBuilder(clConfig)
+        val builder = ChangelogBuilder(clConfig)
 
         val actualChangeLog = builder.createChangeLog(issues, tags)
 
@@ -300,7 +300,7 @@ class ChangeLogBuilderTest {
     @Test
     fun `sinceTag option should limit the output releases`() {
         val clConfig = defaultConfig.copy(sinceTag = "1.8.2")
-        val builder = ChangeLogBuilder(clConfig)
+        val builder = ChangelogBuilder(clConfig)
 
         val actualChangeLog = builder.createChangeLog(issues, tags)
 
@@ -313,7 +313,7 @@ class ChangeLogBuilderTest {
     @Test
     fun `skipTags option should limit the output releases`() {
         val clConfig = defaultConfig.copy(skipTags = listOf("2.0.0"))
-        val builder = ChangeLogBuilder(clConfig)
+        val builder = ChangelogBuilder(clConfig)
 
         val actualChangeLog = builder.createChangeLog(issues, tags)
 
@@ -329,7 +329,7 @@ class ChangeLogBuilderTest {
             releaseUrlTagTransform = { "tag-prefix-$it" },
             diffUrlTagTransform = { "$it-suffix" }
         )
-        val builder = ChangeLogBuilder(clConfig)
+        val builder = ChangelogBuilder(clConfig)
 
         val actualChangeLog = builder.createChangeLog(issues, tags)
 
@@ -355,7 +355,7 @@ class ChangeLogBuilderTest {
     @Test
     fun `customIssueReleaseAssociations option should move arbitrary issues in specified tag`() {
         val clConfig = defaultConfig.copy(customTagByIssueNumber = mapOf(44 to "1.8.2", 46 to "1.8.2"))
-        val builder = ChangeLogBuilder(clConfig)
+        val builder = ChangelogBuilder(clConfig)
 
         val actualChangeLog = builder.createChangeLog(issues, tags)
 

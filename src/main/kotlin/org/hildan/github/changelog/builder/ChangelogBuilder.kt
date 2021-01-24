@@ -3,15 +3,15 @@ package org.hildan.github.changelog.builder
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-class ChangeLogBuilder(private val config: ChangelogConfig) {
+class ChangelogBuilder(private val config: ChangelogConfig) {
 
     private val sectionByLabel: Map<String, String> =
         config.sections.flatMap { s -> s.labels.map { it to s.title } }.toMap()
 
-    fun createChangeLog(issues: List<Issue>, tags: List<Tag>): ChangeLog {
+    fun createChangeLog(issues: List<Issue>, tags: List<Tag>): Changelog {
         val releases = createReleases(issues, tags)
         val displayedReleases = filterReleases(releases)
-        return ChangeLog(config.globalHeader, displayedReleases)
+        return Changelog(config.globalHeader, displayedReleases)
     }
 
     private fun filterReleases(releases: List<Release>): List<Release> {

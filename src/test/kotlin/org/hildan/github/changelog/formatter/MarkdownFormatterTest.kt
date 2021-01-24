@@ -1,6 +1,6 @@
 package org.hildan.github.changelog.formatter
 
-import org.hildan.github.changelog.builder.ChangeLog
+import org.hildan.github.changelog.builder.Changelog
 import org.hildan.github.changelog.builder.DEFAULT_CHANGELOG_TITLE
 import org.hildan.github.changelog.builder.Issue
 import org.hildan.github.changelog.builder.Release
@@ -15,7 +15,7 @@ class MarkdownFormatterTest {
 
     @Test
     fun `format empty change log`() {
-        val changelog = ChangeLog(
+        val changelog = Changelog(
             title = DEFAULT_CHANGELOG_TITLE,
             releases = emptyList()
         )
@@ -127,7 +127,7 @@ class MarkdownFormatterTest {
         )
 
         val releases = listOf(unreleased, release2, release1)
-        val changelog = ChangeLog("My Title", releases)
+        val changelog = Changelog("My Title", releases)
 
         val formatter = MarkdownFormatter()
 

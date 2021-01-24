@@ -2,7 +2,7 @@ package org.hildan.github.changelog.plugin
 
 import org.gradle.api.GradleException
 import org.gradle.api.Project
-import org.hildan.github.changelog.GitHubChangeLogGeneratorConfig
+import org.hildan.github.changelog.GitHubChangelogGeneratorConfig
 import org.hildan.github.changelog.builder.ChangelogConfig
 import org.hildan.github.changelog.builder.DEFAULT_CHANGELOG_TITLE
 import org.hildan.github.changelog.builder.DEFAULT_CUSTOM_TAG_BY_ISSUE_NUMBER
@@ -45,10 +45,10 @@ open class GitHubChangelogExtension(private val project: Project) {
 
     var outputFile: File = File("${project.projectDir}/CHANGELOG.md")
 
-    fun toConfig(): GitHubChangeLogGeneratorConfig {
+    fun toConfig(): GitHubChangelogGeneratorConfig {
         val gitHub = createGitHubConfig()
         val changeLog = createChangeLogConfig(gitHub)
-        return GitHubChangeLogGeneratorConfig(gitHub, changeLog)
+        return GitHubChangelogGeneratorConfig(gitHub, changeLog)
     }
 
     private fun createGitHubConfig(): GitHubConfig {

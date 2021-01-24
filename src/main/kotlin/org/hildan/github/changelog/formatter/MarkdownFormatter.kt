@@ -1,6 +1,6 @@
 package org.hildan.github.changelog.formatter
 
-import org.hildan.github.changelog.builder.ChangeLog
+import org.hildan.github.changelog.builder.Changelog
 import org.hildan.github.changelog.builder.Issue
 import org.hildan.github.changelog.builder.Release
 import org.hildan.github.changelog.builder.Section
@@ -12,9 +12,9 @@ open class MarkdownFormatter(
 ) {
     private val escapedCharactersRegex = Regex("""([\\`*_{}\[\]()#+\-!<>])""")
 
-    fun formatChangeLog(changeLog: ChangeLog): String = """# ${changeLog.title.escapeMd()}
+    fun formatChangeLog(changelog: Changelog): String = """# ${changelog.title.escapeMd()}
         |
-        |${formatReleases(changeLog.releases)}""".trimMargin()
+        |${formatReleases(changelog.releases)}""".trimMargin()
 
     protected fun formatReleases(releases: List<Release>): String = if (releases.isEmpty()) {
         "*Nothing much happened so far, actually...*"
