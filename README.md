@@ -1,8 +1,8 @@
 # GitHub Changelog Generator (Gradle plugin)
 
-[![image](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/org/hildan/github/changelog/org.hildan.github.changelog.gradle.plugin/maven-metadata.xml.svg?label=gradle&logo=gradle)](https://plugins.gradle.org/plugin/org.hildan.github.changelog)
+[![Gradle plugin version](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/org/hildan/github/changelog/org.hildan.github.changelog.gradle.plugin/maven-metadata.xml.svg?label=gradle&logo=gradle)](https://plugins.gradle.org/plugin/org.hildan.github.changelog)
 [![Github Build](https://img.shields.io/github/workflow/status/joffrey-bion/gradle-github-changelog/CI%20Build?label=build&logo=github)](https://github.com/joffrey-bion/gradle-github-changelog/actions?query=workflow%3A%22CI+Build%22)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/joffrey-bion/gradle-github-changelog/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/joffrey-bion/gradle-github-changelog/blob/master/LICENSE)
 
 Generates a changelog from GitHub issues and pull-requests.
 
@@ -28,17 +28,28 @@ plugins {
 }
 ```
 
-### Configuration
+### Usage
+
+When applied, the plugin automatically adds the `generateChangelog` task.
+This task calls GitHub to get information about your issues and pull requests, 
+and generates a `CHANGELOG.md` file in your project's root folder.
 
 The minimal required configuration is your **GitHub username**.
 
-It can be provided in 3 ways:
-- the `githubUser` project property
+It can be provided in 3 different ways depending on your needs:
+- the `githubUser` project property (add `githubUser=user-or-org` to `gradle.properties`)
 - the `GITHUB_USER` environment variable
 - the `githubUser` property of the `changelog` DSL (see below)
 
 If you're using the project property or the environment variable, and stick with the defaults, you don't even need 
 to define the `changelog` extension at all in your gradle file.
+
+You can then simply run:
+```
+gradle generateChangelog
+```
+
+### Complete configuration
 
 Here is the extension DSL with all options and their default values:
 
