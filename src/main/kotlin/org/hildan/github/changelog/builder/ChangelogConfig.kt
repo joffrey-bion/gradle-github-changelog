@@ -9,7 +9,7 @@ const val DEFAULT_ISSUES_SECTION_TITLE = "Closed issues:"
 const val DEFAULT_PR_SECTION_TITLE = "Merged pull requests:"
 
 val DEFAULT_INCLUDED_LABELS = emptyList<String>()
-val DEFAULT_EXCLUDED_LABELS = listOf("duplicate", "invalid", "question", "wontfix")
+val DEFAULT_EXCLUDED_LABELS = listOf("doc", "documentation", "duplicate", "invalid", "question", "wontfix")
 val DEFAULT_SKIPPED_TAGS = emptyList<String>()
 
 val DEFAULT_SECTIONS = listOf(
