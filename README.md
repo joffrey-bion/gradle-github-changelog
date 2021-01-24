@@ -14,19 +14,13 @@ as a Gradle plugin.
 
 Simply add the following line to your `plugins` block:
 
-```groovy
-plugins {
-    id 'org.hildan.github.changelog' version '0.8.0'
-}
-```
-
-Or if you're using the Gradle Kotlin DSL:
-
 ```kotlin
 plugins {
-    id("org.hildan.github.changelog") version "0.8.0"
+    id("org.hildan.github.changelog") version "<version>"
 }
 ```
+
+Where `<version>` is the desired version (see badge above) without `v` prefix (e.g. `1.0.0`).
 
 ### Usage
 
