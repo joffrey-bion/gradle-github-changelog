@@ -17,10 +17,6 @@
 ## [1.0.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.0.0) (2021-01-24)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.8.0...1.0.0)
 
-**Closed issues:**
-
-- Add documentation for every option [\#22](https://github.com/joffrey-bion/gradle-github-changelog/issues/22)
-
 **Implemented enhancements:**
 
 - Upgrade to Kotlin 1.4.20 [\#24](https://github.com/joffrey-bion/gradle-github-changelog/issues/24)
