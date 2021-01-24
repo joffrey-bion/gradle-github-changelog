@@ -105,7 +105,8 @@ labels
 
 - `includeLabels`: if not empty, only issues that have at least one of these labels can appear in the change log.
 
-- `excludeLabels`: issues that have at least one of these labels will not appear in the change log.
+- `excludeLabels`: issues that have at least one of these labels will not appear in the change log, even if they have 
+  labels that are present in `includeLabels`.
 
 - `sinceTag`: if provided, all prior tags will be excluded from the change log.
 
