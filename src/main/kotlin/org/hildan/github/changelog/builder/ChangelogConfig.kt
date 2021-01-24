@@ -13,8 +13,9 @@ val DEFAULT_EXCLUDED_LABELS = listOf("doc", "documentation", "duplicate", "inval
 val DEFAULT_SKIPPED_TAGS = emptyList<String>()
 
 val DEFAULT_SECTIONS = listOf(
-    SectionDefinition("Implemented enhancements:", listOf("enhancement")),
-    SectionDefinition("Fixed bugs:", listOf("bug"))
+    SectionDefinition("New features:", "feature"),
+    SectionDefinition("Implemented enhancements:", "enhancement"),
+    SectionDefinition("Fixed bugs:", "bug"),
 )
 val DEFAULT_RELEASE_URL_TAG_TRANSFORM: (String) -> String = { it }
 val DEFAULT_DIFF_URL_TAG_TRANSFORM: (String) -> String = { it }
@@ -42,4 +43,31 @@ data class ChangelogConfig(
     val timezone: ZoneId = DEFAULT_TIMEZONE,
 )
 
-data class SectionDefinition(val title: String, val labels: List<String>)
+/**
+ * Defines a section of issues within a release in the changelog.
+ */
+data class SectionDefinition(
+    /**
+     * The title of the section.
+     */
+    val title: String,
+    /**
+     * The labels of the issues to include in this section.
+     * Any issue with at least one of these labels will be listed under this section.
+     *
+     * If multiple sections list the same label, issues with this label will appear in the last section that was
+     * defined with this label.
+     */
+    val labels: List<String>,
+) {
+    /**
+     * Creates a section of issues within a release in the changelog.
+     *
+     * This constructor creates a section with the given [title], under which any issue with the given [label] will
+     * be listed.
+     *
+     * If multiple sections list the same label, issues with this label will appear in the last section that was
+     * defined with this label.
+     */
+    constructor(title: String, label: String) : this(title, listOf(label))
+}
