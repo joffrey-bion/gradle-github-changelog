@@ -52,9 +52,11 @@ open class GitHubChangelogExtension(private val project: Project) {
     }
 
     private fun createGitHubConfig(): GitHubConfig {
-        val user = githubUser ?: project.getPropOrEnv("githubUser", "GITHUB_USER")
+        val user = githubUser
+            ?: project.getPropOrEnv("githubUser", "GITHUB_USER")
             ?: throw GradleException("You must specify your GitHub username for changelog generation, using the " +
-                "githubUser project property, or the GITHUB_USER environment variable")
+                "githubUser project property, the githubUser property of the changelog extension, or the GITHUB_USER " +
+                "environment variable")
         val repo = githubRepository ?: project.rootProject.name
         val token = githubToken ?: project.getPropOrEnv("githubToken", "GITHUB_TOKEN")
 
