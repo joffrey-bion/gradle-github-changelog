@@ -57,7 +57,7 @@ changelog {
     showUnreleased = true
     unreleasedVersionTitle = "Unreleased"
     futureVersionTag = null
-    sections = [] // no custom sections by default, but default sections are appended
+    sections = [] // no custom sections by default, but default sections are prepended
     defaultIssueSectionTitle = "Closed issues:"
     defaultPrSectionTitle = "Merged pull requests:"
     includeLabels = []
@@ -96,7 +96,14 @@ By default they will appear as "unreleased", unless a `futureVersionTag` is prov
 the change log under the provided tag. This allows to consider unreleased issues as part of an actual tag prior to 
 actually creating the tag.
 
-- `sections`: custom sections to classify the issues into (to be documented)
+- `sections`: custom sections to classify the issues into within each release. 
+Issues are placed into the first section that is associated to one of their labels.
+The custom sections should be provided as a list of `SectionDefinition`s, with a title and one or more associated
+issue labels.
+The provided custom sections are added on top of the default sections (they don't replace them).
+However, if a custom section is associated to a label that is usually handled by a default section, the custom section
+takes precedence (in fact, the last section defining a mapping for a given issue label wins, and default
+sections are listed first).
 
 - `defaultIssueSectionTitle`: section title for issues that are not classified in a specific section due to their labels
 
