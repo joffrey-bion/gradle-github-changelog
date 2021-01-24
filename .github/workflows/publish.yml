@@ -31,4 +31,4 @@ jobs:
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle-wrapper.properties') }}
 
       - name: Publish plugin to Gradle Portal
-        run: ./gradlew publishPlugins -Pversion=${{ github.event.release.tag_name }} -Pgradle.publish.key=${{ secrets.$GRADLE_API_KEY }} -Pgradle.publish.secret=${{ secrets.$GRADLE_API_SECRET }}
+        run: ./gradlew publishPlugins -Pversion=${{ github.event.release.tag_name }} -Pgradle.publish.key=${{ secrets.GRADLE_API_KEY }} -Pgradle.publish.secret=${{ secrets.GRADLE_API_SECRET }}
