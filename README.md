@@ -10,9 +10,11 @@ This project mimics the functionality of the great
 [GitHub Changelog Generator](https://github.com/github-changelog-generator/github-changelog-generator)
 as a Gradle plugin.
 
+As an example, this project's [CHANGELOG.md](CHANGELOG.md) was generated with this plugin.
+
 ### Applying the plugin
 
-Simply add the following line to your `plugins` block:
+Add the following line to your `plugins` block:
 
 ```kotlin
 plugins {
@@ -20,7 +22,7 @@ plugins {
 }
 ```
 
-Where `<version>` is the desired version (see badge above) without `v` prefix (e.g. `1.3.0`).
+Where `<version>` is the desired version (see badge above without `v` prefix), e.g. `1.3.0`.
 
 Gradle compatibility:
 
