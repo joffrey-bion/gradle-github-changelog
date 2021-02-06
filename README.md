@@ -22,6 +22,13 @@ plugins {
 
 Where `<version>` is the desired version (see badge above) without `v` prefix (e.g. `1.3.0`).
 
+Gradle compatibility:
+
+| Plugin | Gradle |
+|--------|--------|
+| 1.x.x  |  6.8+  |
+| 0.x.0  |  6.7+  |
+
 ### Usage
 
 When applied, the plugin automatically adds the `generateChangelog` task.
