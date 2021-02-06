@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.4.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.4.0) (2021-02-06)
+[Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.3.0...1.4.0)
+
+**Implemented enhancements:**
+
+- Provide full changelog link for first tag [\#31](https://github.com/joffrey-bion/gradle-github-changelog/issues/31)
+
 ## [1.3.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.3.0) (2021-01-24)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.2.0...1.3.0)
 
