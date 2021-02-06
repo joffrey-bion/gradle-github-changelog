@@ -15,7 +15,7 @@ import org.kohsuke.github.HttpException
 data class GitHubConfig(
     val user: String,
     val repo: String,
-    val token: String? = null
+    val token: String? = null,
 ) {
     val releaseUrlTemplate: String = "https://github.com/$user/$repo/tree/%s"
     val diffUrlTemplate: String = "https://github.com/$user/$repo/compare/%s...%s"
@@ -40,10 +40,9 @@ private fun GitHubConfig.fetchGHRepository(): GHRepository {
     }
 }
 
-private fun GitHubConfig.connect(): GitHub = if (token == null) {
-    GitHub.connectAnonymously()
-} else {
-    GitHub.connectUsingPassword(user, token)
+private fun GitHubConfig.connect(): GitHub = when (token) {
+    null -> GitHub.connectAnonymously()
+    else -> GitHub.connectUsingPassword(user, token)
 }
 
 private fun GHTag.toTag(): Tag = Tag(name, commit.commitDate.toInstant())
