@@ -1,15 +1,15 @@
 package org.hildan.github.changelog.builder
 
+import org.hildan.github.changelog.github.Repository
 import java.time.LocalDateTime
-import java.time.ZoneId
 
 class ChangelogBuilder(private val config: ChangelogConfig) {
 
     private val sectionByLabel: Map<String, String> =
         config.sections.flatMap { s -> s.labels.map { it to s.title } }.toMap()
 
-    fun createChangeLog(issues: List<Issue>, tags: List<Tag>): Changelog {
-        val releases = createReleases(issues, tags)
+    fun createChangeLog(repo: Repository): Changelog {
+        val releases = createReleases(repo)
         val displayedReleases = filterReleases(releases)
         return Changelog(config.globalHeader, displayedReleases)
     }
@@ -23,25 +23,25 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
         }
     }
 
-    private fun createReleases(issues: List<Issue>, tags: List<Tag>): List<Release> {
-        val (regularIssues, overriddenIssuesByTag) = sortIssues(issues)
+    private fun createReleases(repo: Repository): List<Release> {
+        val (regularIssues, overriddenIssuesByTag) = sortIssues(repo.closedIssues)
 
         var remainingIssues = regularIssues
         val releases = mutableListOf<Release>()
-        var previousTag: String? = null
-        for (tag in tags.sortedBy { it.date }) {
+        var previousRef: Ref = Ref.Sha(repo.initialCommitSha)
+        for (tag in repo.tags.sortedBy { it.date }) {
             val (closedBeforeTag, closedAfterTag) = remainingIssues.partition { it.closedAt <= tag.date }
 
             val tagOverriddenIssues = overriddenIssuesByTag[tag.name] ?: emptyList()
             val issuesForTag = closedBeforeTag + tagOverriddenIssues
 
-            releases.add(createExistingRelease(tag, previousTag, issuesForTag))
+            releases.add(createExistingRelease(tag, previousRef, issuesForTag))
 
             remainingIssues = closedAfterTag
-            previousTag = tag.name
+            previousRef = Ref.Tag(tag.name)
         }
         if (remainingIssues.isNotEmpty() && config.showUnreleased) {
-            releases.add(createFutureRelease(previousTag, remainingIssues))
+            releases.add(createFutureRelease(previousRef, remainingIssues))
         }
         return releases.sortedByDescending { it.date }
     }
@@ -67,13 +67,13 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
 
     private fun isExcluded(issue: Issue) = issue.labels.any { config.excludeLabels.contains(it) }
 
-    private fun createExistingRelease(tag: Tag, previousTagName: String?, issues: List<Issue>): Release {
+    private fun createExistingRelease(tag: Tag, previousRef: Ref, issues: List<Issue>): Release {
         val tagName = tag.name
         val date = tag.date.atZone(config.timezone).toLocalDateTime()
-        return createRelease(tagName, previousTagName, date, issues)
+        return createRelease(tagName, previousRef, date, issues)
     }
 
-    private fun createFutureRelease(previousTagName: String?, issues: List<Issue>): Release =
+    private fun createFutureRelease(previousTagName: Ref, issues: List<Issue>): Release =
         if (config.futureVersionTag != null) {
             createRelease(config.futureVersionTag, previousTagName, LocalDateTime.now(), issues)
         } else {
@@ -88,10 +88,10 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
             )
         }
 
-    private fun createRelease(tagName: String, previousTagName: String?, date: LocalDateTime, issues: List<Issue>): Release {
+    private fun createRelease(tagName: String, previousRef: Ref, date: LocalDateTime, issues: List<Issue>): Release {
         val sections = dispatchInSections(issues)
         val releaseUrl = releaseUrl(tagName)
-        val diffUrl = previousTagName?.let { diffUrl(it, tagName) }
+        val diffUrl = diffUrl(previousRef, tagName)
         return Release(tagName, tagName, date, sections, releaseUrl, diffUrl)
     }
 
@@ -115,6 +115,16 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
 
     private fun releaseUrl(tag: String) = String.format(config.releaseUrlTemplate, config.releaseUrlTagTransform(tag))
 
-    private fun diffUrl(fromTag: String, toTag: String) =
-        String.format(config.diffUrlTemplate, config.diffUrlTagTransform(fromTag), config.diffUrlTagTransform(toTag))
+    private fun diffUrl(fromRef: Ref, toTag: String): String {
+        val from = when (fromRef) {
+            is Ref.Tag -> config.diffUrlTagTransform(fromRef.name)
+            is Ref.Sha -> fromRef.value
+        }
+        return String.format(config.diffUrlTemplate, from, config.diffUrlTagTransform(toTag))
+    }
+}
+
+sealed class Ref {
+    data class Tag(val name: String): Ref()
+    data class Sha(val value: String): Ref()
 }

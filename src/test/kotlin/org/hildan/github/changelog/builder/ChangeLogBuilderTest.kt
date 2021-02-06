@@ -2,6 +2,7 @@ package org.hildan.github.changelog.builder
 
 import io.mockk.every
 import io.mockk.mockkStatic
+import org.hildan.github.changelog.github.Repository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.Instant
@@ -18,6 +19,8 @@ class ChangeLogBuilderTest {
     )
 
     private val fakeNow = LocalDate.of(2019, 1, 20).atTime(10, 0)
+
+    private val fakeInitSha = "fake_init_sha"
 
     private val issue1unlabeled = Issue(
         number = 1,
@@ -119,7 +122,7 @@ class ChangeLogBuilderTest {
         tag = "1.8.0",
         title = "1.8.0",
         date = LocalDate.of(2018, 5, 6).atTime(11, 0),
-        diffUrl = null,
+        diffUrl = "https://github.com/someuser/somerepo/compare/$fakeInitSha...1.8.2",
         releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.0",
         sections = listOf(unlabeledIssuesSection, oldBugsSection)
     )
@@ -367,5 +370,9 @@ class ChangeLogBuilderTest {
             )
         )
         assertEquals(expectedChangeLog, actualChangeLog)
+    }
+
+    private fun ChangelogBuilder.createChangeLog(issues: List<Issue>, tags: List<Tag>): Changelog {
+        return createChangeLog(Repository(tags, issues, fakeInitSha))
     }
 }

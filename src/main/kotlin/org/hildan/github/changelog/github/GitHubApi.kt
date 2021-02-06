@@ -3,14 +3,7 @@ package org.hildan.github.changelog.github
 import org.hildan.github.changelog.builder.Issue
 import org.hildan.github.changelog.builder.Tag
 import org.hildan.github.changelog.builder.User
-import org.kohsuke.github.GHFileNotFoundException
-import org.kohsuke.github.GHIssue
-import org.kohsuke.github.GHIssueState
-import org.kohsuke.github.GHRepository
-import org.kohsuke.github.GHTag
-import org.kohsuke.github.GHUser
-import org.kohsuke.github.GitHub
-import org.kohsuke.github.HttpException
+import org.kohsuke.github.*
 
 data class GitHubConfig(
     val user: String,
@@ -21,13 +14,18 @@ data class GitHubConfig(
     val diffUrlTemplate: String = "https://github.com/$user/$repo/compare/%s...%s"
 }
 
-data class Repository(val tags: List<Tag>, val closedIssues: List<Issue>)
+data class Repository(
+    val tags: List<Tag>,
+    val closedIssues: List<Issue>,
+    val initialCommitSha: String,
+)
 
 fun fetchRepositoryInfo(gitHubConfig: GitHubConfig): Repository {
     val ghRepository = gitHubConfig.fetchGHRepository()
     val tags = ghRepository.listTags().map { it.toTag() }
     val closedIssues = ghRepository.getIssues(GHIssueState.CLOSED).map { it.toIssue() }
-    return Repository(tags, closedIssues)
+    val firstCommit = ghRepository.listCommits().withPageSize(1).first()
+    return Repository(tags, closedIssues, firstCommit.shA1)
 }
 
 private fun GitHubConfig.fetchGHRepository(): GHRepository {

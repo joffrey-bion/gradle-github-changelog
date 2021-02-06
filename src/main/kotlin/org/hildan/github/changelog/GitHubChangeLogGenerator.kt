@@ -19,7 +19,7 @@ class GitHubChangeLogGenerator(private val config: GitHubChangelogGeneratorConfi
 
     fun generate(outputFile: File? = null) {
         val repo = fetchRepositoryInfo(config.gitHubConfig)
-        val changeLog = changeLogBuilder.createChangeLog(repo.closedIssues, repo.tags)
+        val changeLog = changeLogBuilder.createChangeLog(repo)
         val markdown = config.formatter.formatChangeLog(changeLog)
         if (outputFile != null) {
             outputFile.writeText(markdown)
