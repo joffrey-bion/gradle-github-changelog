@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class Changelog(
     val title: String,
-    val releases: List<Release>
+    val releases: List<Release>,
 )
 
 data class Release(
@@ -14,12 +14,12 @@ data class Release(
     val date: LocalDateTime,
     val sections: List<Section>,
     val releaseUrl: String?,
-    val diffUrl: String?
+    val diffUrl: String?,
 )
 
 data class Section(
     val title: String,
-    val issues: List<Issue>
+    val issues: List<Issue>,
 )
 
 data class Issue(
@@ -29,15 +29,15 @@ data class Issue(
     val labels: List<String>,
     val url: String,
     val author: User,
-    val isPullRequest: Boolean
+    val isPullRequest: Boolean,
 )
 
 data class User(
     val login: String,
-    val profileUrl: String
+    val profileUrl: String,
 )
 
 data class Tag(
     val name: String,
-    val date: Instant
+    val date: Instant,
 )
