@@ -15,10 +15,9 @@ The date of the release is the date of the tag.
 
 By default, issues are sorted into releases by their close date.
 For example, all issues closed between the date of tag `1.0` and the date of the tag `1.1` are considered to be in release `1.1`.
-
 You can override this by manually specifying the release associated to a particular issue (see `customTagByIssueNumber`).
 
-As an example, this project's [CHANGELOG.md](CHANGELOG.md) was generated with this plugin.
+To see an example output, take a look at this project's [CHANGELOG.md](CHANGELOG.md), which was generated with this plugin.
 
 ### Applying the plugin
 
