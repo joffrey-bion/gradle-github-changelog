@@ -1,9 +1,20 @@
 # Change Log
 
+## [1.6.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.6.0) (2021-02-27)
+[Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.5.0...1.6.0)
+
+**Fixed bugs:**
+
+- Exception when milestone has no description [\#35](https://github.com/joffrey-bion/gradle-github-changelog/issues/35)
+
+**Implemented enhancements:**
+
+- Add config param to enable/disable milestone override [\#34](https://github.com/joffrey-bion/gradle-github-changelog/issues/34)
+
 ## [1.5.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.5.0) (2021-02-27)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.4.0...1.5.0)
 
-**Closed issues:**
+**Implemented enhancements:**
 
 - Allow using Milestones to determine association of issues with tags [\#33](https://github.com/joffrey-bion/gradle-github-changelog/issues/33)
 
