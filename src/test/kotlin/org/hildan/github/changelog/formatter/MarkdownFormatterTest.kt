@@ -141,7 +141,7 @@ class MarkdownFormatterTest {
             - Latest PR [\#5](http://github.com/issues/5) ([@bob](http://github.com/bob))
 
             ## [2.0.0](http://github.com/tree/2.0.0) (2019-01-02)
-            [Full Changelog](http://github.com/compare/1.0.0...2.0.0)
+            [View commits](http://github.com/compare/1.0.0...2.0.0)
 
             **Pull requests**
 

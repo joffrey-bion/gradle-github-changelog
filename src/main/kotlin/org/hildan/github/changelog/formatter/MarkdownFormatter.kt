@@ -29,7 +29,7 @@ open class MarkdownFormatter(
 
     protected fun formatDiffUrl(diffUrl: String?): String =
         if (diffUrl != null) {
-            "\n[Full Changelog]($diffUrl)"
+            "\n[View commits]($diffUrl)"
         } else {
             ""
         }
