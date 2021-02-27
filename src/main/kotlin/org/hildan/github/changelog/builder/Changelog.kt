@@ -35,7 +35,7 @@ data class Issue(
 
 data class Milestone(
     val title: String,
-    val description: String,
+    val description: String?,
 )
 
 data class User(
