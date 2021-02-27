@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.5.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.5.0) (2021-02-27)
+[Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.4.0...1.5.0)
+
+**Closed issues:**
+
+- Allow using Milestones to determine association of issues with tags [\#33](https://github.com/joffrey-bion/gradle-github-changelog/issues/33)
+
 ## [1.4.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.4.0) (2021-02-06)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.3.0...1.4.0)
 
