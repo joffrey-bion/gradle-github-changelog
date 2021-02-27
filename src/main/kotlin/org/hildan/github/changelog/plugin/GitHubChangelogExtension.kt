@@ -121,6 +121,11 @@ open class GitHubChangelogExtension(private val project: Project) {
      */
     var customTagByIssueNumber: Map<Int, String> = DEFAULT_CUSTOM_TAG_BY_ISSUE_NUMBER
     /**
+     * If true, issues associated to a milestone with a title that matches a tag will be associated to that tag,
+     * regardless of their close date.
+     */
+    var useMilestoneAsTag: Boolean = DEFAULT_USE_MILESTONE_AS_TAG
+    /**
      * The timezone used to convert the tags timestamps to local dates for releases (defaults to GMT).
      */
     var timezone: ZoneId = DEFAULT_TIMEZONE
@@ -165,6 +170,7 @@ open class GitHubChangelogExtension(private val project: Project) {
         releaseUrlTagTransform = releaseUrlTagTransform,
         diffUrlTagTransform = diffUrlTagTransform,
         customTagByIssueNumber = customTagByIssueNumber,
+        useMilestoneAsTag = useMilestoneAsTag,
         timezone = timezone,
     )
 }

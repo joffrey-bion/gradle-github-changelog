@@ -57,19 +57,13 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
         val overriddenIssues = mutableMapOf<String, MutableList<Issue>>()
 
         issues.asSequence().filter { shouldInclude(it) }.forEach { issue ->
-            val tagOverride = config.customTagByIssueNumber[issue.number]
-            val milestone = issue.milestone?.title
+            val tagOverride = issue.getTagOverride(tagNames)
             when {
-                tagOverride != null -> overriddenIssues.add(tagOverride, issue)
-                milestone != null && milestone in tagNames -> overriddenIssues.add(milestone, issue)
+                tagOverride != null -> overriddenIssues.getOrPut(tagOverride) { mutableListOf() }.add(issue)
                 else -> regularIssues.add(issue)
             }
         }
         return SortedIssues(regularIssues, overriddenIssues)
-    }
-
-    private fun <K, V> MutableMap<K, MutableList<V>>.add(key: K, value: V) {
-        getOrPut(key) { mutableListOf() }.add(value)
     }
 
     private fun shouldInclude(issue: Issue) = !isExcluded(issue) && isIncluded(issue)
@@ -78,6 +72,15 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
         config.includeLabels.isEmpty() || issue.labels.any { config.includeLabels.contains(it) }
 
     private fun isExcluded(issue: Issue) = issue.labels.any { config.excludeLabels.contains(it) }
+
+    private fun Issue.getTagOverride(allTags: Set<String>): String? {
+        val tagOverride = config.customTagByIssueNumber[number]
+        return when {
+            tagOverride != null -> tagOverride
+            config.useMilestoneAsTag && milestone != null && milestone.title in allTags -> milestone.title
+            else -> null // no override
+        }
+    }
 
     private fun createExistingRelease(tag: Tag, previousRef: Ref, issues: List<Issue>): Release {
         val tagName = tag.name

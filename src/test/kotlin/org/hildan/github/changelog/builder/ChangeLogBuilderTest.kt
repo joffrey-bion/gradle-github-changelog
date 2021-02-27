@@ -387,6 +387,33 @@ class ChangeLogBuilderTest {
         assertEquals(expectedChangeLog, actualChangeLog)
     }
 
+    @Test
+    fun `milestone override should be disabled if useMilestonesAsTags is false`() {
+        val modifiedIssues = issues.forceMilestone("1.8.2", 44, 46)
+        val builder = ChangelogBuilder(defaultConfig.copy(useMilestoneAsTag = false))
+
+        val actualChangeLog = builder.createChangeLog(modifiedIssues, tags)
+
+        val expectedChangeLog = expectedChangeLog.copy(
+            releases = listOf(
+                releaseUnreleased.copy(
+                    sections = listOf(
+                        unlabeledPrsSection.forceMilestone("1.8.2", 46),
+                    ),
+                ),
+                release200.copy(
+                    sections = listOf(
+                        bugsSection,
+                        enhancementsSection.forceMilestone("1.8.2", 44),
+                    ),
+                ),
+                release182,
+                release180,
+            )
+        )
+        assertEquals(expectedChangeLog, actualChangeLog)
+    }
+
     private fun Section.forceMilestone(milestone: String, vararg issueNumbers: Int) = copy(
         issues = issues.forceMilestone(milestone, *issueNumbers)
     )

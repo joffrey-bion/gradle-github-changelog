@@ -95,6 +95,7 @@ changelog {
     releaseUrlTagTransform = { it }
     diffUrlTagTransform = { it }
     customTagByIssueNumber = [:]
+    useMilestoneAsTag = true
     timezone = ZoneId.of("GMT")
     
     outputFile = file("${projectDir}/CHANGELOG.md")
@@ -165,6 +166,9 @@ instance.
 - `customTagByIssueNumber`: a mapping from issue numbers to tags. An issue may be incorrectly classified due to late 
 closing date or other timing problems. If this is the case, use this map to override the tag to use for a particular 
 issue.
+
+- `useMilestoneAsTag`: if true, issues associated to a milestone with a title that matches a tag will be associated to 
+that tag, regardless of their close date.
 
 - `timezone`: the timezone used to convert the tags timestamps to local dates for releases (defaults to GMT).
 

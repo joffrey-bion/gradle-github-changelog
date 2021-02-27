@@ -20,6 +20,7 @@ val DEFAULT_SECTIONS = listOf(
 val DEFAULT_RELEASE_URL_TAG_TRANSFORM: (String) -> String = { it }
 val DEFAULT_DIFF_URL_TAG_TRANSFORM: (String) -> String = { it }
 val DEFAULT_CUSTOM_TAG_BY_ISSUE_NUMBER: Map<Int, String> = emptyMap()
+const val DEFAULT_USE_MILESTONE_AS_TAG: Boolean = true
 
 val DEFAULT_TIMEZONE: ZoneId = ZoneId.of("GMT")
 
@@ -40,6 +41,7 @@ data class ChangelogConfig(
     val releaseUrlTagTransform: (String) -> String = DEFAULT_RELEASE_URL_TAG_TRANSFORM,
     val diffUrlTagTransform: (String) -> String = DEFAULT_DIFF_URL_TAG_TRANSFORM,
     val customTagByIssueNumber: Map<Int, String> = DEFAULT_CUSTOM_TAG_BY_ISSUE_NUMBER,
+    val useMilestoneAsTag: Boolean = DEFAULT_USE_MILESTONE_AS_TAG,
     val timezone: ZoneId = DEFAULT_TIMEZONE,
 )
 
