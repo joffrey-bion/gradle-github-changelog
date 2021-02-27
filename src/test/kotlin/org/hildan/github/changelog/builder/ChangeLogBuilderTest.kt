@@ -98,18 +98,10 @@ class ChangeLogBuilderTest {
     )
 
     private val oldBugsSection = Section("Fixed bugs:", listOf(issue2bug))
-    private val bugsSection =
-        Section("Fixed bugs:", listOf(pr45bugfix, issue43bug, issue42bug))
-    private val enhancementsSection =
-        Section("Implemented enhancements:", listOf(issue44enhancement))
-    private val unlabeledIssuesSection = Section(
-        DEFAULT_ISSUES_SECTION_TITLE,
-        listOf(issue1unlabeled)
-    )
-    private val unlabeledPrsSection = Section(
-        DEFAULT_PR_SECTION_TITLE,
-        listOf(pr46unlabeled)
-    )
+    private val bugsSection = Section("Fixed bugs:", listOf(pr45bugfix, issue43bug, issue42bug))
+    private val enhancementsSection = Section("Implemented enhancements:", listOf(issue44enhancement))
+    private val unlabeledIssuesSection = Section(DEFAULT_ISSUES_SECTION_TITLE, listOf(issue1unlabeled))
+    private val unlabeledPrsSection = Section(DEFAULT_PR_SECTION_TITLE, listOf(pr46unlabeled))
 
     private val tag180 = Tag("1.8.0", Instant.parse("2018-05-06T11:00:00.00Z"))
     private val tag182 = Tag("1.8.2", Instant.parse("2018-07-07T11:00:00.00Z"))
@@ -122,7 +114,7 @@ class ChangeLogBuilderTest {
         tag = "1.8.0",
         title = "1.8.0",
         date = LocalDate.of(2018, 5, 6).atTime(11, 0),
-        diffUrl = "https://github.com/someuser/somerepo/compare/$fakeInitSha...1.8.2",
+        diffUrl = "https://github.com/someuser/somerepo/compare/$fakeInitSha...1.8.0",
         releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.0",
         sections = listOf(unlabeledIssuesSection, oldBugsSection)
     )
@@ -341,14 +333,15 @@ class ChangeLogBuilderTest {
                 releaseUnreleased,
                 release200.copy(
                     diffUrl = "https://github.com/someuser/somerepo/compare/1.8.2-suffix...2.0.0-suffix",
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-2.0.0"
+                    releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-2.0.0",
                 ),
                 release182.copy(
                     diffUrl = "https://github.com/someuser/somerepo/compare/1.8.0-suffix...1.8.2-suffix",
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-1.8.2"
+                    releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-1.8.2",
                 ),
                 release180.copy(
-                    releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-1.8.0"
+                    diffUrl = "https://github.com/someuser/somerepo/compare/$fakeInitSha...1.8.0-suffix",
+                    releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-1.8.0",
                 )
             )
         )
@@ -356,7 +349,7 @@ class ChangeLogBuilderTest {
     }
 
     @Test
-    fun `customIssueReleaseAssociations option should move arbitrary issues in specified tag`() {
+    fun `customTagByIssueNumber option should move arbitrary issues in specified tag`() {
         val clConfig = defaultConfig.copy(customTagByIssueNumber = mapOf(44 to "1.8.2", 46 to "1.8.2"))
         val builder = ChangelogBuilder(clConfig)
 

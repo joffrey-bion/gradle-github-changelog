@@ -18,7 +18,12 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
-    testImplementation("io.mockk:mockk:1.9")
+    testImplementation("io.mockk:mockk:1.10.6")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 pluginBundle {
