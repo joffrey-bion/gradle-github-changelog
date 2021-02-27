@@ -1,6 +1,7 @@
 package org.hildan.github.changelog.github
 
 import org.hildan.github.changelog.builder.Issue
+import org.hildan.github.changelog.builder.Milestone
 import org.hildan.github.changelog.builder.Tag
 import org.hildan.github.changelog.builder.User
 import org.kohsuke.github.*
@@ -52,8 +53,11 @@ private fun GHIssue.toIssue(): Issue = Issue(
     labels = labels.map { it.name },
     url = htmlUrl.toString(),
     author = user.toUser(),
-    isPullRequest = isPullRequest
+    isPullRequest = isPullRequest,
+    milestone = milestone?.toMilestone(),
 )
+
+private fun GHMilestone.toMilestone() = Milestone(title, description)
 
 private fun GHUser.toUser(): User = User(login, htmlUrl.toString())
 

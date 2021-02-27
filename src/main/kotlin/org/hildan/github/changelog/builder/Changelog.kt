@@ -30,6 +30,12 @@ data class Issue(
     val url: String,
     val author: User,
     val isPullRequest: Boolean,
+    val milestone: Milestone? = null,
+)
+
+data class Milestone(
+    val title: String,
+    val description: String,
 )
 
 data class User(

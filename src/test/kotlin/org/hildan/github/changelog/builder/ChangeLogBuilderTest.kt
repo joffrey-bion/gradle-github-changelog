@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.TimeZone
+import java.util.*
 import kotlin.test.assertEquals
 
 class ChangeLogBuilderTest {
@@ -363,6 +363,40 @@ class ChangeLogBuilderTest {
             )
         )
         assertEquals(expectedChangeLog, actualChangeLog)
+    }
+
+    @Test
+    fun `issues with milestone matching tag should be moved to that tag`() {
+        val modifiedIssues = issues.forceMilestone("1.8.2", 44, 46)
+        val builder = ChangelogBuilder(defaultConfig)
+
+        val actualChangeLog = builder.createChangeLog(modifiedIssues, tags)
+
+        val expectedChangeLog = expectedChangeLog.copy(
+            releases = listOf(
+                release200.copy(sections = listOf(bugsSection)),
+                release182.copy(
+                    sections = listOf(
+                        enhancementsSection.forceMilestone("1.8.2", 44),
+                        unlabeledPrsSection.forceMilestone("1.8.2", 46),
+                    ),
+                ),
+                release180,
+            )
+        )
+        assertEquals(expectedChangeLog, actualChangeLog)
+    }
+
+    private fun Section.forceMilestone(milestone: String, vararg issueNumbers: Int) = copy(
+        issues = issues.forceMilestone(milestone, *issueNumbers)
+    )
+
+    private fun List<Issue>.forceMilestone(milestone: String, vararg issueNumbers: Int) = map {
+        if (it.number in issueNumbers) {
+            it.copy(milestone = Milestone(milestone, ""))
+        } else {
+            it
+        }
     }
 
     private fun ChangelogBuilder.createChangeLog(issues: List<Issue>, tags: List<Tag>): Changelog {

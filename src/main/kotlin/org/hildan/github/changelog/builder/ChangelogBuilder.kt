@@ -24,7 +24,7 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
     }
 
     private fun createReleases(repo: Repository): List<Release> {
-        val (regularIssues, overriddenIssuesByTag) = sortIssues(repo.closedIssues)
+        val (regularIssues, overriddenIssuesByTag) = sortIssues(repo.closedIssues, repo.tags)
 
         var remainingIssues = regularIssues
         val releases = mutableListOf<Release>()
@@ -51,13 +51,25 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
         val overriddenIssuesByTag: Map<String, List<Issue>>
     )
 
-    private fun sortIssues(issues: List<Issue>): SortedIssues {
-        val (overriddenIssues, regularIssues) = issues
-            .filter(this::shouldInclude)
-            .partition { config.customTagByIssueNumber.containsKey(it.number) }
-        val issuesByTag = overriddenIssues
-            .groupBy { config.customTagByIssueNumber.getValue(it.number) }
-        return SortedIssues(regularIssues, issuesByTag)
+    private fun sortIssues(issues: List<Issue>, tags: List<Tag>): SortedIssues {
+        val tagNames = tags.mapTo(HashSet()) { it.name }
+        val regularIssues = mutableListOf<Issue>()
+        val overriddenIssues = mutableMapOf<String, MutableList<Issue>>()
+
+        issues.asSequence().filter { shouldInclude(it) }.forEach { issue ->
+            val tagOverride = config.customTagByIssueNumber[issue.number]
+            val milestone = issue.milestone?.title
+            when {
+                tagOverride != null -> overriddenIssues.add(tagOverride, issue)
+                milestone != null && milestone in tagNames -> overriddenIssues.add(milestone, issue)
+                else -> regularIssues.add(issue)
+            }
+        }
+        return SortedIssues(regularIssues, overriddenIssues)
+    }
+
+    private fun <K, V> MutableMap<K, MutableList<V>>.add(key: K, value: V) {
+        getOrPut(key) { mutableListOf() }.add(value)
     }
 
     private fun shouldInclude(issue: Issue) = !isExcluded(issue) && isIncluded(issue)
