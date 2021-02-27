@@ -10,14 +10,28 @@ This project is similar (in functionality and output) to the great
 [GitHub Changelog Generator](https://github.com/github-changelog-generator/github-changelog-generator),
 but as a Gradle plugin.
 
-The releases in the changelog are determined by git tags.
+When applied, the plugin automatically adds the `generateChangelog` task.
+This task calls GitHub to get information about your issues and pull requests,
+and generates a `CHANGELOG.md` file in your project's root folder.
+
+## How it works
+
+The releases in the changelog are determined by the git tags of the repository.
 The date of the release is the date of the tag.
 
-By default, issues are sorted into releases by their close date.
+Closed issues are sorted into releases using their close date, but this behaviour can be overridden.
+
+More specifically, the following rules apply (by order of precedence):
+
+1. if the issue is forced into a tag via `customTagByIssueNumber` mapping, it is put under this tag
+2. if the issue has a milestone, and the title of that milestone matches a git tag, then the issue is put under this tag
+3. otherwise, the issue is put under the first tag that follows its close date
+
 For example, all issues closed between the date of tag `1.0` and the date of the tag `1.1` are considered to be in release `1.1`.
-You can override this by manually specifying the release associated to a particular issue (see `customTagByIssueNumber`).
 
 To see an example output, take a look at this project's [CHANGELOG.md](CHANGELOG.md), which was generated with this plugin.
+
+## Usage
 
 ### Applying the plugin
 
@@ -38,11 +52,7 @@ Gradle compatibility:
 | 1.x.x  |  6.8+  |
 | 0.x.0  |  6.7+  |
 
-### Usage
-
-When applied, the plugin automatically adds the `generateChangelog` task.
-This task calls GitHub to get information about your issues and pull requests, 
-and generates a `CHANGELOG.md` file in your project's root folder.
+### Minimal configuration
 
 The minimal required configuration is your **GitHub username**.
 
