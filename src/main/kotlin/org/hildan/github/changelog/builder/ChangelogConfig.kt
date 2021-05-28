@@ -11,6 +11,7 @@ const val DEFAULT_PR_SECTION_TITLE = "Merged pull requests:"
 val DEFAULT_INCLUDED_LABELS = emptyList<String>()
 val DEFAULT_EXCLUDED_LABELS = listOf("doc", "documentation", "duplicate", "invalid", "question", "wontfix")
 val DEFAULT_SKIPPED_TAGS = emptyList<String>()
+val DEFAULT_SKIPPED_TAGS_REGEX = emptyList<Regex>()
 
 val DEFAULT_SECTIONS = listOf(
     SectionDefinition("New features:", "feature"),
@@ -36,6 +37,7 @@ data class ChangelogConfig(
     val excludeLabels: List<String> = DEFAULT_EXCLUDED_LABELS,
     val sinceTag: String? = null,
     val skipTags: List<String> = DEFAULT_SKIPPED_TAGS,
+    val skipTagsRegex: List<Regex> = DEFAULT_SKIPPED_TAGS_REGEX,
     val releaseUrlTemplate: String,
     val diffUrlTemplate: String,
     val releaseUrlTagTransform: (String) -> String = DEFAULT_RELEASE_URL_TAG_TRANSFORM,

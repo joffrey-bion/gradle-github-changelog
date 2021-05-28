@@ -15,13 +15,16 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
     }
 
     private fun filterReleases(releases: List<Release>): List<Release> {
-        val nonSkippedReleases = releases.filterNot { it.tag in config.skipTags }
+        val nonSkippedReleases = releases.filterNot { it.shouldBeSkipped() }
         return if (config.sinceTag != null) {
             nonSkippedReleases.dropLastWhile { it.tag != config.sinceTag }
         } else {
             nonSkippedReleases
         }
     }
+
+    private fun Release.shouldBeSkipped() =
+        tag in config.skipTags || (tag != null && config.skipTagsRegex.any { it.matches(tag) })
 
     private fun createReleases(repo: Repository): List<Release> {
         val (regularIssues, overriddenIssuesByTag) = sortIssues(repo.closedIssues, repo.tags)

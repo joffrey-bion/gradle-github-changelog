@@ -319,6 +319,19 @@ class ChangeLogBuilderTest {
     }
 
     @Test
+    fun `skipTagsRegex option should limit the output releases`() {
+        val clConfig = defaultConfig.copy(skipTagsRegex = listOf(Regex("""1\..\..""")))
+        val builder = ChangelogBuilder(clConfig)
+
+        val actualChangeLog = builder.createChangeLog(issues, tags)
+
+        val expectedChangeLog = expectedChangeLog.copy(
+            releases = listOf(releaseUnreleased, release200)
+        )
+        assertEquals(expectedChangeLog, actualChangeLog)
+    }
+
+    @Test
     fun `tag transforms options should change the release and diff URLs`() {
         val clConfig = defaultConfig.copy(
             releaseUrlTagTransform = { "tag-prefix-$it" },

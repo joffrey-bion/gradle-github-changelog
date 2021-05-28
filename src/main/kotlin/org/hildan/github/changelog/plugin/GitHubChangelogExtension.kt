@@ -91,6 +91,13 @@ open class GitHubChangelogExtension(private val project: Project) {
      */
     var skipTags: List<String> = DEFAULT_SKIPPED_TAGS
     /**
+     * Tags matching one of these regexes are excluded from the change log.
+     *
+     * The issues that are part of the excluded tags are also excluded from the change log.
+     * They are not reported under the next tag.
+     */
+    var skipTagsRegex: List<Regex> = DEFAULT_SKIPPED_TAGS_REGEX
+    /**
      * Custom template for the URL of releases to use in the hyperlink on the title.
      * If present, a `%s` placeholder will be replaced by the tag of the release.
      * By default, it points to the source code of the git repository at the given tag.
@@ -165,6 +172,7 @@ open class GitHubChangelogExtension(private val project: Project) {
         excludeLabels = excludeLabels,
         sinceTag = sinceTag,
         skipTags = skipTags,
+        skipTagsRegex = skipTagsRegex,
         releaseUrlTemplate = releaseUrlTemplate ?: gitHub.releaseUrlTemplate,
         diffUrlTemplate = diffUrlTemplate ?: gitHub.diffUrlTemplate,
         releaseUrlTagTransform = releaseUrlTagTransform,
