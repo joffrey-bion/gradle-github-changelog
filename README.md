@@ -90,6 +90,7 @@ changelog {
     excludeLabels = ["duplicate", "invalid", "question", "wontfix"]
     sinceTag = null
     skipTags = []
+    skipTagsRegex = []
     releaseUrlTemplate = null // defaults to "https://github.com/$user/$repo/tree/%s"
     diffUrlTemplate = null // defaults to "https://github.com/$user/$repo/compare/%s...%s"
     releaseUrlTagTransform = { it }
@@ -145,6 +146,9 @@ labels
 - `sinceTag`: if provided, all prior tags will be excluded from the change log.
 
 - `skipTags`: some specific tags to exclude from the change log. The issues that are part of the excluded tags are 
+also excluded from the change log. They are not reported under the next tag.
+
+- `skipTagsRegex`: tags matching one of these regexes are excluded from the change log.. The issues that are part of the excluded tags are 
 also excluded from the change log. They are not reported under the next tag.
 
 - `releaseUrlTemplate`: custom template for the URL of releases to use in the hyperlink on the title. If present, a `%s` 
