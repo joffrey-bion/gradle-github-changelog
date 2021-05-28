@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.7.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.7.0) (2021-05-28)
+[Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.6.0...1.7.0)
+
+**Implemented enhancements:**
+
+- SkipTags support  regular expression [\#36](https://github.com/joffrey-bion/gradle-github-changelog/issues/36)
+
 ## [1.6.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.6.0) (2021-02-27)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.5.0...1.6.0)
 
