@@ -14,7 +14,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation("org.kohsuke:github-api:1.122")
+    implementation("org.kohsuke:github-api:1.132")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
