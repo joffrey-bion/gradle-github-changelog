@@ -29,6 +29,8 @@ jobs:
 
       - name: Generate Change Log
         uses: burrunan/gradle-cache-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # jobs with different JDK versions can't share caches
           job-id: jdk11
