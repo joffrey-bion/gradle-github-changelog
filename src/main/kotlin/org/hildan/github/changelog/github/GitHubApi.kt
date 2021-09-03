@@ -5,6 +5,9 @@ import org.hildan.github.changelog.builder.Milestone
 import org.hildan.github.changelog.builder.Tag
 import org.hildan.github.changelog.builder.User
 import org.kohsuke.github.*
+import org.slf4j.LoggerFactory
+
+private val logger = LoggerFactory.getLogger("GithubApi")
 
 data class GitHubConfig(
     val user: String,
@@ -23,15 +26,24 @@ data class Repository(
 
 fun fetchRepositoryInfo(gitHubConfig: GitHubConfig): Repository {
     val ghRepository = gitHubConfig.fetchGHRepository()
+
+    logger.info("Fetching tags...")
     val tags = ghRepository.listTags().map { it.toTag() }
+    logger.info("${tags.size} tags found")
+
+    logger.info("Fetching closed issues...")
     val closedIssues = ghRepository.getIssues(GHIssueState.CLOSED).map { it.toIssue() }
+    logger.info("${closedIssues.size} closed issues found")
+
     val firstCommit = ghRepository.listCommits().withPageSize(1).first()
     return Repository(tags, closedIssues, firstCommit.shA1)
 }
 
 private fun GitHubConfig.fetchGHRepository(): GHRepository {
     try {
-        return connect().getRepository("$user/$repo")
+        val connect = connect()
+        logger.info("Fetching repository info for $user/$repo...")
+        return connect.getRepository("$user/$repo")
     } catch (e: HttpException) {
         throw GitHubConfigException("Could not connect to GitHub: ${e.cause?.message}")
     } catch (e: GHFileNotFoundException) {
@@ -40,8 +52,14 @@ private fun GitHubConfig.fetchGHRepository(): GHRepository {
 }
 
 private fun GitHubConfig.connect(): GitHub = when (token) {
-    null -> GitHub.connectAnonymously()
-    else -> GitHub.connectUsingPassword(user, token)
+    null -> {
+        logger.warn("Connecting to GitHub anonymously (you may be subject to rate limiting)...")
+        GitHub.connectAnonymously()
+    }
+    else -> {
+        logger.info("Connecting to GitHub as $user...")
+        GitHub.connectUsingOAuth(token)
+    }
 }
 
 private fun GHTag.toTag(): Tag = Tag(name, commit.commitDate.toInstant())
