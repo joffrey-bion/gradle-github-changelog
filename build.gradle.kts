@@ -8,7 +8,7 @@ plugins {
 group = "org.hildan.gradle"
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
