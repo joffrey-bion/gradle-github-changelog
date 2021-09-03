@@ -1,5 +1,14 @@
 # Change Log
 
+## [1.8.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.8.0) (2021-09-03)
+[Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.7.0...1.8.0)
+
+**Implemented enhancements:**
+
+- Replace deprecated basic auth with token [\#39](https://github.com/joffrey-bion/gradle-github-changelog/issues/39)
+- Add more logging to see more granular steps [\#38](https://github.com/joffrey-bion/gradle-github-changelog/issues/38)
+- Upgrade Github API client to 1.132 [\#37](https://github.com/joffrey-bion/gradle-github-changelog/issues/37)
+
 ## [1.7.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.7.0) (2021-05-28)
 [Full Changelog](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.6.0...1.7.0)
 
