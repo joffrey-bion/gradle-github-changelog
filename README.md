@@ -47,10 +47,11 @@ Where `<version>` is the desired version (see badge above without `v` prefix), e
 
 Gradle compatibility:
 
-| Plugin | Gradle |
-|--------|--------|
-| 1.x.x  |  6.8+  |
-| 0.x.0  |  6.7+  |
+|     Plugin      | Gradle |
+|-----------------|--------|
+|      1.8.0      |  7.2+  |
+|  1.0.0 - 1.7.0  |  6.8+  |
+|      0.x.0      |  6.7+  |
 
 ### Minimal configuration
 
