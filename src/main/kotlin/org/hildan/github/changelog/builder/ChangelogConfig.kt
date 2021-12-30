@@ -24,8 +24,11 @@ val DEFAULT_SKIPPED_TAGS = emptyList<String>()
 val DEFAULT_SKIPPED_TAGS_REGEX = emptyList<Regex>()
 
 val DEFAULT_SECTIONS = listOf(
+    SectionDefinition("Breaking changes:", "backwards-incompatible", "breaking"),
     SectionDefinition("New features:", "feature"),
     SectionDefinition("Implemented enhancements:", "enhancement"),
+    SectionDefinition("Deprecated:", "deprecated"),
+    SectionDefinition("Removed:", "removed"),
     SectionDefinition("Fixed bugs:", "bug"),
     SectionDefinition("Upgraded dependencies:", "dependency", "dependency-upgrade", "dependencies"),
 )
