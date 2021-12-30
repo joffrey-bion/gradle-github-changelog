@@ -110,7 +110,8 @@ changelog {
 - `githubToken`: GitHub only allows 50 unauthenticated requests per hour. By providing an API token, you allow this 
 plugin to log in and thus remove the limit. If you don't have one yet, you may 
 [generate a personal token](https://github.com/settings/tokens/new?description=GitHub%20Changelog%20Generator%20token) 
-for your repo. You don't need to tick any permissions for the plugin to work, it only accesses public stuff.
+for your repo. You don't need to tick any permissions for the plugin to work on public repositories, but you need
+the `repo` permission for private repositories ("full access to private repo").
 
 - `githubRepository`: the repository from which to get the issues to generate the change log.
 
