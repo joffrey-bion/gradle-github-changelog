@@ -143,7 +143,7 @@ open class GitHubChangelogExtension(private val project: Project) {
      */
     var outputFile: File = File("${project.projectDir}/CHANGELOG.md")
 
-    fun toConfig(): GitHubChangelogGeneratorConfig {
+    internal fun toConfig(): GitHubChangelogGeneratorConfig {
         val gitHub = createGitHubConfig()
         val changeLog = createChangeLogConfig(gitHub)
         return GitHubChangelogGeneratorConfig(gitHub, changeLog)
