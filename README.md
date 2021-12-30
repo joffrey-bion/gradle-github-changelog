@@ -125,14 +125,15 @@ By default they will appear as "unreleased", unless a `futureVersionTag` is prov
 the change log under the provided tag. This allows to consider unreleased issues as part of an actual tag prior to 
 actually creating the tag.
 
-- `sections`: custom sections to classify the issues into within each release. 
-Issues are placed into the first section that is associated to one of their labels.
+- `sections`: custom sections to classify the issues within each release.
+The section definitions are used to build a label-to-section mapping.
 The custom sections should be provided as a list of `SectionDefinition`s, with a title and one or more associated
 issue labels.
-The provided custom sections are added on top of the default sections (they don't replace them).
-However, if a custom section is associated to a label that is usually handled by a default section, the custom section
-takes precedence (in fact, the last section defining a mapping for a given issue label wins, and default
-sections are listed first).
+Issues are placed into a section according to the first of their labels that is associated to a section.
+The provided custom sections are appended to the default sections (they don't replace them).
+However, if a custom section is associated to a label that is usually handled by a default section, the custom
+section takes precedence.
+In fact, the last section defining a mapping for a given issue label wins, and default sections are listed first.
 
 - `defaultIssueSectionTitle`: section title for issues that are not classified in a specific section due to their labels
 
