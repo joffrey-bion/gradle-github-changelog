@@ -17,6 +17,7 @@ val DEFAULT_SECTIONS = listOf(
     SectionDefinition("New features:", "feature"),
     SectionDefinition("Implemented enhancements:", "enhancement"),
     SectionDefinition("Fixed bugs:", "bug"),
+    SectionDefinition("Upgraded dependencies:", "dependency", "dependency-upgrade", "dependencies"),
 )
 val DEFAULT_RELEASE_URL_TAG_TRANSFORM: (String) -> String = { it }
 val DEFAULT_DIFF_URL_TAG_TRANSFORM: (String) -> String = { it }
@@ -67,11 +68,11 @@ data class SectionDefinition(
     /**
      * Creates a section of issues within a release in the changelog.
      *
-     * This constructor creates a section with the given [title], under which any issue with the given [label] will
-     * be listed.
+     * This constructor creates a section with the given [title], under which any issue with one the given [labels]
+     * will be listed.
      *
      * If multiple sections list the same label, issues with this label will appear in the last section that was
      * defined with this label.
      */
-    constructor(title: String, label: String) : this(title, listOf(label))
+    constructor(title: String, vararg labels: String) : this(title, labels.toList())
 }
