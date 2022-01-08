@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.10.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.10.0) (2022-01-08)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.9.0...1.10.0)
+
+**Implemented enhancements:**
+
+- Rename default sections Deprecations/Removals [\#45](https://github.com/joffrey-bion/gradle-github-changelog/issues/45)
+
 ## [1.9.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.9.0) (2021-12-30)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.8.0...1.9.0)
 
@@ -172,7 +179,7 @@
 
 
 ## [0.1.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.1.0) (2019-01-20)
-[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/de799d5a78754e0fa935b4049db3b0dea2558b31...0.1.0)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/42d5ca3033965c89674070f4655a8a2c2dfdf43a...0.1.0)
 
 **Implemented enhancements:**
 
