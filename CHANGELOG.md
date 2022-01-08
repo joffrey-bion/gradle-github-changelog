@@ -3,10 +3,6 @@
 ## [1.9.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.9.0) (2021-12-30)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.8.0...1.9.0)
 
-**Closed issues:**
-
-- private repo support? [\#40](https://github.com/joffrey-bion/gradle-github-changelog/issues/40)
-
 **Implemented enhancements:**
 
 - Add default sections for breaking changes, deprecations and removals [\#43](https://github.com/joffrey-bion/gradle-github-changelog/issues/43)
@@ -176,7 +172,7 @@
 
 
 ## [0.1.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.1.0) (2019-01-20)
-[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/5858c7aaff914c9065d9e747ddcafe6f28f2b3f4...0.1.0)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/de799d5a78754e0fa935b4049db3b0dea2558b31...0.1.0)
 
 **Implemented enhancements:**
 
