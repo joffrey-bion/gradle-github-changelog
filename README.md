@@ -31,6 +31,22 @@ For example, all issues closed between the date of tag `1.0` and the date of the
 
 To see an example output, take a look at this project's [CHANGELOG.md](CHANGELOG.md), which was generated with this plugin.
 
+### Issue sections
+
+Within a given release, issues are sorted into sections based on their labels.
+Each issue label can be associated to at most one section, but a section can correspond to several labels.
+An issue is placed into a section according to the first of its labels that is associated to a section.
+
+The default sections and the associated labels are:
+
+* Breaking changes: `backwards-incompatible`, `breaking`
+* New features: `feature`
+* Implemented enhancements: `enhancement`
+* Deprecations: `deprecated`, `deprecation`
+* Removals: `removed`, `removal`
+* Fixed bugs: `bug`
+* Upgraded dependencies: `dependency`, `dependency-upgrade`, `dependencies`
+
 ## Usage
 
 ### Applying the plugin
