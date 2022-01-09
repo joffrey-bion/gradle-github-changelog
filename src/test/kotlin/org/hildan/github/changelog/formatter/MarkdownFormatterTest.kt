@@ -1,11 +1,6 @@
 package org.hildan.github.changelog.formatter
 
-import org.hildan.github.changelog.builder.Changelog
-import org.hildan.github.changelog.builder.DEFAULT_CHANGELOG_TITLE
-import org.hildan.github.changelog.builder.Issue
-import org.hildan.github.changelog.builder.Release
-import org.hildan.github.changelog.builder.Section
-import org.hildan.github.changelog.builder.User
+import org.hildan.github.changelog.builder.*
 import org.junit.jupiter.api.Test
 import java.time.Instant
 import java.time.LocalDate
@@ -26,6 +21,7 @@ class MarkdownFormatterTest {
             # $DEFAULT_CHANGELOG_TITLE
 
             *Nothing much happened so far, actually...*
+            
         """.trimIndent()
 
         assertEquals(expected, formatter.formatChangeLog(changelog))
@@ -46,13 +42,14 @@ class MarkdownFormatterTest {
 
         val prs3 = listOf(
             Issue(
-                5,
-                "Latest PR",
-                Instant.now(),
-                emptyList(),
-                "http://github.com/issues/5",
-                bob,
-                true
+                number = 5,
+                title = "Latest PR",
+                body = "Latest PR description",
+                closedAt = Instant.now(),
+                labels = emptyList(),
+                url = "http://github.com/issues/5",
+                author = bob,
+                isPullRequest = true,
             )
         )
         val sectionsNext = listOf(
@@ -61,24 +58,26 @@ class MarkdownFormatterTest {
 
         val prs2 = listOf(
             Issue(
-                4,
-                "Some PR with <Things> *to* [escape]",
-                Instant.now(),
-                emptyList(),
-                "http://github.com/issues/4",
-                bob,
-                true
+                number = 4,
+                title = "Some PR with <Things> *to* [escape]",
+                body = "Some PR description",
+                closedAt = Instant.now(),
+                labels = emptyList(),
+                url = "http://github.com/issues/4",
+                author = bob,
+                isPullRequest = true,
             )
         )
         val bugs2 = listOf(
             Issue(
-                3,
-                "Some bug",
-                Instant.now(),
-                emptyList(),
-                "http://github.com/issues/3",
-                alex,
-                false
+                number = 3,
+                title = "Some bug",
+                body = "Some bug description",
+                closedAt = Instant.now(),
+                labels = emptyList(),
+                url = "http://github.com/issues/3",
+                author = alex,
+                isPullRequest = false,
             )
         )
         val sections2 = listOf(
@@ -88,24 +87,26 @@ class MarkdownFormatterTest {
 
         val prs1 = listOf(
             Issue(
-                2,
-                "Some PR",
-                Instant.now(),
-                emptyList(),
-                "http://github.com/issues/2",
-                lee,
-                true
+                number = 2,
+                title = "Some PR",
+                body = "Some PR description",
+                closedAt = Instant.now(),
+                labels = emptyList(),
+                url = "http://github.com/issues/2",
+                author = lee,
+                isPullRequest = true,
             )
         )
         val enhancements1 = listOf(
             Issue(
-                1,
-                "Some feature",
-                Instant.now(),
-                emptyList(),
-                "http://github.com/issues/1",
-                bob,
-                false
+                number = 1,
+                title = "Some feature",
+                body = "Some feature description",
+                closedAt = Instant.now(),
+                labels = emptyList(),
+                url = "http://github.com/issues/1",
+                author = bob,
+                isPullRequest = false,
             )
         )
         val sections1 = listOf(
@@ -113,13 +114,26 @@ class MarkdownFormatterTest {
             Section("Enhancements", enhancements1)
         )
 
-        val unreleased = Release(null, "Unreleased", now, sectionsNext, null, null)
-        val release2 = Release(
-            tag2, tag2, date2, sections2, "http://github.com/tree/$tag2", "http://github.com/compare/$tag1...$tag2"
-        )
+        val unreleased = Release(null, "Unreleased", null, now, sectionsNext, null, null)
+        val release2 =
+            Release(
+                tag = tag2,
+                title = tag2,
+                summary = """
+                    |This is a summary with *markdown*:
+                    |
+                    | - bullet point 1
+                    | - bullet point 2 [with link](https://google.com)
+                """.trimMargin(),
+                date = date2,
+                sections = sections2,
+                releaseUrl = "http://github.com/tree/$tag2",
+                diffUrl = "http://github.com/compare/$tag1...$tag2",
+            )
         val release1 = Release(
             tag1,
             tag1,
+            null,
             date1,
             sections1,
             "http://github.com/tree/$tag1",
@@ -143,6 +157,11 @@ class MarkdownFormatterTest {
             ## [2.0.0](http://github.com/tree/2.0.0) (2019-01-02)
             [View commits](http://github.com/compare/1.0.0...2.0.0)
 
+            This is a summary with *markdown*:
+            
+             - bullet point 1
+             - bullet point 2 [with link](https://google.com)
+            
             **Pull requests**
 
             - Some PR with \<Things\> \*to\* \[escape\] [\#4](http://github.com/issues/4) ([@bob](http://github.com/bob))

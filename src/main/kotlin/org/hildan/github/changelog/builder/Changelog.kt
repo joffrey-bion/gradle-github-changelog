@@ -11,6 +11,7 @@ data class Changelog(
 data class Release(
     val tag: String?,
     val title: String,
+    val summary: String?,
     val date: LocalDateTime,
     val sections: List<Section>,
     val releaseUrl: String?,
@@ -25,6 +26,7 @@ data class Section(
 data class Issue(
     val number: Int,
     val title: String,
+    val body: String,
     val closedAt: Instant,
     val labels: List<String>,
     val url: String,

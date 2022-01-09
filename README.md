@@ -47,6 +47,19 @@ The default sections and the associated labels are:
 * Fixed bugs: `bug`
 * Upgraded dependencies: `dependency`, `dependency-upgrade`, `dependencies`
 
+### Release summary
+
+If the list of issues itself is not enough, you can write a summary for a given release to describe the release further
+with full markdown capabilities.
+
+To do so, you simply need to create a special issue:
+
+* with the label `release-summary`
+* with a milestone that has the same name as the release tag
+* with a body that contains the description of the release that you want to appear
+
+Then close this issue and run the changelog generator.
+
 ## Usage
 
 ### Applying the plugin

@@ -3,6 +3,8 @@ package org.hildan.github.changelog.builder
 import org.hildan.github.changelog.github.Repository
 import java.time.LocalDateTime
 
+private const val RELEASE_SUMMARY_LABEL = "release-summary"
+
 class ChangelogBuilder(private val config: ChangelogConfig) {
 
     private val sectionByLabel: Map<String, String> =
@@ -27,7 +29,14 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
         tag in config.skipTags || (tag != null && config.skipTagsRegex.any { it.matches(tag) })
 
     private fun createReleases(repo: Repository): List<Release> {
-        val (regularIssues, overriddenIssuesByTag) = sortIssues(repo.closedIssues, repo.tags)
+        val (regularIssues, overriddenIssuesByTag, releaseSummaries) = sortIssues(repo.closedIssues, repo.tags)
+        val summariesByTag = releaseSummaries.associate {
+            val milestone = it.milestone ?: error(
+                "Issue #${it.number} is a release summary but doesn't have a milestone. " +
+                    "Please add a milestone with a title that matches the release tag that this summary should apply to."
+            )
+            milestone.title to it.body
+        }
 
         var remainingIssues = regularIssues
         val releases = mutableListOf<Release>()
@@ -38,35 +47,39 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
             val tagOverriddenIssues = overriddenIssuesByTag[tag.name] ?: emptyList()
             val issuesForTag = closedBeforeTag + tagOverriddenIssues
 
-            releases.add(createExistingRelease(tag, previousRef, issuesForTag))
+            releases.add(createExistingRelease(tag, previousRef, issuesForTag, summariesByTag[tag.name]))
 
             remainingIssues = closedAfterTag
             previousRef = Ref.Tag(tag.name)
         }
         if (remainingIssues.isNotEmpty() && config.showUnreleased) {
-            releases.add(createFutureRelease(previousRef, remainingIssues))
+            val futureVersionSummary = config.futureVersionTag?.let { summariesByTag[it] }
+            releases.add(createFutureRelease(previousRef, remainingIssues, futureVersionSummary))
         }
         return releases.sortedByDescending { it.date }
     }
 
     private data class SortedIssues(
         val regularIssues: List<Issue>,
-        val overriddenIssuesByTag: Map<String, List<Issue>>
+        val overriddenIssuesByTag: Map<String, List<Issue>>,
+        val releaseSummaries: List<Issue>,
     )
 
     private fun sortIssues(issues: List<Issue>, tags: List<Tag>): SortedIssues {
         val tagNames = tags.mapTo(HashSet()) { it.name }
         val regularIssues = mutableListOf<Issue>()
         val overriddenIssues = mutableMapOf<String, MutableList<Issue>>()
+        val releaseSummaries = mutableListOf<Issue>()
 
         issues.asSequence().filter { shouldInclude(it) }.forEach { issue ->
             val tagOverride = issue.getTagOverride(tagNames)
             when {
+                RELEASE_SUMMARY_LABEL in issue.labels -> releaseSummaries.add(issue)
                 tagOverride != null -> overriddenIssues.getOrPut(tagOverride) { mutableListOf() }.add(issue)
                 else -> regularIssues.add(issue)
             }
         }
-        return SortedIssues(regularIssues, overriddenIssues)
+        return SortedIssues(regularIssues, overriddenIssues, releaseSummaries)
     }
 
     private fun shouldInclude(issue: Issue) = !isExcluded(issue) && isIncluded(issue)
@@ -85,41 +98,56 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
         }
     }
 
-    private fun createExistingRelease(tag: Tag, previousRef: Ref, issues: List<Issue>): Release {
-        val tagName = tag.name
+    private fun createExistingRelease(
+        tag: Tag,
+        previousRef: Ref,
+        issues: List<Issue>,
+        summary: String?,
+    ): Release {
         val date = tag.date.atZone(config.timezone).toLocalDateTime()
-        return createRelease(tagName, previousRef, date, issues)
+        return createRelease(tag.name, previousRef, date, issues, summary)
     }
 
-    private fun createFutureRelease(previousTagName: Ref, issues: List<Issue>): Release =
+    private fun createFutureRelease(previousTagName: Ref, issues: List<Issue>, summary: String?): Release =
         if (config.futureVersionTag != null) {
-            createRelease(config.futureVersionTag, previousTagName, LocalDateTime.now(), issues)
+            createRelease(
+                tagName = config.futureVersionTag,
+                previousRef = previousTagName,
+                date = LocalDateTime.now(),
+                issues = issues,
+                summary = summary,
+            )
         } else {
-            val sections = dispatchInSections(issues)
             Release(
-                null,
-                config.unreleasedVersionTitle,
-                LocalDateTime.now(),
-                sections,
-                null,
-                null
+                tag = null,
+                title = config.unreleasedVersionTitle,
+                summary = null,
+                date = LocalDateTime.now(),
+                sections = dispatchInSections(issues),
+                releaseUrl = null,
+                diffUrl = null,
             )
         }
 
-    private fun createRelease(tagName: String, previousRef: Ref, date: LocalDateTime, issues: List<Issue>): Release {
-        val sections = dispatchInSections(issues)
-        val releaseUrl = releaseUrl(tagName)
-        val diffUrl = diffUrl(previousRef, tagName)
-        return Release(tagName, tagName, date, sections, releaseUrl, diffUrl)
-    }
+    private fun createRelease(
+        tagName: String,
+        previousRef: Ref,
+        date: LocalDateTime,
+        issues: List<Issue>,
+        summary: String?,
+    ): Release = Release(
+        tag = tagName,
+        title = tagName,
+        summary = summary,
+        date = date,
+        sections = dispatchInSections(issues),
+        releaseUrl = releaseUrl(tagName),
+        diffUrl = diffUrl(previousRef, tagName),
+    )
 
     private fun dispatchInSections(issues: List<Issue>): List<Section> =
         issues.groupBy { findSectionTitle(it) }
-            .map { (title, issues) ->
-                Section(
-                    title,
-                    issues.sortedByDescending { it.closedAt })
-            }
+            .map { (title, issues) -> Section(title, issues.sortedByDescending { it.closedAt }) }
             .sortedBy { it.title }
 
     private fun findSectionTitle(issue: Issue): String =

@@ -67,6 +67,7 @@ private fun GHTag.toTag(): Tag = Tag(name, commit.commitDate.toInstant())
 private fun GHIssue.toIssue(): Issue = Issue(
     number = number,
     title = title,
+    body = body,
     closedAt = closedAt.toInstant(),
     labels = labels.map { it.name },
     url = htmlUrl.toString(),

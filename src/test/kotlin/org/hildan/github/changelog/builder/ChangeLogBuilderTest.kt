@@ -10,6 +10,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class ChangeLogBuilderTest {
 
@@ -25,76 +26,108 @@ class ChangeLogBuilderTest {
     private val issue1unlabeled = Issue(
         number = 1,
         title = "No label for me",
+        body = "Some issue description",
         author = User("hipster", "http://github.com/hipster"),
         closedAt = Instant.parse("2018-05-01T08:00:00.00Z"),
         isPullRequest = false,
         labels = emptyList(),
-        url = "https://some.host/issue/1"
+        url = "https://some.host/issue/1",
     )
 
     private val issue2bug = Issue(
         number = 2,
         title = "Issue 2",
+        body = "Some issue description",
         author = User("hipster", "http://github.com/hipster"),
         closedAt = Instant.parse("2018-05-02T15:20:00.00Z"),
         isPullRequest = false,
         labels = listOf("bug"),
-        url = "https://some.host/issue/2"
+        url = "https://some.host/issue/2",
     )
 
     private val issue42bug = Issue(
         number = 42,
         title = "Fixed problem 42",
+        body = "Some issue description",
         author = User("bob", "http://github.com/bob"),
         closedAt = Instant.parse("2018-08-05T10:15:30.00Z"),
         isPullRequest = false,
         labels = listOf("bug"),
-        url = "https://some.host/issue/42"
+        url = "https://some.host/issue/42",
     )
 
     private val issue43bug = Issue(
         number = 43,
         title = "Fixed problem 43",
+        body = "Some issue description",
         author = User("bob", "http://github.com/bob"),
         closedAt = Instant.parse("2018-08-06T10:15:30.00Z"),
         isPullRequest = false,
         labels = listOf("bug"),
-        url = "https://some.host/issue/43"
+        url = "https://some.host/issue/43",
     )
 
     private val issue44enhancement = Issue(
         number = 44,
         title = "Add thing 44",
+        body = "Some issue description",
         author = User("bob", "http://github.com/bob"),
         closedAt = Instant.parse("2018-08-06T10:30:00.00Z"),
         isPullRequest = false,
         labels = listOf("enhancement"),
-        url = "https://some.host/issue/44"
+        url = "https://some.host/issue/44",
     )
 
     private val pr45bugfix = Issue(
         number = 45,
         title = "Fixed problem 45",
+        body = "Some issue description",
         author = User("mike", "http://github.com/mike"),
         closedAt = Instant.parse("2018-08-09T10:15:30.00Z"),
         isPullRequest = true,
         labels = listOf("bug"),
-        url = "https://some.host/issue/45"
+        url = "https://some.host/issue/45",
     )
 
     private val pr46unlabeled = Issue(
         number = 46,
         title = "Fixed problem 46",
+        body = "Some issue description",
         author = User("mike", "http://github.com/mike"),
         closedAt = Instant.parse("2018-08-10T10:15:30.00Z"),
         isPullRequest = true,
         labels = emptyList(),
-        url = "https://some.host/issue/46"
+        url = "https://some.host/issue/46",
+    )
+
+    private val releaseSummary180Content = """
+        ## Some release title
+        
+        This is the body of the release summary!
+    """.trimIndent()
+
+    private val releaseSummary180 = Issue(
+        number = 100,
+        title = "Release summary for 1.8.0",
+        body = releaseSummary180Content,
+        author = User("mike", "http://github.com/mike"),
+        closedAt = Instant.parse("2019-12-30T10:15:30.00Z"),
+        isPullRequest = false,
+        labels = listOf("release-summary"),
+        url = "https://some.host/issue/100",
+        milestone = Milestone("1.8.0", "Milestone 1.8.0"),
     )
 
     // unordered on purpose
     private val issues = listOf(
-        pr46unlabeled, issue42bug, issue2bug, issue43bug, issue1unlabeled, pr45bugfix, issue44enhancement
+        pr46unlabeled,
+        issue42bug,
+        issue2bug,
+        issue43bug,
+        issue1unlabeled,
+        pr45bugfix,
+        issue44enhancement,
+        releaseSummary180,
     )
 
     private val oldBugsSection = Section("Fixed bugs:", listOf(issue2bug))
@@ -113,42 +146,46 @@ class ChangeLogBuilderTest {
     private val release180 = Release(
         tag = "1.8.0",
         title = "1.8.0",
+        summary = releaseSummary180Content,
         date = LocalDate.of(2018, 5, 6).atTime(11, 0),
         diffUrl = "https://github.com/someuser/somerepo/compare/$fakeInitSha...1.8.0",
         releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.0",
-        sections = listOf(unlabeledIssuesSection, oldBugsSection)
+        sections = listOf(unlabeledIssuesSection, oldBugsSection),
     )
 
     private val release182 = Release(
         tag = "1.8.2",
         title = "1.8.2",
+        summary = null,
         date = LocalDate.of(2018, 7, 7).atTime(11, 0),
         diffUrl = "https://github.com/someuser/somerepo/compare/1.8.0...1.8.2",
         releaseUrl = "https://github.com/someuser/somerepo/tree/1.8.2",
-        sections = emptyList()
+        sections = emptyList(),
     )
 
     private val release200 = Release(
         tag = "2.0.0",
         title = "2.0.0",
+        summary = null,
         date = LocalDate.of(2018, 8, 10).atTime(10, 0),
         diffUrl = "https://github.com/someuser/somerepo/compare/1.8.2...2.0.0",
         releaseUrl = "https://github.com/someuser/somerepo/tree/2.0.0",
-        sections = listOf(bugsSection, enhancementsSection)
+        sections = listOf(bugsSection, enhancementsSection),
     )
 
     private val releaseUnreleased = Release(
         tag = null,
         title = DEFAULT_UNRELEASED_VERSION_TITLE,
+        summary = null,
         date = fakeNow,
         diffUrl = null,
         releaseUrl = null,
-        sections = listOf(unlabeledPrsSection)
+        sections = listOf(unlabeledPrsSection),
     )
 
     private val expectedChangeLog = Changelog(
         title = DEFAULT_CHANGELOG_TITLE,
-        releases = listOf(releaseUnreleased, release200, release182, release180)
+        releases = listOf(releaseUnreleased, release200, release182, release180),
     )
 
     @BeforeEach
@@ -165,7 +202,7 @@ class ChangeLogBuilderTest {
         val actualChangeLog = builder.createChangeLog(emptyList(), emptyList())
         val expectedChangeLog = Changelog(
             title = DEFAULT_CHANGELOG_TITLE,
-            releases = emptyList()
+            releases = emptyList(),
         )
 
         assertEquals(expectedChangeLog, actualChangeLog)
@@ -181,6 +218,7 @@ class ChangeLogBuilderTest {
                 Release(
                     tag = null,
                     title = DEFAULT_UNRELEASED_VERSION_TITLE,
+                    summary = null,
                     date = fakeNow,
                     diffUrl = null,
                     releaseUrl = null,
@@ -188,9 +226,9 @@ class ChangeLogBuilderTest {
                         unlabeledIssuesSection,
                         bugsSection.copy(issues = bugsSection.issues + oldBugsSection.issues),
                         enhancementsSection,
-                        unlabeledPrsSection
+                        unlabeledPrsSection,
                     )
-                )
+                ),
             )
         )
         assertEquals(expectedChangeLog, actualChangeLog)
@@ -223,7 +261,7 @@ class ChangeLogBuilderTest {
         val customPrSectionTitle = "PRs:"
         val clConfig = defaultConfig.copy(
             defaultIssueSectionTitle = customIssuesSectionTitle,
-            defaultPrSectionTitle = customPrSectionTitle
+            defaultPrSectionTitle = customPrSectionTitle,
         )
         val builder = ChangelogBuilder(clConfig)
 
@@ -232,16 +270,14 @@ class ChangeLogBuilderTest {
         val expectedChangeLog = expectedChangeLog.copy(
             releases = listOf(
                 releaseUnreleased.copy(
-                    sections = listOf(
-                        unlabeledPrsSection.copy(title = customPrSectionTitle)
-                    )
+                    sections = listOf(unlabeledPrsSection.copy(title = customPrSectionTitle))
                 ),
                 release200,
                 release182,
                 release180.copy(
                     sections = listOf(
                         oldBugsSection,
-                        unlabeledIssuesSection.copy(title = customIssuesSectionTitle)
+                        unlabeledIssuesSection.copy(title = customIssuesSectionTitle),
                     )
                 )
             )
@@ -262,7 +298,7 @@ class ChangeLogBuilderTest {
                 releaseUnreleased.copy(title = customUnreleasedVersionTitle),
                 release200,
                 release182,
-                release180
+                release180,
             )
         )
         assertEquals(expectedChangeLog, actualChangeLog)
@@ -282,12 +318,12 @@ class ChangeLogBuilderTest {
                     tag = customFutureVersionTag,
                     title = customFutureVersionTag,
                     releaseUrl = "https://github.com/someuser/somerepo/tree/$customFutureVersionTag",
-                    diffUrl = "https://github.com/someuser/somerepo/compare/2.0.0...$customFutureVersionTag"
+                    diffUrl = "https://github.com/someuser/somerepo/compare/2.0.0...$customFutureVersionTag",
                 ),
                 release200,
                 release182,
-                release180
-            )
+                release180,
+            ),
         )
         assertEquals(expectedChangeLog, actualChangeLog)
     }
@@ -355,10 +391,33 @@ class ChangeLogBuilderTest {
                 release180.copy(
                     diffUrl = "https://github.com/someuser/somerepo/compare/$fakeInitSha...1.8.0-suffix",
                     releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-1.8.0",
-                )
+                ),
             )
         )
         assertEquals(expectedChangeLog, actualChangeLog)
+    }
+
+    @Test
+    fun `should fail if release summary issue doesn't have a milestone`() {
+        val builder = ChangelogBuilder(defaultConfig)
+        val releaseSummaryWithoutMilestone = Issue(
+            number = 123,
+            title = "Release summary for 1.8.0",
+            body = releaseSummary180Content,
+            author = User("mike", "http://github.com/mike"),
+            closedAt = Instant.parse("2019-12-30T10:15:30.00Z"),
+            isPullRequest = false,
+            labels = listOf("release-summary"),
+            url = "https://some.host/issue/123",
+            milestone = null,
+        )
+
+        val exception = assertFailsWith<IllegalStateException> {
+            builder.createChangeLog(issues + releaseSummaryWithoutMilestone, tags)
+        }
+        val expectedMessage = "Issue #123 is a release summary but doesn't have a milestone. Please add a milestone " +
+            "with a title that matches the release tag that this summary should apply to."
+        assertEquals(expectedMessage, exception.message)
     }
 
     @Test
@@ -372,8 +431,8 @@ class ChangeLogBuilderTest {
             releases = listOf(
                 release200.copy(sections = listOf(bugsSection)),
                 release182.copy(sections = listOf(enhancementsSection, unlabeledPrsSection)),
-                release180
-            )
+                release180,
+            ),
         )
         assertEquals(expectedChangeLog, actualChangeLog)
     }

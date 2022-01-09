@@ -10,7 +10,7 @@ import java.io.File
 data class GitHubChangelogGeneratorConfig(
     val gitHubConfig: GitHubConfig,
     val changelogConfig: ChangelogConfig,
-    val formatter: MarkdownFormatter = MarkdownFormatter()
+    val formatter: MarkdownFormatter = MarkdownFormatter(),
 )
 
 class GitHubChangeLogGenerator(private val config: GitHubChangelogGeneratorConfig) {
