@@ -1,7 +1,23 @@
 # Change Log
 
+## [1.11.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.11.1) (2022-01-10)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.11.0...1.11.1)
+
+**Fixed bugs:**
+
+- First commit in first release diff URL is actually the last [\#51](https://github.com/joffrey-bion/gradle-github-changelog/issues/51)
+- "body must not be null" in 1.11.0 [\#49](https://github.com/joffrey-bion/gradle-github-changelog/issues/49)
+
+**Upgraded dependencies:**
+
+- Upgrade Github API to 1.301 [\#50](https://github.com/joffrey-bion/gradle-github-changelog/issues/50)
+
 ## [1.11.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.11.0) (2022-01-10)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.10.0...1.11.0)
+
+**Closed issues:**
+
+- Release summary for 1.11.0 [\#48](https://github.com/joffrey-bion/gradle-github-changelog/issues/48)
 
 **Implemented enhancements:**
 
@@ -186,7 +202,7 @@
 
 
 ## [0.1.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.1.0) (2019-01-20)
-[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/dc9992053b168e9a6a8c3524ae4c5d2bc99639d6...0.1.0)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/0b194a1a46b9b5fcce003da8f49b274a3fe671ab...0.1.0)
 
 **Implemented enhancements:**
 
