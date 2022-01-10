@@ -15,9 +15,12 @@
 ## [1.11.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.11.0) (2022-01-10)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.10.0...1.11.0)
 
-**Closed issues:**
+This release brings a new feature called "release summary".
 
-- Release summary for 1.11.0 [\#48](https://github.com/joffrey-bion/gradle-github-changelog/issues/48)
+The text you're reading is actually from a release summary itself.
+It has been written as the body of [a GitHub issue](https://github.com/joffrey-bion/gradle-github-changelog/issues/48) tagged with `release-summary` and associated to the milestone 1.11.0.
+
+This is sufficient for it to be automatically picked up by the generator and placed here as description.
 
 **Implemented enhancements:**
 
@@ -36,7 +39,7 @@
 **Implemented enhancements:**
 
 - Add default sections for breaking changes, deprecations and removals [\#43](https://github.com/joffrey-bion/gradle-github-changelog/issues/43)
-- Add more default excluded labels: \`internal\`, \`no\-changelog\` [\#42](https://github.com/joffrey-bion/gradle-github-changelog/issues/42)
+- Add more default excluded labels: `internal`, `no\-changelog` [\#42](https://github.com/joffrey-bion/gradle-github-changelog/issues/42)
 - Add default section for dependency upgrades [\#41](https://github.com/joffrey-bion/gradle-github-changelog/issues/41)
 
 ## [1.8.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.8.0) (2021-09-03)
@@ -202,7 +205,7 @@
 
 
 ## [0.1.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.1.0) (2019-01-20)
-[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/0b194a1a46b9b5fcce003da8f49b274a3fe671ab...0.1.0)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/62a26be507776326de2b975098f48af6acea57df...0.1.0)
 
 **Implemented enhancements:**
 
