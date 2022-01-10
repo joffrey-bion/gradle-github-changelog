@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter
 open class MarkdownFormatter(
     protected val dateFormat: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 ) {
-    private val escapedCharactersRegex = Regex("""([\\`*_{}\[\]()#+\-!<>])""")
+    private val escapedCharactersRegex = Regex("""([\\*_{}\[\]()#+\-!<>])""")
 
     fun formatChangeLog(changelog: Changelog): String = buildString {
         appendLine("# ${changelog.title.escapeMd()}")

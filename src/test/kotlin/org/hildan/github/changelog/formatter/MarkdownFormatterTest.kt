@@ -100,7 +100,7 @@ class MarkdownFormatterTest {
         val enhancements1 = listOf(
             Issue(
                 number = 1,
-                title = "Some feature",
+                title = "Some feature with `markdown`",
                 body = "Some feature description",
                 closedAt = Instant.now(),
                 labels = emptyList(),
@@ -178,7 +178,7 @@ class MarkdownFormatterTest {
 
             **Enhancements**
 
-            - Some feature [\#1](http://github.com/issues/1)
+            - Some feature with `markdown` [\#1](http://github.com/issues/1)
 
         """.trimIndent()
 
