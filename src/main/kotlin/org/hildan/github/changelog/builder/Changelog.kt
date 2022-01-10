@@ -26,7 +26,7 @@ data class Section(
 data class Issue(
     val number: Int,
     val title: String,
-    val body: String,
+    val body: String?,
     val closedAt: Instant,
     val labels: List<String>,
     val url: String,
