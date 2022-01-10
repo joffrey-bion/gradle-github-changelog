@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.11.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.11.0) (2022-01-10)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.10.0...1.11.0)
+
+**Implemented enhancements:**
+
+- Respect markdown backticks in issue titles [\#47](https://github.com/joffrey-bion/gradle-github-changelog/issues/47)
+
 ## [1.10.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.10.0) (2022-01-08)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.9.0...1.10.0)
 
@@ -179,7 +186,7 @@
 
 
 ## [0.1.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.1.0) (2019-01-20)
-[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/42d5ca3033965c89674070f4655a8a2c2dfdf43a...0.1.0)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/dc9992053b168e9a6a8c3524ae4c5d2bc99639d6...0.1.0)
 
 **Implemented enhancements:**
 
