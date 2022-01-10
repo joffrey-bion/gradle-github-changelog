@@ -35,7 +35,7 @@ fun fetchRepositoryInfo(gitHubConfig: GitHubConfig): Repository {
     val closedIssues = ghRepository.getIssues(GHIssueState.CLOSED).map { it.toIssue() }
     logger.info("${closedIssues.size} closed issues found")
 
-    val firstCommit = ghRepository.listCommits().withPageSize(1).first()
+    val firstCommit = ghRepository.listCommits().withPageSize(1000).last()
     return Repository(tags, closedIssues, firstCommit.shA1)
 }
 
