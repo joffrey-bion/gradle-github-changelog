@@ -19,12 +19,10 @@ jobs:
           java-version: 11
 
       - name: Publish plugin to Gradle Portal
-        uses: burrunan/gradle-cache-action@v1
+        uses: gradle/gradle-build-action@v2
         with:
-          # jobs with different JDK versions can't share caches
-          job-id: jdk11
-          arguments: publishPlugins
-          properties: |
-            version=${{ github.event.release.tag_name }}
-            gradle.publish.key=${{ secrets.GRADLE_API_KEY }}
-            gradle.publish.secret=${{ secrets.GRADLE_API_SECRET }}
+          arguments: |
+            publishPlugins
+            -Pversion=${{ github.event.release.tag_name }}
+            -Pgradle.publish.key=${{ secrets.GRADLE_API_KEY }}
+            -Pgradle.publish.secret=${{ secrets.GRADLE_API_SECRET }}

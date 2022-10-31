@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        jdk-version: [11, 15]
+        jdk-version: [11, 17]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -24,8 +24,6 @@ jobs:
           java-version: ${{ matrix.jdk-version }}
 
       - name: Build with Gradle
-        uses: burrunan/gradle-cache-action@v1
+        uses: gradle/gradle-build-action@v2
         with:
-          # jobs with different JDK versions can't share caches
-          job-id: jdk${{ matrix.jdk-version }}
           arguments: build
