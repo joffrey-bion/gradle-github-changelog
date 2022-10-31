@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.12.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.12.0) (2022-10-31)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.11.1...1.12.0)
+
+**Implemented enhancements:**
+
+- Generate release notes for the latest version as a build report [\#46](https://github.com/joffrey-bion/gradle-github-changelog/issues/46)
+
 ## [1.11.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.11.1) (2022-01-10)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.11.0...1.11.1)
 
@@ -24,6 +31,7 @@ This is sufficient for it to be automatically picked up by the generator and pla
 
 **Implemented enhancements:**
 
+- Allow to provide a release summary [\#32](https://github.com/joffrey-bion/gradle-github-changelog/issues/32)
 - Respect markdown backticks in issue titles [\#47](https://github.com/joffrey-bion/gradle-github-changelog/issues/47)
 
 ## [1.10.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.10.0) (2022-01-08)
