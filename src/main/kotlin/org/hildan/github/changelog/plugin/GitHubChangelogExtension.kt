@@ -34,7 +34,7 @@ open class GitHubChangelogExtension(private val project: Project) {
     var title: String = DEFAULT_CHANGELOG_TITLE
     /**
      * If true, issues that were closed since the last tag will appear at the top of the change log.
-     * By default they will appear as "unreleased", unless a custom [unreleasedVersionTitle] or a [futureVersionTag] is
+     * By default, they will appear as "unreleased", unless a custom [unreleasedVersionTitle] or a [futureVersionTag] is
      * provided.
      */
     var showUnreleased: Boolean = DEFAULT_SHOW_UNRELEASED
@@ -142,6 +142,12 @@ open class GitHubChangelogExtension(private val project: Project) {
      * The file to write the change log to.
      */
     var outputFile: File = File("${project.projectDir}/CHANGELOG.md")
+
+    /**
+     * The file to write the change log of the unreleased changes to.
+     * This is meant to be used as body for the new GitHub release.
+     */
+    var latestReleaseBodyFile: File = File("${project.buildDir}/reports/changelog/latest-release-body.md")
 
     internal fun toConfig(): GitHubChangelogGeneratorConfig {
         val gitHub = createGitHubConfig()

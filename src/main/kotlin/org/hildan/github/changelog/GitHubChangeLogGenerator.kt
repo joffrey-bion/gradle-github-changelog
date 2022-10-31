@@ -17,14 +17,16 @@ class GitHubChangeLogGenerator(private val config: GitHubChangelogGeneratorConfi
 
     private val changeLogBuilder = ChangelogBuilder(config.changelogConfig)
 
-    fun generate(outputFile: File? = null) {
+    fun generate(outputFile: File, releaseBodyFile: File? = null) {
         val repo = fetchRepositoryInfo(config.gitHubConfig)
         val changeLog = changeLogBuilder.createChangeLog(repo)
+
         val markdown = config.formatter.formatChangeLog(changeLog)
-        if (outputFile != null) {
-            outputFile.writeText(markdown)
-        } else {
-            print(markdown)
+        outputFile.writeText(markdown)
+
+        if (releaseBodyFile != null) {
+            val releaseNotes = config.formatter.formatReleaseBody(changeLog.releases.first())
+            releaseBodyFile.writeText(releaseNotes)
         }
     }
 }

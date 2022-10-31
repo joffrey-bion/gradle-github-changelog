@@ -21,7 +21,7 @@ open class MarkdownFormatter(
     protected fun formatReleases(releases: List<Release>): String = if (releases.isEmpty()) {
         "*Nothing much happened so far, actually...*\n"
     } else {
-        releases.joinToString("\n", transform =::formatRelease)
+        releases.joinToString("\n", transform = ::formatRelease)
     }
 
     protected fun formatRelease(release: Release): String = buildString {
@@ -34,7 +34,7 @@ open class MarkdownFormatter(
         append(formatReleaseBody(release))
     }
 
-    protected fun formatReleaseBody(release: Release): String = buildString {
+    fun formatReleaseBody(release: Release): String = buildString {
         if (release.summary != null) {
             appendLine(release.summary)
             appendLine()

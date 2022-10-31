@@ -30,7 +30,7 @@ open class GenerateChangelogTask @Inject constructor(private val ext: GitHubChan
         val configuration = ext.toConfig()
         val outFile = ext.outputFile
         project.logger.info("Generating changelog into $outFile...")
-        GitHubChangeLogGenerator(configuration).generate(outFile)
+        GitHubChangeLogGenerator(configuration).generate(outFile, ext.latestReleaseBodyFile)
     }
 }
 
