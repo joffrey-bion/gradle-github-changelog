@@ -45,9 +45,9 @@ private fun GitHubConfig.fetchGHRepository(): GHRepository {
         logger.info("Fetching repository info for $user/$repo...")
         return connect.getRepository("$user/$repo")
     } catch (e: HttpException) {
-        throw GitHubConfigException("Could not connect to GitHub: ${e.cause?.message}")
+        throw GitHubConfigException("Could not connect to GitHub: ${e.cause ?: e}")
     } catch (e: GHFileNotFoundException) {
-        throw GitHubConfigException("Could not find repository: ${e.cause?.message}")
+        throw GitHubConfigException("Could not find repository: ${e.cause ?: e }")
     }
 }
 
@@ -57,7 +57,7 @@ private fun GitHubConfig.connect(): GitHub = when (token) {
         GitHub.connectAnonymously()
     }
     else -> {
-        logger.info("Connecting to GitHub as $user...")
+        logger.info("Connecting to GitHub using token...")
         GitHub.connectUsingOAuth(token)
     }
 }
