@@ -6,6 +6,7 @@ import org.hildan.github.changelog.formatter.MarkdownFormatter
 import org.hildan.github.changelog.github.GitHubConfig
 import org.hildan.github.changelog.github.fetchRepositoryInfo
 import java.io.File
+import java.nio.file.Files
 
 data class GitHubChangelogGeneratorConfig(
     val gitHubConfig: GitHubConfig,
@@ -22,10 +23,12 @@ class GitHubChangeLogGenerator(private val config: GitHubChangelogGeneratorConfi
         val changeLog = changeLogBuilder.createChangeLog(repo)
 
         val markdown = config.formatter.formatChangeLog(changeLog)
+        outputFile.toPath().parent?.let { Files.createDirectories(it) }
         outputFile.writeText(markdown)
 
         if (releaseBodyFile != null) {
             val releaseNotes = config.formatter.formatReleaseBody(changeLog.releases.first())
+            releaseBodyFile.toPath().parent?.let { Files.createDirectories(it) }
             releaseBodyFile.writeText(releaseNotes)
         }
     }
