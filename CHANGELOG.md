@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.12.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.12.1) (2022-11-01)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.12.0...1.12.1)
+
+**Fixed bugs:**
+
+- Generation fails if the output file paths have non\-existing directories [\#53](https://github.com/joffrey-bion/gradle-github-changelog/issues/53)
+
 ## [1.12.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.12.0) (2022-10-31)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.11.1...1.12.0)
 
