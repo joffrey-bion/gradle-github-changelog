@@ -1,10 +1,16 @@
 plugins {
     `kotlin-dsl`
-    id("com.gradle.plugin-publish") version "0.12.0"
+    id("com.gradle.plugin-publish") version "1.0.0-rc-1"
     id("org.hildan.github.changelog") version "1.12.1"
+    id("ru.vyarus.github-info") version "1.4.0"
 }
 
 group = "org.hildan.gradle"
+
+github {
+    user = "joffrey-bion"
+    license = "MIT"
+}
 
 repositories {
     mavenCentral()
@@ -26,8 +32,6 @@ tasks.test {
 }
 
 pluginBundle {
-    website = "https://github.com/joffrey-bion/gradle-github-changelog"
-    vcsUrl = "https://github.com/joffrey-bion/gradle-github-changelog"
     tags = listOf("github", "changelog", "generator")
 }
 
@@ -43,5 +47,6 @@ gradlePlugin {
 }
 
 changelog {
+    githubUser = github.user
     futureVersionTag = project.version.toString()
 }
