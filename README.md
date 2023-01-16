@@ -1,7 +1,7 @@
 # GitHub Changelog Generator (Gradle plugin)
 
 [![Gradle plugin version](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/org/hildan/github/changelog/org.hildan.github.changelog.gradle.plugin/maven-metadata.xml.svg?label=gradle&logo=gradle)](https://plugins.gradle.org/plugin/org.hildan.github.changelog)
-[![Github Build](https://img.shields.io/github/workflow/status/joffrey-bion/gradle-github-changelog/CI%20Build?label=build&logo=github)](https://github.com/joffrey-bion/gradle-github-changelog/actions?query=workflow%3A%22CI+Build%22)
+[![Github Build](https://img.shields.io/github/actions/workflow/status/joffrey-bion/gradle-github-changelog/build.yml?branch=main&logo=github)](https://github.com/joffrey-bion/gradle-github-changelog/actions/workflows/build.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/joffrey-bion/gradle-github-changelog/blob/master/LICENSE)
 
 Generates a changelog from GitHub issues and pull-requests.
