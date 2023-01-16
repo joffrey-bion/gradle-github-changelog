@@ -20,7 +20,6 @@ The releases in the changelog are determined by the git tags of the repository.
 The date of the release is the date of the tag.
 
 Closed issues are sorted into releases using their close date, but this behaviour can be overridden.
-
 More specifically, the following rules apply (by order of precedence):
 
 1. if the issue is forced into a tag via `customTagByIssueNumber` mapping, it is put under this tag
@@ -64,7 +63,7 @@ Then close this issue and run the changelog generator.
 
 ### Applying the plugin
 
-Add the following line to your `plugins` block:
+Add the following line to your `plugins` block (in the root project's `build.gradle(.kts)`):
 
 ```kotlin
 plugins {
