@@ -1,8 +1,8 @@
 plugins {
     `kotlin-dsl`
-    id("com.gradle.plugin-publish") version "1.0.0-rc-1"
+    id("com.gradle.plugin-publish") version "1.1.0"
     id("org.hildan.github.changelog") version "1.12.1"
-    id("ru.vyarus.github-info") version "1.4.0"
+    id("ru.vyarus.github-info") version "1.5.0"
 }
 
 group = "org.hildan.gradle"
@@ -17,8 +17,6 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-
     implementation("org.kohsuke:github-api:1.313")
 
     testImplementation(kotlin("test"))
@@ -31,10 +29,6 @@ tasks.test {
     useJUnitPlatform()
 }
 
-pluginBundle {
-    tags = listOf("github", "changelog", "generator")
-}
-
 gradlePlugin {
     plugins {
         create("githubChangelogPlugin") {
@@ -42,6 +36,7 @@ gradlePlugin {
             displayName = "GitHub Changelog Plugin"
             description = "Generates a changelog for your project based on GitHub issues"
             implementationClass = "org.hildan.github.changelog.plugin.GitHubChangelogPlugin"
+            tags.set(listOf("github", "changelog", "generator"))
         }
     }
 }
