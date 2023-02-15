@@ -75,13 +75,14 @@ Where `<version>` is the desired version (see badge above without `v` prefix), e
 
 Gradle compatibility:
 
-|     Plugin     | Gradle |
-|:--------------:|:------:|
-|     1.12+      |  7.5+  |
-| 1.9.0 - 1.11.1 |  7.3+  |
-|     1.8.0      |  7.2+  |
-| 1.0.0 - 1.7.0  |  6.8+  |
-|    < 1.0.0     |  6.7+  |
+|     Plugin     | Min Gradle Version |
+|:--------------:|:------------------:|
+|     1.13+      |        8.0         |
+|     1.12.x     |        7.5         |
+| 1.9.0 - 1.11.1 |        7.3         |
+|     1.8.0      |        7.2         |
+| 1.0.0 - 1.7.0  |        6.8         |
+|    < 1.0.0     |        6.7         |
 
 ### Minimal configuration
 
