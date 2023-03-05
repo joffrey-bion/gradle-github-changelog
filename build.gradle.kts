@@ -19,9 +19,12 @@ repositories {
 dependencies {
     implementation("org.kohsuke:github-api:1.313")
 
+    compileOnly("ru.vyarus:gradle-github-info-plugin:1.5.0")
+
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
     testImplementation("io.mockk:mockk:1.13.2")
+    testImplementation("ru.vyarus:gradle-github-info-plugin:1.5.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
 }
 

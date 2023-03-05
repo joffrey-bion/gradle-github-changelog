@@ -4,7 +4,9 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskAction
+import org.gradle.kotlin.dsl.*
 import org.hildan.github.changelog.GitHubChangeLogGenerator
+import ru.vyarus.gradle.plugin.github.*
 import javax.inject.Inject
 
 private const val EXTENSION_NAME = "changelog"
@@ -13,8 +15,15 @@ private const val TASK_NAME = "generateChangelog"
 open class GitHubChangelogPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        val ext = project.extensions.create(EXTENSION_NAME, GitHubChangelogExtension::class.java, project)
-        project.tasks.create(TASK_NAME, GenerateChangelogTask::class.java, ext)
+        val ext = project.extensions.create<GitHubChangelogExtension>(EXTENSION_NAME, project)
+        project.tasks.register<GenerateChangelogTask>(TASK_NAME, ext)
+
+        project.pluginManager.withPlugin("ru.vyarus.github-info") {
+            val github = project.extensions.getByType<GithubInfoExtension>()
+            if (ext.githubUser == null) {
+                ext.githubUser = github.user
+            }
+        }
     }
 }
 
