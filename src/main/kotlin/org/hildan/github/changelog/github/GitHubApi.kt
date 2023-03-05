@@ -32,11 +32,19 @@ fun fetchRepositoryInfo(gitHubConfig: GitHubConfig): Repository {
     logger.info("${tags.size} tags found")
 
     logger.info("Fetching closed issues...")
-    val closedIssues = ghRepository.getIssues(GHIssueState.CLOSED).map { it.toIssue() }
+    val closedIssues = ghRepository.getIssues(GHIssueState.CLOSED)
+        .filter { !it.isPullRequest }
+        .map { it.toIssue() }
     logger.info("${closedIssues.size} closed issues found")
 
+    logger.info("Fetching merged pull-requests...")
+    val mergedPullRequests = ghRepository.getPullRequests(GHIssueState.CLOSED)
+        .filter { it.isMerged }
+        .map { it.toIssue() }
+    logger.info("${mergedPullRequests.size} merged pull-requests issues found")
+
     val firstCommit = ghRepository.listCommits().withPageSize(1000).last()
-    return Repository(tags, closedIssues, firstCommit.shA1)
+    return Repository(tags, closedIssues + mergedPullRequests, firstCommit.shA1)
 }
 
 private fun GitHubConfig.fetchGHRepository(): GHRepository {
@@ -72,7 +80,7 @@ private fun GHIssue.toIssue(): Issue = Issue(
     labels = labels.map { it.name },
     url = htmlUrl.toString(),
     author = user.toUser(),
-    isPullRequest = isPullRequest,
+    isPullRequest = isPullRequest || this is GHPullRequest,
     milestone = milestone?.toMilestone(),
 )
 
