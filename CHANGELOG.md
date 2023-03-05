@@ -1,15 +1,23 @@
 # Change Log
 
+## [1.13.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.13.1) (2023-03-05)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.13.0...1.13.1)
+
+**Fixed bugs:**
+
+- Closed but unmerged pull\-requests appear in the changelog [\#60](https://github.com/joffrey-bion/gradle-github-changelog/issues/60)
+
+**Merged pull requests:**
+
+- Update Gradle Wrapper from 8.0.1 to 8.0.2 [\#59](https://github.com/joffrey-bion/gradle-github-changelog/pull/59) ([@joffrey-bion](https://github.com/joffrey-bion))
+- Update Gradle Wrapper from 7.6 to 8.0 [\#56](https://github.com/joffrey-bion/gradle-github-changelog/pull/56) ([@joffrey-bion](https://github.com/joffrey-bion))
+
 ## [1.13.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.13.0) (2023-02-15)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.12.1...1.13.0)
 
 **Implemented enhancements:**
 
 - Upgrade to Gradle 8 [\#57](https://github.com/joffrey-bion/gradle-github-changelog/issues/57)
-
-**Merged pull requests:**
-
-- Update Gradle Wrapper from 7.5.1 to 7.6 [\#55](https://github.com/joffrey-bion/gradle-github-changelog/pull/55) ([@joffrey-bion](https://github.com/joffrey-bion))
 
 ## [1.12.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.12.1) (2022-11-01)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.12.0...1.12.1)
