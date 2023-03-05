@@ -119,7 +119,16 @@ changelog {
     defaultIssueSectionTitle = "Closed issues:"
     defaultPrSectionTitle = "Merged pull requests:"
     includeLabels = []
-    excludeLabels = ["duplicate", "invalid", "question", "wontfix"]
+    excludeLabels = [
+        "doc",
+        "documentation",
+        "duplicate",
+        "internal",
+        "invalid",
+        "no-changelog",
+        "question",
+        "wontfix"
+    ]
     sinceTag = null
     skipTags = []
     skipTagsRegex = []
