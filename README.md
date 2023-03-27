@@ -59,6 +59,16 @@ To do so, you simply need to create a special issue:
 
 Then close this issue and run the changelog generator.
 
+### Release notes for a single release
+
+The changelog generation task also outputs a markdown file containing just the closed issues for the latest release
+(and the optional release summary), which is ideal for generating the latest release notes.
+
+The default path to this file is `$buildDir/reports/changelog/latest-release-body.md`, and is customizable via the
+`latestReleaseBodyFile` extension property.
+
+If you create a GitHub release from a GitHub Actions workflow, you can use this file as the body text of that release.
+
 ## Usage
 
 ### Applying the plugin
@@ -141,6 +151,7 @@ changelog {
     timezone = ZoneId.of("GMT")
     
     outputFile = file("${projectDir}/CHANGELOG.md")
+    latestReleaseBodyFile = file("$buildDir/reports/changelog/latest-release-body.md")
 }
 ```
 
@@ -223,3 +234,7 @@ that tag, regardless of their close date.
 - `timezone`: the timezone used to convert the tags timestamps to local dates for releases (defaults to GMT).
 
 - `outputFile`: the file to write the change log to.
+
+- `latestReleaseBodyFile`: the desired output path to a markdown file containing the release notes for the latest 
+release. This is useful when generating GitHub releases with an embedded changelog. By default, the path is
+`$buildDir/reports/changelog/latest-release-body.md`
