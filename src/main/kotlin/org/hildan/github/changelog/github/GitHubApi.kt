@@ -1,9 +1,12 @@
 package org.hildan.github.changelog.github
 
+import com.expediagroup.graphql.client.ktor.*
+import kotlinx.coroutines.flow.*
 import org.hildan.github.changelog.builder.Issue
 import org.hildan.github.changelog.builder.Milestone
 import org.hildan.github.changelog.builder.Tag
 import org.hildan.github.changelog.builder.User
+import org.hildan.github.graphql.*
 import org.kohsuke.github.*
 import org.slf4j.LoggerFactory
 
@@ -24,68 +27,91 @@ data class Repository(
     val initialCommitSha: String,
 )
 
-fun fetchRepositoryInfo(gitHubConfig: GitHubConfig): Repository {
-    val ghRepository = gitHubConfig.fetchGHRepository()
+suspend fun fetchRepositoryInfo(gitHubConfig: GitHubConfig): Repository {
+    val gitHubClient = GitHubGraphQLClient(gitHubConfig.token ?: error("GitHub token is required"))
 
     logger.info("Fetching tags...")
     val tags = ghRepository.listTags().map { it.toTag() }
     logger.info("${tags.size} tags found")
 
     logger.info("Fetching closed issues...")
-    val closedIssues = ghRepository.getIssues(GHIssueState.CLOSED)
-        .filter { !it.isPullRequest }
+    val closedIssues = gitHubClient.closedIssuesFlow(repo = gitHubConfig.repo, owner = gitHubConfig.user)
         .map { it.toIssue() }
+        .toList()
     logger.info("${closedIssues.size} closed issues found")
 
     logger.info("Fetching merged pull-requests...")
-    val mergedPullRequests = ghRepository.getPullRequests(GHIssueState.CLOSED)
-        .filter { it.isMerged }
+    val mergedPullRequests = gitHubClient.mergedPRsFlow(repo = gitHubConfig.repo, owner = gitHubConfig.user)
         .map { it.toIssue() }
-    logger.info("${mergedPullRequests.size} merged pull-requests issues found")
+        .toList()
+    logger.info("${mergedPullRequests.size} merged pull-requests found")
 
     val firstCommit = ghRepository.listCommits().withPageSize(1000).last()
     return Repository(tags, closedIssues + mergedPullRequests, firstCommit.shA1)
 }
 
-private fun GitHubConfig.fetchGHRepository(): GHRepository {
-    try {
-        val connect = connect()
-        logger.info("Fetching repository info for $user/$repo...")
-        return connect.getRepository("$user/$repo")
-    } catch (e: HttpException) {
-        throw GitHubConfigException("Could not connect to GitHub: ${e.cause ?: e}")
-    } catch (e: GHFileNotFoundException) {
-        throw GitHubConfigException("Could not find repository: ${e.cause ?: e }")
+private fun GraphQLKtorClient.closedIssuesFlow(repo: String, owner: String) =
+    paginatedFlow { lastEndCursor ->
+        val data = executeOrThrow(
+            GetClosedIssues(
+                variables = GetClosedIssues.Variables(
+                    repo = repo,
+                    owner = owner,
+                    first = 100,
+                    after = lastEndCursor,
+                )
+            )
+        )
+        PaginatedData(data.repository?.issues?.pageInfo, data.repository?.issues?.nodes?.filterNotNull() ?: emptyList())
     }
-}
 
-private fun GitHubConfig.connect(): GitHub = when (token) {
-    null -> {
-        logger.warn("Connecting to GitHub anonymously (you may be subject to rate limiting)...")
-        GitHub.connectAnonymously()
+private fun GraphQLKtorClient.mergedPRsFlow(repo: String, owner: String) =
+    paginatedFlow { lastEndCursor ->
+        val data = executeOrThrow(
+            GetMergedPRs(
+                variables = GetMergedPRs.Variables(
+                    repo = repo,
+                    owner = owner,
+                    first = 100,
+                    after = lastEndCursor,
+                )
+            )
+        )
+        PaginatedData(data.repository?.pullRequests?.pageInfo, data.repository?.pullRequests?.nodes?.filterNotNull() ?: emptyList())
     }
-    else -> {
-        logger.info("Connecting to GitHub using token...")
-        GitHub.connectUsingOAuth(token)
-    }
-}
 
 private fun GHTag.toTag(): Tag = Tag(name, commit.commitDate.toInstant())
 
-private fun GHIssue.toIssue(): Issue = Issue(
+private fun org.hildan.github.graphql.getclosedissues.Issue.toIssue(): Issue = Issue(
     number = number,
     title = title,
     body = body,
-    closedAt = closedAt.toInstant(),
-    labels = labels.map { it.name },
-    url = htmlUrl.toString(),
-    author = user.toUser(),
-    isPullRequest = isPullRequest || this is GHPullRequest,
+    closedAt = closedAt ?: error("Issue $number is expected to be closed"),
+    labels = labels?.nodes?.map { it!!.name } ?: emptyList(),
+    url = url,
+    author = author?.toUser() ?: error("Author is missing in issue $number"),
+    isPullRequest = false,
     milestone = milestone?.toMilestone(),
 )
 
-private fun GHMilestone.toMilestone() = Milestone(title, description)
+private fun org.hildan.github.graphql.getmergedprs.PullRequest.toIssue(): Issue = Issue(
+    number = number,
+    title = title,
+    body = body,
+    closedAt = closedAt ?: error("Issue $number is expected to be closed"),
+    labels = labels?.nodes?.map { it!!.name } ?: emptyList(),
+    url = url,
+    author = author?.toUser() ?: error("Author is missing in issue $number"),
+    isPullRequest = false,
+    milestone = milestone?.toMilestone(),
+)
 
-private fun GHUser.toUser(): User = User(login, htmlUrl.toString())
+private fun org.hildan.github.graphql.getclosedissues.Milestone.toMilestone() = Milestone(title, description)
+
+private fun org.hildan.github.graphql.getmergedprs.Milestone.toMilestone() = Milestone(title, description)
+
+private fun org.hildan.github.graphql.getclosedissues.Actor.toUser(): User = User(login, url)
+
+private fun org.hildan.github.graphql.getmergedprs.Actor.toUser(): User = User(login, url)
 
 class GitHubConfigException(message: String) : RuntimeException(message)

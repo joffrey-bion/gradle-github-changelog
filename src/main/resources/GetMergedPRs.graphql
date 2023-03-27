@@ -1,0 +1,45 @@
+query GetMergedPRs($owner: String!, $repo: String!, $first: Int!, $after: String) {
+    repository(owner: $owner, name: $repo) {
+        pullRequests(states: [MERGED], first: $first, after: $after) {
+            nodes {
+                number
+                title
+                body
+                url
+                author {
+                    login
+                    url
+                    ...on Bot {
+                        __typename
+                    }
+                    ...on EnterpriseUserAccount {
+                        __typename
+                    }
+                    ...on Mannequin {
+                        __typename
+                    }
+                    ...on Organization {
+                        __typename
+                    }
+                    ...on User {
+                        __typename
+                    }
+                }
+                labels(first: 50) {
+                    nodes {
+                        name
+                    }
+                }
+                milestone {
+                    title
+                    description
+                }
+                closedAt
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
+        }
+    }
+}
