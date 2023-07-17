@@ -1,4 +1,4 @@
-# GitHub Changelog Generator (Gradle plugin)
+# GitHub Changelog Gradle Plugin
 
 [![Gradle plugin version](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/org/hildan/github/changelog/org.hildan.github.changelog.gradle.plugin/maven-metadata.xml.svg?label=gradle&logo=gradle)](https://plugins.gradle.org/plugin/org.hildan.github.changelog)
 [![Github Build](https://img.shields.io/github/actions/workflow/status/joffrey-bion/gradle-github-changelog/build.yml?branch=main&logo=github)](https://github.com/joffrey-bion/gradle-github-changelog/actions/workflows/build.yml)
