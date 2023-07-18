@@ -29,7 +29,7 @@ data class Issue(
     val title: String,
     val body: String?,
     val closedAt: Instant,
-    val labels: List<String>,
+    val labels: Set<String>,
     val url: String,
     val author: User,
     val isPullRequest: Boolean,

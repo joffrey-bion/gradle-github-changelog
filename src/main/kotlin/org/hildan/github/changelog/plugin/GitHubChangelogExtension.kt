@@ -84,12 +84,12 @@ open class GitHubChangelogExtension(private val project: Project) {
     /**
      * If not empty, only issues that have at least one of these labels can appear in the change log.
      */
-    var includeLabels: List<String> = DEFAULT_INCLUDED_LABELS
+    var includeLabels: Set<String> = DEFAULT_INCLUDED_LABELS
     /**
      * Issues that have at least one of these labels will not appear in the change log, even if they have labels that
      * are present in [includeLabels].
      */
-    var excludeLabels: List<String> = DEFAULT_EXCLUDED_LABELS
+    var excludeLabels: Set<String> = DEFAULT_EXCLUDED_LABELS
     /**
      * If provided, all prior tags will be excluded from the change log.
      */
@@ -100,7 +100,7 @@ open class GitHubChangelogExtension(private val project: Project) {
      * The issues that are part of the excluded tags are also excluded from the change log.
      * They are not reported under the next tag.
      */
-    var skipTags: List<String> = DEFAULT_SKIPPED_TAGS
+    var skipTags: Set<String> = DEFAULT_SKIPPED_TAGS
     /**
      * Tags matching one of these regexes are excluded from the change log.
      *

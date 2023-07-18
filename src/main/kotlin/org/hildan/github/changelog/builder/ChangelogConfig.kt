@@ -12,8 +12,8 @@ const val DEFAULT_ISSUES_SECTION_ORDER = 60
 const val DEFAULT_PR_SECTION_ORDER = 70
 const val DEFAULT_BUGS_SECTION_ORDER = 90
 
-val DEFAULT_INCLUDED_LABELS = emptyList<String>()
-val DEFAULT_EXCLUDED_LABELS = listOf(
+val DEFAULT_INCLUDED_LABELS = emptySet<String>()
+val DEFAULT_EXCLUDED_LABELS = setOf(
     "doc",
     "documentation",
     "duplicate",
@@ -24,7 +24,7 @@ val DEFAULT_EXCLUDED_LABELS = listOf(
     "wontfix",
 )
 
-val DEFAULT_SKIPPED_TAGS = emptyList<String>()
+val DEFAULT_SKIPPED_TAGS = emptySet<String>()
 val DEFAULT_SKIPPED_TAGS_REGEX = emptyList<Regex>()
 
 val DEFAULT_SECTIONS = listOf(
@@ -51,10 +51,10 @@ data class ChangelogConfig(
     val sections: List<SectionDefinition> = DEFAULT_SECTIONS,
     val defaultIssueSection: SectionDefinition = SectionDefinition(DEFAULT_ISSUES_SECTION_TITLE, DEFAULT_ISSUES_SECTION_ORDER, emptyList()),
     val defaultPrSection: SectionDefinition = SectionDefinition(DEFAULT_PR_SECTION_TITLE, DEFAULT_PR_SECTION_ORDER, emptyList()),
-    val includeLabels: List<String> = DEFAULT_INCLUDED_LABELS,
-    val excludeLabels: List<String> = DEFAULT_EXCLUDED_LABELS,
+    val includeLabels: Set<String> = DEFAULT_INCLUDED_LABELS,
+    val excludeLabels: Set<String> = DEFAULT_EXCLUDED_LABELS,
     val sinceTag: String? = null,
-    val skipTags: List<String> = DEFAULT_SKIPPED_TAGS,
+    val skipTags: Set<String> = DEFAULT_SKIPPED_TAGS,
     val skipTagsRegex: List<Regex> = DEFAULT_SKIPPED_TAGS_REGEX,
     val releaseUrlTemplate: String,
     val diffUrlTemplate: String,

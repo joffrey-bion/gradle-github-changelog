@@ -30,7 +30,7 @@ class ChangeLogBuilderTest {
         author = User("hipster", "http://github.com/hipster"),
         closedAt = Instant.parse("2018-05-01T08:00:00.00Z"),
         isPullRequest = false,
-        labels = emptyList(),
+        labels = emptySet(),
         url = "https://some.host/issue/1",
     )
 
@@ -41,7 +41,7 @@ class ChangeLogBuilderTest {
         author = User("hipster", "http://github.com/hipster"),
         closedAt = Instant.parse("2018-05-02T15:20:00.00Z"),
         isPullRequest = false,
-        labels = listOf("bug"),
+        labels = setOf("bug"),
         url = "https://some.host/issue/2",
     )
 
@@ -52,7 +52,7 @@ class ChangeLogBuilderTest {
         author = User("bob", "http://github.com/bob"),
         closedAt = Instant.parse("2018-08-05T10:15:30.00Z"),
         isPullRequest = false,
-        labels = listOf("bug"),
+        labels = setOf("bug"),
         url = "https://some.host/issue/42",
     )
 
@@ -63,7 +63,7 @@ class ChangeLogBuilderTest {
         author = User("bob", "http://github.com/bob"),
         closedAt = Instant.parse("2018-08-06T10:15:30.00Z"),
         isPullRequest = false,
-        labels = listOf("bug"),
+        labels = setOf("bug"),
         url = "https://some.host/issue/43",
     )
 
@@ -74,7 +74,7 @@ class ChangeLogBuilderTest {
         author = User("bob", "http://github.com/bob"),
         closedAt = Instant.parse("2018-08-06T10:30:00.00Z"),
         isPullRequest = false,
-        labels = listOf("enhancement"),
+        labels = setOf("enhancement"),
         url = "https://some.host/issue/44",
     )
 
@@ -85,7 +85,7 @@ class ChangeLogBuilderTest {
         author = User("mike", "http://github.com/mike"),
         closedAt = Instant.parse("2018-08-09T10:15:30.00Z"),
         isPullRequest = true,
-        labels = listOf("bug"),
+        labels = setOf("bug"),
         url = "https://some.host/issue/45",
     )
 
@@ -96,7 +96,7 @@ class ChangeLogBuilderTest {
         author = User("mike", "http://github.com/mike"),
         closedAt = Instant.parse("2018-08-10T10:15:30.00Z"),
         isPullRequest = true,
-        labels = emptyList(),
+        labels = emptySet(),
         url = "https://some.host/issue/46",
     )
 
@@ -113,7 +113,7 @@ class ChangeLogBuilderTest {
         author = User("mike", "http://github.com/mike"),
         closedAt = Instant.parse("2019-12-30T10:15:30.00Z"),
         isPullRequest = false,
-        labels = listOf("release-summary"),
+        labels = setOf("release-summary"),
         url = "https://some.host/issue/100",
         milestone = Milestone("1.8.0", "Milestone 1.8.0"),
     )

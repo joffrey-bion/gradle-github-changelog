@@ -85,9 +85,9 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
     private fun shouldInclude(issue: Issue) = !isExcluded(issue) && isIncluded(issue)
 
     private fun isIncluded(issue: Issue) =
-        config.includeLabels.isEmpty() || issue.labels.any { config.includeLabels.contains(it) }
+        config.includeLabels.isEmpty() || issue.labels.any { it in config.includeLabels }
 
-    private fun isExcluded(issue: Issue) = issue.labels.any { config.excludeLabels.contains(it) }
+    private fun isExcluded(issue: Issue) = issue.labels.any { it in config.excludeLabels }
 
     private fun Issue.getTagOverride(allTags: Set<String>): String? {
         val tagOverride = config.customTagByIssueNumber[number]
