@@ -7,8 +7,8 @@ private const val RELEASE_SUMMARY_LABEL = "release-summary"
 
 class ChangelogBuilder(private val config: ChangelogConfig) {
 
-    private val sectionByLabel: Map<String, String> =
-        config.sections.flatMap { s -> s.labels.map { it to s.title } }.toMap()
+    private val sectionByLabel: Map<String, SectionDefinition> =
+        config.sections.flatMap { s -> s.labels.map { it to s } }.toMap()
 
     fun createChangeLog(repo: Repository): Changelog {
         val releases = createReleases(repo)
@@ -146,17 +146,17 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
     )
 
     private fun dispatchInSections(issues: List<Issue>): List<Section> =
-        issues.groupBy { findSectionTitle(it) }
-            .map { (title, issues) -> Section(title, issues.sortedByDescending { it.closedAt }) }
-            .sortedBy { it.title }
+        issues.groupBy { findSection(it) }
+            .map { (section, issues) -> Section(section.title, section.order, issues.sortedByDescending { it.closedAt }) }
+            .sortedBy { it.order }
 
-    private fun findSectionTitle(issue: Issue): String =
+    private fun findSection(issue: Issue): SectionDefinition =
         issue.labels.asSequence().mapNotNull { sectionByLabel[it] }.firstOrNull() ?: defaultSection(issue)
 
-    private fun defaultSection(issue: Issue): String = if (issue.isPullRequest) {
-        config.defaultPrSectionTitle
+    private fun defaultSection(issue: Issue): SectionDefinition = if (issue.isPullRequest) {
+        config.defaultPrSection
     } else {
-        config.defaultIssueSectionTitle
+        config.defaultIssueSection
     }
 
     private fun releaseUrl(tag: String) = String.format(config.releaseUrlTemplate, config.releaseUrlTagTransform(tag))

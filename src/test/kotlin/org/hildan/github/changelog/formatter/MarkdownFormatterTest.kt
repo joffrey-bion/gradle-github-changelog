@@ -53,7 +53,7 @@ class MarkdownFormatterTest {
             )
         )
         val sectionsNext = listOf(
-            Section("Pull requests", prs3)
+            Section("Pull requests", DEFAULT_PR_SECTION_ORDER, prs3)
         )
 
         val prs2 = listOf(
@@ -81,8 +81,8 @@ class MarkdownFormatterTest {
             )
         )
         val sections2 = listOf(
-            Section("Pull requests", prs2),
-            Section("Bug fixes", bugs2)
+            Section("Pull requests", DEFAULT_PR_SECTION_ORDER, prs2),
+            Section("Bug fixes", DEFAULT_BUGS_SECTION_ORDER, bugs2)
         )
 
         val prs1 = listOf(
@@ -110,8 +110,8 @@ class MarkdownFormatterTest {
             )
         )
         val sections1 = listOf(
-            Section("Pull requests", prs1),
-            Section("Enhancements", enhancements1)
+            Section("Pull requests", DEFAULT_PR_SECTION_ORDER, prs1),
+            Section("Enhancements", DEFAULT_ENHANCEMENTS_SECTION_ORDER, enhancements1)
         )
 
         val unreleased = Release(null, "Unreleased", null, now, sectionsNext, null, null)

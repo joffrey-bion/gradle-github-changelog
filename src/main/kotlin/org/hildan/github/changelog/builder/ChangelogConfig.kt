@@ -7,6 +7,10 @@ const val DEFAULT_SHOW_UNRELEASED = true
 const val DEFAULT_UNRELEASED_VERSION_TITLE = "Unreleased"
 const val DEFAULT_ISSUES_SECTION_TITLE = "Closed issues:"
 const val DEFAULT_PR_SECTION_TITLE = "Merged pull requests:"
+const val DEFAULT_ENHANCEMENTS_SECTION_ORDER = 30
+const val DEFAULT_ISSUES_SECTION_ORDER = 60
+const val DEFAULT_PR_SECTION_ORDER = 70
+const val DEFAULT_BUGS_SECTION_ORDER = 90
 
 val DEFAULT_INCLUDED_LABELS = emptyList<String>()
 val DEFAULT_EXCLUDED_LABELS = listOf(
@@ -24,13 +28,13 @@ val DEFAULT_SKIPPED_TAGS = emptyList<String>()
 val DEFAULT_SKIPPED_TAGS_REGEX = emptyList<Regex>()
 
 val DEFAULT_SECTIONS = listOf(
-    SectionDefinition("Breaking changes:", "backwards-incompatible", "breaking"),
-    SectionDefinition("New features:", "feature"),
-    SectionDefinition("Implemented enhancements:", "enhancement"),
-    SectionDefinition("Deprecations:", "deprecated", "deprecation"),
-    SectionDefinition("Removals:", "removed", "removal"),
-    SectionDefinition("Fixed bugs:", "bug"),
-    SectionDefinition("Upgraded dependencies:", "dependency", "dependency-upgrade", "dependencies"),
+    SectionDefinition("Breaking changes:", 10, "backwards-incompatible", "breaking"),
+    SectionDefinition("New features:", 20, "feature"),
+    SectionDefinition("Implemented enhancements:", DEFAULT_ENHANCEMENTS_SECTION_ORDER, "enhancement"),
+    SectionDefinition("Deprecations:", 40, "deprecated", "deprecation"),
+    SectionDefinition("Removals:", 50, "removed", "removal"),
+    SectionDefinition("Upgraded dependencies:", 80, "dependency", "dependency-upgrade", "dependencies"),
+    SectionDefinition("Fixed bugs:", DEFAULT_BUGS_SECTION_ORDER, "bug"),
 )
 val DEFAULT_RELEASE_URL_TAG_TRANSFORM: (String) -> String = { it }
 val DEFAULT_DIFF_URL_TAG_TRANSFORM: (String) -> String = { it }
@@ -45,8 +49,8 @@ data class ChangelogConfig(
     val futureVersionTag: String? = null,
     val unreleasedVersionTitle: String = DEFAULT_UNRELEASED_VERSION_TITLE,
     val sections: List<SectionDefinition> = DEFAULT_SECTIONS,
-    val defaultIssueSectionTitle: String = DEFAULT_ISSUES_SECTION_TITLE,
-    val defaultPrSectionTitle: String = DEFAULT_PR_SECTION_TITLE,
+    val defaultIssueSection: SectionDefinition = SectionDefinition(DEFAULT_ISSUES_SECTION_TITLE, DEFAULT_ISSUES_SECTION_ORDER, emptyList()),
+    val defaultPrSection: SectionDefinition = SectionDefinition(DEFAULT_PR_SECTION_TITLE, DEFAULT_PR_SECTION_ORDER, emptyList()),
     val includeLabels: List<String> = DEFAULT_INCLUDED_LABELS,
     val excludeLabels: List<String> = DEFAULT_EXCLUDED_LABELS,
     val sinceTag: String? = null,
@@ -70,6 +74,10 @@ data class SectionDefinition(
      */
     val title: String,
     /**
+     * The order of the section in the changelog. Smaller orders appear first.
+     */
+    val order: Int,
+    /**
      * The labels of the issues to include in this section.
      * Any issue with at least one of these labels will be listed under this section.
      *
@@ -87,5 +95,5 @@ data class SectionDefinition(
      * If multiple sections list the same label, issues with this label will appear in the last section that was
      * defined with this label.
      */
-    constructor(title: String, vararg labels: String) : this(title, labels.toList())
+    constructor(title: String, order: Int, vararg labels: String) : this(title, order, labels.toList())
 }

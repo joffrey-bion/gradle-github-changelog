@@ -130,11 +130,11 @@ class ChangeLogBuilderTest {
         releaseSummary180,
     )
 
-    private val oldBugsSection = Section("Fixed bugs:", listOf(issue2bug))
-    private val bugsSection = Section("Fixed bugs:", listOf(pr45bugfix, issue43bug, issue42bug))
-    private val enhancementsSection = Section("Implemented enhancements:", listOf(issue44enhancement))
-    private val unlabeledIssuesSection = Section(DEFAULT_ISSUES_SECTION_TITLE, listOf(issue1unlabeled))
-    private val unlabeledPrsSection = Section(DEFAULT_PR_SECTION_TITLE, listOf(pr46unlabeled))
+    private val oldBugsSection = Section("Fixed bugs:", DEFAULT_BUGS_SECTION_ORDER, listOf(issue2bug))
+    private val bugsSection = Section("Fixed bugs:", DEFAULT_BUGS_SECTION_ORDER, listOf(pr45bugfix, issue43bug, issue42bug))
+    private val enhancementsSection = Section("Implemented enhancements:", DEFAULT_ENHANCEMENTS_SECTION_ORDER, listOf(issue44enhancement))
+    private val unlabeledIssuesSection = Section(DEFAULT_ISSUES_SECTION_TITLE, DEFAULT_ISSUES_SECTION_ORDER, listOf(issue1unlabeled))
+    private val unlabeledPrsSection = Section(DEFAULT_PR_SECTION_TITLE, DEFAULT_PR_SECTION_ORDER, listOf(pr46unlabeled))
 
     private val tag180 = Tag("1.8.0", Instant.parse("2018-05-06T11:00:00.00Z"))
     private val tag182 = Tag("1.8.2", Instant.parse("2018-07-07T11:00:00.00Z"))
@@ -170,7 +170,7 @@ class ChangeLogBuilderTest {
         date = LocalDate.of(2018, 8, 10).atTime(10, 0),
         diffUrl = "https://github.com/someuser/somerepo/compare/1.8.2...2.0.0",
         releaseUrl = "https://github.com/someuser/somerepo/tree/2.0.0",
-        sections = listOf(bugsSection, enhancementsSection),
+        sections = listOf(enhancementsSection, bugsSection),
     )
 
     private val releaseUnreleased = Release(
@@ -223,10 +223,10 @@ class ChangeLogBuilderTest {
                     diffUrl = null,
                     releaseUrl = null,
                     sections = listOf(
-                        unlabeledIssuesSection,
-                        bugsSection.copy(issues = bugsSection.issues + oldBugsSection.issues),
                         enhancementsSection,
+                        unlabeledIssuesSection,
                         unlabeledPrsSection,
+                        bugsSection.copy(issues = bugsSection.issues + oldBugsSection.issues),
                     )
                 ),
             )
@@ -260,8 +260,8 @@ class ChangeLogBuilderTest {
         val customIssuesSectionTitle = "Issues:"
         val customPrSectionTitle = "PRs:"
         val clConfig = defaultConfig.copy(
-            defaultIssueSectionTitle = customIssuesSectionTitle,
-            defaultPrSectionTitle = customPrSectionTitle,
+            defaultIssueSection = SectionDefinition(customIssuesSectionTitle, DEFAULT_ISSUES_SECTION_ORDER, emptyList()),
+            defaultPrSection = SectionDefinition(customPrSectionTitle, DEFAULT_PR_SECTION_ORDER, emptyList()),
         )
         val builder = ChangelogBuilder(clConfig)
 
@@ -276,8 +276,8 @@ class ChangeLogBuilderTest {
                 release182,
                 release180.copy(
                     sections = listOf(
-                        oldBugsSection,
                         unlabeledIssuesSection.copy(title = customIssuesSectionTitle),
+                        oldBugsSection,
                     )
                 )
             )
@@ -475,8 +475,8 @@ class ChangeLogBuilderTest {
                 ),
                 release200.copy(
                     sections = listOf(
-                        bugsSection,
                         enhancementsSection.forceMilestone("1.8.2", 44),
+                        bugsSection,
                     ),
                 ),
                 release182,

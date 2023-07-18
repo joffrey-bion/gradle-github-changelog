@@ -20,6 +20,7 @@ data class Release(
 
 data class Section(
     val title: String,
+    val order: Int,
     val issues: List<Issue>,
 )
 

@@ -68,9 +68,19 @@ open class GitHubChangelogExtension(private val project: Project) {
      */
     var defaultIssueSectionTitle: String = DEFAULT_ISSUES_SECTION_TITLE
     /**
+     * Section order for issues that are not classified in a specific section due to their labels.
+     * Smaller orders appear first.
+     */
+    var defaultIssueSectionOrder: Int = DEFAULT_ISSUES_SECTION_ORDER
+    /**
      * Section title for pull-requests that are not classified in a specific section due to their labels
      */
     var defaultPrSectionTitle: String = DEFAULT_PR_SECTION_TITLE
+    /**
+     * Section order for pull-requests that are not classified in a specific section due to their labels.
+     * Smaller orders appear first.
+     */
+    var defaultPrSectionOrder: Int = DEFAULT_PR_SECTION_ORDER
     /**
      * If not empty, only issues that have at least one of these labels can appear in the change log.
      */
@@ -173,8 +183,8 @@ open class GitHubChangelogExtension(private val project: Project) {
         futureVersionTag = futureVersionTag,
         unreleasedVersionTitle = unreleasedVersionTitle,
         sections = DEFAULT_SECTIONS + sections,
-        defaultIssueSectionTitle = defaultIssueSectionTitle,
-        defaultPrSectionTitle = defaultPrSectionTitle,
+        defaultIssueSection = SectionDefinition(defaultIssueSectionTitle, defaultIssueSectionOrder, emptyList()),
+        defaultPrSection = SectionDefinition(defaultPrSectionTitle, defaultPrSectionOrder, emptyList()),
         includeLabels = includeLabels,
         excludeLabels = excludeLabels,
         sinceTag = sinceTag,

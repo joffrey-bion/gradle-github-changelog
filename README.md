@@ -127,7 +127,9 @@ changelog {
     futureVersionTag = null
     sections = [] // no custom sections by default, but default sections are prepended
     defaultIssueSectionTitle = "Closed issues:"
+    defaultIssueSectionOrder = 60
     defaultPrSectionTitle = "Merged pull requests:"
+    defaultPrSectionOrder = 70
     includeLabels = []
     excludeLabels = [
         "doc",
@@ -192,7 +194,12 @@ In fact, the last section defining a mapping for a given issue label wins, and d
 
 - `defaultIssueSectionTitle`: section title for issues that are not classified in a specific section due to their labels
 
+- `defaultIssueSectionOrder`: section order for issues that are not classified in a specific section due to their labels
+
 - `defaultPrSectionTitle`: section title for pull-requests that are not classified in a specific section due to their 
+labels
+
+- `defaultPrSectionOrder`: section order for pull-requests that are not classified in a specific section due to their 
 labels
 
 - `includeLabels`: if not empty, only issues that have at least one of these labels can appear in the change log.
