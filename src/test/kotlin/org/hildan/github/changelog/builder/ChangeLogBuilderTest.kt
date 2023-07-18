@@ -5,9 +5,7 @@ import io.mockk.mockkStatic
 import org.hildan.github.changelog.github.Repository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.*
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -209,6 +207,29 @@ class ChangeLogBuilderTest {
     }
 
     @Test
+    fun `no tags and no issues yield with future version tag yield empty future release`() {
+        val builder = ChangelogBuilder(defaultConfig.copy(futureVersionTag = "0.1.0"))
+
+        val actualChangeLog = builder.createChangeLog(emptyList(), emptyList())
+        val expectedChangeLog = Changelog(
+            title = DEFAULT_CHANGELOG_TITLE,
+            releases = listOf(
+                Release(
+                    tag = "0.1.0",
+                    title = "0.1.0",
+                    date = fakeNow,
+                    summary = null,
+                    sections = emptyList(),
+                    releaseUrl = "https://github.com/someuser/somerepo/tree/0.1.0",
+                    diffUrl = "https://github.com/someuser/somerepo/compare/fake_init_sha...0.1.0",
+                )
+            ),
+        )
+
+        assertEquals(expectedChangeLog, actualChangeLog)
+    }
+
+    @Test
     fun `unreleased issues only - no tags`() {
         val builder = ChangelogBuilder(defaultConfig)
 
@@ -343,7 +364,7 @@ class ChangeLogBuilderTest {
 
     @Test
     fun `skipTags option should limit the output releases`() {
-        val clConfig = defaultConfig.copy(skipTags = listOf("2.0.0"))
+        val clConfig = defaultConfig.copy(skipTags = setOf("2.0.0"))
         val builder = ChangelogBuilder(clConfig)
 
         val actualChangeLog = builder.createChangeLog(issues, tags)
@@ -407,7 +428,7 @@ class ChangeLogBuilderTest {
             author = User("mike", "http://github.com/mike"),
             closedAt = Instant.parse("2019-12-30T10:15:30.00Z"),
             isPullRequest = false,
-            labels = listOf("release-summary"),
+            labels = setOf("release-summary"),
             url = "https://some.host/issue/123",
             milestone = null,
         )

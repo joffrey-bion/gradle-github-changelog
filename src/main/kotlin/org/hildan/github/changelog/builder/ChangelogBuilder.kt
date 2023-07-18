@@ -29,14 +29,7 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
         tag in config.skipTags || (tag != null && config.skipTagsRegex.any { it.matches(tag) })
 
     private fun createReleases(repo: Repository): List<Release> {
-        val (regularIssues, overriddenIssuesByTag, releaseSummaries) = sortIssues(repo.closedIssues, repo.tags)
-        val summariesByTag = releaseSummaries.associate {
-            val milestone = it.milestone ?: error(
-                "Issue #${it.number} is a release summary but doesn't have a milestone. " +
-                    "Please add a milestone with a title that matches the release tag that this summary should apply to."
-            )
-            milestone.title to it.body
-        }
+        val (regularIssues, overriddenIssuesByTag, summariesByTag) = sortIssues(repo.closedIssues, repo.tags)
 
         var remainingIssues = regularIssues
         val releases = mutableListOf<Release>()
@@ -52,9 +45,13 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
             remainingIssues = closedAfterTag
             previousRef = Ref.Tag(tag.name)
         }
-        if (remainingIssues.isNotEmpty() && config.showUnreleased) {
-            val futureVersionSummary = config.futureVersionTag?.let { summariesByTag[it] }
-            releases.add(createFutureRelease(previousRef, remainingIssues, futureVersionSummary))
+        if (config.showUnreleased) {
+            val futureTag = config.futureVersionTag
+            if (futureTag != null) {
+                releases.add(createFutureRelease(futureTag, previousRef, remainingIssues, summariesByTag[futureTag]))
+            } else if (remainingIssues.isNotEmpty()) {
+                releases.add(createUnreleasedRelease(remainingIssues))
+            }
         }
         return releases.sortedByDescending { it.date }
     }
@@ -62,7 +59,7 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
     private data class SortedIssues(
         val regularIssues: List<Issue>,
         val overriddenIssuesByTag: Map<String, List<Issue>>,
-        val releaseSummaries: List<Issue>,
+        val releaseSummariesByTag: Map<String, String?>,
     )
 
     private fun sortIssues(issues: List<Issue>, tags: List<Tag>): SortedIssues {
@@ -79,7 +76,14 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
                 else -> regularIssues.add(issue)
             }
         }
-        return SortedIssues(regularIssues, overriddenIssues, releaseSummaries)
+        val releaseSummariesByTag = releaseSummaries.associate {
+            val milestone = it.milestone ?: error(
+                "Issue #${it.number} is a release summary but doesn't have a milestone. " +
+                        "Please add a milestone with a title that matches the release tag that this summary should apply to."
+            )
+            milestone.title to it.body
+        }
+        return SortedIssues(regularIssues, overriddenIssues, releaseSummariesByTag)
     }
 
     private fun shouldInclude(issue: Issue) = !isExcluded(issue) && isIncluded(issue)
@@ -108,26 +112,28 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
         return createRelease(tag.name, previousRef, date, issues, summary)
     }
 
-    private fun createFutureRelease(previousTagName: Ref, issues: List<Issue>, summary: String?): Release =
-        if (config.futureVersionTag != null) {
-            createRelease(
-                tagName = config.futureVersionTag,
-                previousRef = previousTagName,
-                date = LocalDateTime.now(),
-                issues = issues,
-                summary = summary,
-            )
-        } else {
-            Release(
-                tag = null,
-                title = config.unreleasedVersionTitle,
-                summary = null,
-                date = LocalDateTime.now(),
-                sections = dispatchInSections(issues),
-                releaseUrl = null,
-                diffUrl = null,
-            )
-        }
+    private fun createFutureRelease(
+        futureVersionTag: String,
+        previousTagName: Ref,
+        issues: List<Issue>,
+        summary: String?,
+    ) = createRelease(
+        tagName = futureVersionTag,
+        previousRef = previousTagName,
+        date = LocalDateTime.now(),
+        issues = issues,
+        summary = summary,
+    )
+
+    private fun createUnreleasedRelease(issues: List<Issue>) = Release(
+        tag = null,
+        title = config.unreleasedVersionTitle,
+        summary = null,
+        date = LocalDateTime.now(),
+        sections = dispatchInSections(issues),
+        releaseUrl = null,
+        diffUrl = null,
+    )
 
     private fun createRelease(
         tagName: String,

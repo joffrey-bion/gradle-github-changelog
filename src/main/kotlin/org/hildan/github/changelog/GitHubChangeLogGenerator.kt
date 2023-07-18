@@ -1,7 +1,6 @@
 package org.hildan.github.changelog
 
-import org.hildan.github.changelog.builder.ChangelogBuilder
-import org.hildan.github.changelog.builder.ChangelogConfig
+import org.hildan.github.changelog.builder.*
 import org.hildan.github.changelog.formatter.MarkdownFormatter
 import org.hildan.github.changelog.github.GitHubConfig
 import org.hildan.github.changelog.github.fetchRepositoryInfo
@@ -27,7 +26,9 @@ class GitHubChangeLogGenerator(private val config: GitHubChangelogGeneratorConfi
         outputFile.writeText(markdown)
 
         if (releaseBodyFile != null) {
-            val releaseNotes = config.formatter.formatReleaseBody(changeLog.releases.first())
+            val latestRelease = changeLog.releases.firstOrNull()
+                ?: error("Can't generate release notes file because there are no releases and 'showUnreleased' is disabled.")
+            val releaseNotes = config.formatter.formatReleaseBody(latestRelease)
             releaseBodyFile.toPath().parent?.let { Files.createDirectories(it) }
             releaseBodyFile.writeText(releaseNotes)
         }
