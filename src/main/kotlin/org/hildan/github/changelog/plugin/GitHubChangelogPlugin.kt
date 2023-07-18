@@ -4,6 +4,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.*
 import org.hildan.github.changelog.GitHubChangeLogGenerator
 import javax.inject.Inject
 
@@ -18,6 +19,7 @@ open class GitHubChangelogPlugin : Plugin<Project> {
     }
 }
 
+@DisableCachingByDefault(because = "The change log depends on external GitHub issues state that may change over time")
 open class GenerateChangelogTask @Inject constructor(private val ext: GitHubChangelogExtension) : DefaultTask() {
 
     init {
