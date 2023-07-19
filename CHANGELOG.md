@@ -1,5 +1,24 @@
 # Change Log
 
+## [2.0.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/2.0.0) (2023-07-19)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.13.1...2.0.0)
+
+**Breaking changes:**
+
+- Generate empty future release when there are no unreleased issues but `futureVersionTag` is set [\#68](https://github.com/joffrey-bion/gradle-github-changelog/issues/68)
+
+**Fixed bugs:**
+
+- `generateChangelog` fails when there are no issues at all [\#65](https://github.com/joffrey-bion/gradle-github-changelog/issues/65)
+
+**Implemented enhancements:**
+
+- Make the order of the sections customizable [\#66](https://github.com/joffrey-bion/gradle-github-changelog/issues/66)
+
+**Merged pull requests:**
+
+- Update Gradle Wrapper from 8.0.2 to 8.2.1 [\#64](https://github.com/joffrey-bion/gradle-github-changelog/pull/64) ([@joffrey-bion](https://github.com/joffrey-bion))
+
 ## [1.13.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.13.1) (2023-03-05)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.13.0...1.13.1)
 
@@ -10,7 +29,6 @@
 **Merged pull requests:**
 
 - Update Gradle Wrapper from 8.0.1 to 8.0.2 [\#59](https://github.com/joffrey-bion/gradle-github-changelog/pull/59) ([@joffrey-bion](https://github.com/joffrey-bion))
-- Update Gradle Wrapper from 7.6 to 8.0 [\#56](https://github.com/joffrey-bion/gradle-github-changelog/pull/56) ([@joffrey-bion](https://github.com/joffrey-bion))
 
 ## [1.13.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.13.0) (2023-02-15)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.12.1...1.13.0)
