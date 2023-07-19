@@ -5,6 +5,7 @@
 
 **Breaking changes:**
 
+- Use sets instead of lists for `includeLabels`, `excludeLabels`, and `skipTags` [\#67](https://github.com/joffrey-bion/gradle-github-changelog/issues/67)
 - Generate empty future release when there are no unreleased issues but `futureVersionTag` is set [\#68](https://github.com/joffrey-bion/gradle-github-changelog/issues/68)
 
 **Fixed bugs:**
