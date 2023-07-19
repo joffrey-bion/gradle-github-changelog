@@ -22,12 +22,14 @@ jobs:
 
       - name: Publish plugin to Gradle Portal
         uses: gradle/gradle-build-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           arguments: |
             check
             generateChangelog
             publishPlugins
-            -Pversion=${{ github.event.release.tag_name }}
+            -Pversion=${{ inputs.version }}
             -Pgradle.publish.key=${{ secrets.GRADLE_API_KEY }}
             -Pgradle.publish.secret=${{ secrets.GRADLE_API_SECRET }}
 
