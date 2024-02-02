@@ -1,5 +1,20 @@
 # Change Log
 
+## [2.1.2](https://github.com/joffrey-bion/gradle-github-changelog/tree/2.1.2) (2024-02-02)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/2.1.1...2.1.2)
+
+**Implemented enhancements:**
+
+- Mark task as incompatible with configuration cache [\#80](https://github.com/joffrey-bion/gradle-github-changelog/issues/80)
+
+## [2.1.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/2.1.1) (2024-02-02)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/2.1.0...2.1.1)
+
+**Upgraded dependencies:**
+
+- Bump com.gradle.plugin\-publish from 1.1.0 to 1.2.1 [\#76](https://github.com/joffrey-bion/gradle-github-changelog/pull/76) ([@dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.kohsuke:github\-api from 1.314 to 1.318 [\#75](https://github.com/joffrey-bion/gradle-github-changelog/pull/75) ([@dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [2.1.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/2.1.0) (2024-02-02)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/2.0.0...2.1.0)
 
@@ -15,10 +30,6 @@
 - Use sets instead of lists for `includeLabels`, `excludeLabels`, and `skipTags` [\#67](https://github.com/joffrey-bion/gradle-github-changelog/issues/67)
 - Generate empty future release when there are no unreleased issues but `futureVersionTag` is set [\#68](https://github.com/joffrey-bion/gradle-github-changelog/issues/68)
 
-**Fixed bugs:**
-
-- `generateChangelog` fails when there are no issues at all [\#65](https://github.com/joffrey-bion/gradle-github-changelog/issues/65)
-
 **Implemented enhancements:**
 
 - Make the order of the sections customizable [\#66](https://github.com/joffrey-bion/gradle-github-changelog/issues/66)
@@ -27,16 +38,20 @@
 
 - Update Gradle Wrapper from 8.0.2 to 8.2.1 [\#64](https://github.com/joffrey-bion/gradle-github-changelog/pull/64) ([@joffrey-bion](https://github.com/joffrey-bion))
 
-## [1.13.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.13.1) (2023-03-05)
-[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.13.0...1.13.1)
-
 **Fixed bugs:**
 
-- Closed but unmerged pull\-requests appear in the changelog [\#60](https://github.com/joffrey-bion/gradle-github-changelog/issues/60)
+- `generateChangelog` fails when there are no issues at all [\#65](https://github.com/joffrey-bion/gradle-github-changelog/issues/65)
+
+## [1.13.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.13.1) (2023-03-05)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.13.0...1.13.1)
 
 **Merged pull requests:**
 
 - Update Gradle Wrapper from 8.0.1 to 8.0.2 [\#59](https://github.com/joffrey-bion/gradle-github-changelog/pull/59) ([@joffrey-bion](https://github.com/joffrey-bion))
+
+**Fixed bugs:**
+
+- Closed but unmerged pull\-requests appear in the changelog [\#60](https://github.com/joffrey-bion/gradle-github-changelog/issues/60)
 
 ## [1.13.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.13.0) (2023-02-15)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.12.1...1.13.0)
@@ -62,14 +77,14 @@
 ## [1.11.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.11.1) (2022-01-10)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.11.0...1.11.1)
 
+**Upgraded dependencies:**
+
+- Upgrade Github API to 1.301 [\#50](https://github.com/joffrey-bion/gradle-github-changelog/issues/50)
+
 **Fixed bugs:**
 
 - First commit in first release diff URL is actually the last [\#51](https://github.com/joffrey-bion/gradle-github-changelog/issues/51)
 - "body must not be null" in 1.11.0 [\#49](https://github.com/joffrey-bion/gradle-github-changelog/issues/49)
-
-**Upgraded dependencies:**
-
-- Upgrade Github API to 1.301 [\#50](https://github.com/joffrey-bion/gradle-github-changelog/issues/50)
 
 ## [1.11.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.11.0) (2022-01-10)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.10.0...1.11.0)
@@ -121,13 +136,13 @@ This is sufficient for it to be automatically picked up by the generator and pla
 ## [1.6.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.6.0) (2021-02-27)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.5.0...1.6.0)
 
-**Fixed bugs:**
-
-- Exception when milestone has no description [\#35](https://github.com/joffrey-bion/gradle-github-changelog/issues/35)
-
 **Implemented enhancements:**
 
 - Add config param to enable/disable milestone override [\#34](https://github.com/joffrey-bion/gradle-github-changelog/issues/34)
+
+**Fixed bugs:**
+
+- Exception when milestone has no description [\#35](https://github.com/joffrey-bion/gradle-github-changelog/issues/35)
 
 ## [1.5.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/1.5.0) (2021-02-27)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/1.4.0...1.5.0)
@@ -190,13 +205,13 @@ This is sufficient for it to be automatically picked up by the generator and pla
 ## [0.6.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.6.0) (2019-01-29)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.5.2...0.6.0)
 
-**Fixed bugs:**
-
-- Custom sections don't override default ones for "bug" and "enhancement" labels [\#19](https://github.com/joffrey-bion/gradle-github-changelog/issues/19)
-
 **Implemented enhancements:**
 
 - Make section order deterministic \(sorted alphabetically\) [\#18](https://github.com/joffrey-bion/gradle-github-changelog/issues/18)
+
+**Fixed bugs:**
+
+- Custom sections don't override default ones for "bug" and "enhancement" labels [\#19](https://github.com/joffrey-bion/gradle-github-changelog/issues/19)
 
 ## [0.5.2](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.5.2) (2019-01-29)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.5.1...0.5.2)
@@ -233,14 +248,14 @@ This is sufficient for it to be automatically picked up by the generator and pla
 ## [0.3.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.3.0) (2019-01-26)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.2.1...0.3.0)
 
-**Fixed bugs:**
-
-- Fix default "futureVersion" [\#6](https://github.com/joffrey-bion/gradle-github-changelog/issues/6)
-
 **Implemented enhancements:**
 
 - Add "skip tags" option [\#7](https://github.com/joffrey-bion/gradle-github-changelog/issues/7)
 - Add "since tag" option [\#5](https://github.com/joffrey-bion/gradle-github-changelog/issues/5)
+
+**Fixed bugs:**
+
+- Fix default "futureVersion" [\#6](https://github.com/joffrey-bion/gradle-github-changelog/issues/6)
 
 ## [0.2.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.2.1) (2019-01-24)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.2.0...0.2.1)
@@ -252,13 +267,13 @@ This is sufficient for it to be automatically picked up by the generator and pla
 ## [0.2.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.2.0) (2019-01-22)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.1.1...0.2.0)
 
-**Closed issues:**
-
-- Publish to Gradle portal [\#2](https://github.com/joffrey-bion/gradle-github-changelog/issues/2)
-
 **Implemented enhancements:**
 
 - Make releaseUrl customizable [\#3](https://github.com/joffrey-bion/gradle-github-changelog/issues/3)
+
+**Closed issues:**
+
+- Publish to Gradle portal [\#2](https://github.com/joffrey-bion/gradle-github-changelog/issues/2)
 
 ## [0.1.1](https://github.com/joffrey-bion/gradle-github-changelog/tree/0.1.1) (2019-01-20)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/0.1.0...0.1.1)
