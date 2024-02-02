@@ -12,18 +12,19 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        jdk-version: [11, 17]
+        jdk-version: [11, 17, 21]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK ${{ matrix.jdk-version }}
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.jdk-version }}
 
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@v3
-        with:
-          arguments: build
+        run: ./gradlew build
