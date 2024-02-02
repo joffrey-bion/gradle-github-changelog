@@ -1,7 +1,7 @@
 plugins {
     `kotlin-dsl`
     id("com.gradle.plugin-publish") version "1.2.1"
-    id("org.hildan.github.changelog") version "1.13.1"
+    id("org.hildan.github.changelog") version "2.1.0"
     id("ru.vyarus.github-info") version "1.5.0"
 }
 
