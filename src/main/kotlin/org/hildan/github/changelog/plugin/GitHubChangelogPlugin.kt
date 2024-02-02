@@ -25,13 +25,17 @@ open class GenerateChangelogTask @Inject constructor(private val ext: GitHubChan
     init {
         group = "documentation"
         description = "Generates the changelog of the project based on GitHub tags, issues and pull-requests."
+
+        @Suppress("LeakingThis")
+        notCompatibleWithConfigurationCache("Using 'project' in the GithubChangelogExtension")
     }
 
     @TaskAction
     fun generate() {
         val configuration = ext.toConfig()
         val outFile = ext.outputFile
-        project.logger.info("Generating changelog into $outFile...")
+        logger.info("Generating changelog into $outFile...")
+
         GitHubChangeLogGenerator(configuration).generate(outFile, ext.latestReleaseBodyFile)
     }
 }
