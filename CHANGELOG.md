@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.2.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/2.2.0) (2024-02-03)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/2.1.2...2.2.0)
+
+**Merged pull requests:**
+
+- Update Gradle Wrapper from 8.5 to 8.6 [\#82](https://github.com/joffrey-bion/gradle-github-changelog/pull/82) ([@joffrey-bion](https://github.com/joffrey-bion))
+
 ## [2.1.2](https://github.com/joffrey-bion/gradle-github-changelog/tree/2.1.2) (2024-02-02)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/2.1.1...2.1.2)
 
