@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.kohsuke:github-api:1.318")
+    implementation("org.kohsuke:github-api:1.319")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
