@@ -16,6 +16,7 @@ jobs:
       internal-dependencies: |
         gradle-wrapper
         com.gradle.develocity
+        com.gradle.plugin-publish
         org.hildan.github.changelog*
         io.mockk:mockk
         org.junit.jupiter:junit-jupiter-engine
