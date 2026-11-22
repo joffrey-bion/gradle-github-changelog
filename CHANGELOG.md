@@ -1,5 +1,38 @@
 # Change Log
 
+## [3.0.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/3.0.0) (2026-11-22)
+[View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/2.2.0...3.0.0)
+
+**Implemented enhancements:**
+
+- Support the Gradle configuration cache [\#92](https://github.com/joffrey-bion/gradle-github-changelog/issues/92)
+
+**Merged pull requests:**
+
+- Update Gradle Wrapper from 8.10 to 8.10.2 [\#110](https://github.com/joffrey-bion/gradle-github-changelog/pull/110) ([@joffrey-bion](https://github.com/joffrey-bion))
+- Update Gradle Wrapper from 8.8 to 8.10 [\#102](https://github.com/joffrey-bion/gradle-github-changelog/pull/102) ([@joffrey-bion](https://github.com/joffrey-bion))
+- Update Gradle Wrapper from 8.7 to 8.8 [\#94](https://github.com/joffrey-bion/gradle-github-changelog/pull/94) ([@joffrey-bion](https://github.com/joffrey-bion))
+- Update Gradle Wrapper from 8.6 to 8.7 [\#91](https://github.com/joffrey-bion/gradle-github-changelog/pull/91) ([@joffrey-bion](https://github.com/joffrey-bion))
+
+**Upgraded dependencies:**
+
+- Bump org.junit.jupiter:junit\-jupiter\-engine from 5.11.4 to 6.1.3 [\#176](https://github.com/joffrey-bion/gradle-github-changelog/pull/176) ([@dependabot[bot]](https://github.com/apps/dependabot))
+- Bump com.gradle.plugin\-publish from 1.3.1 to 2.2.1 [\#180](https://github.com/joffrey-bion/gradle-github-changelog/pull/180) ([@dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.kohsuke:github\-api from 1.327 to 1.330 [\#147](https://github.com/joffrey-bion/gradle-github-changelog/pull/147) ([@dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.kohsuke:github\-api from 1.326 to 1.327 [\#123](https://github.com/joffrey-bion/gradle-github-changelog/pull/123) ([@dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.junit.jupiter:junit\-jupiter\-engine from 5.11.3 to 5.11.4 [\#117](https://github.com/joffrey-bion/gradle-github-changelog/pull/117) ([@dependabot[bot]](https://github.com/apps/dependabot))
+- Bump io.mockk:mockk from 1.13.13 to 1.13.14 [\#118](https://github.com/joffrey-bion/gradle-github-changelog/pull/118) ([@dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.kohsuke:github\-api from 1.323 to 1.326 [\#109](https://github.com/joffrey-bion/gradle-github-changelog/pull/109) ([@dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.kohsuke:github\-api from 1.322 to 1.323 [\#97](https://github.com/joffrey-bion/gradle-github-changelog/pull/97) ([@dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.junit.jupiter:junit\-jupiter\-engine from 5.10.3 to 5.11.0 [\#101](https://github.com/joffrey-bion/gradle-github-changelog/pull/101) ([@dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.kohsuke:github\-api from 1.321 to 1.322 [\#95](https://github.com/joffrey-bion/gradle-github-changelog/pull/95) ([@dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.kohsuke:github\-api from 1.320 to 1.321 [\#90](https://github.com/joffrey-bion/gradle-github-changelog/pull/90) ([@dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.kohsuke:github\-api from 1.318 to 1.319 [\#85](https://github.com/joffrey-bion/gradle-github-changelog/pull/85) ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+**Fixed bugs:**
+
+- `breaking`  label doesn't take precedence over `enhancement` [\#167](https://github.com/joffrey-bion/gradle-github-changelog/issues/167)
+
 ## [2.2.0](https://github.com/joffrey-bion/gradle-github-changelog/tree/2.2.0) (2024-02-03)
 [View commits](https://github.com/joffrey-bion/gradle-github-changelog/compare/2.1.2...2.2.0)
 
