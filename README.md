@@ -14,6 +14,9 @@ When applied, the plugin automatically adds the `generateChangelog` task.
 This task calls GitHub to get information about your issues and pull requests,
 and generates a `CHANGELOG.md` file in your project's root folder.
 
+The plugin is fully compatible with the [configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html),
+including when your GitHub user or token is provided via environment variables or project properties.
+
 ## How it works
 
 The releases in the changelog are determined by the git tags of the repository.
@@ -87,6 +90,7 @@ Gradle compatibility:
 
 |     Plugin     | Min Gradle Version |
 |:--------------:|:------------------:|
+|     3.0.0      |        9.9         |
 |     2.2.0      |        8.6         |
 |     2.1.0      |        8.5         |
 |     2.0.0      |        8.2         |
@@ -118,23 +122,23 @@ gradle generateChangelog
 
 Here is the extension DSL with all options and their default values:
 
-```groovy
+```kotlin
 changelog {
-    githubUser = // [mandatory] project property "githubUser" or env variable "GITHUB_USER"
-    githubToken = null // [optional] project property "githubToken" or env variable "GITHUB_TOKEN"
+    githubUser = "user-or-org" // [mandatory] project property "githubUser" or env variable "GITHUB_USER" are used if not set here
+    githubToken = "token" // [optional] project property "githubToken" or env variable "GITHUB_TOKEN"
     githubRepository = rootProject.name
-    
+
     title = "Change Log"
     showUnreleased = true
     unreleasedVersionTitle = "Unreleased"
-    futureVersionTag = null
-    sections = [] // no custom sections by default, but default sections are prepended
+    futureVersionTag = "1.2.3"
+    sections.add(SectionDefinition("My custom section:", 100, "custom-label")) // custom sections are appended to the default ones
     defaultIssueSectionTitle = "Closed issues:"
     defaultIssueSectionOrder = 60
     defaultPrSectionTitle = "Merged pull requests:"
     defaultPrSectionOrder = 70
-    includeLabels = []
-    excludeLabels = [
+    includeLabels = emptySet()
+    excludeLabels = setOf(
         "doc",
         "documentation",
         "duplicate",
@@ -143,22 +147,27 @@ changelog {
         "no-changelog",
         "question",
         "wontfix"
-    ]
-    sinceTag = null
-    skipTags = []
-    skipTagsRegex = []
-    releaseUrlTemplate = null // defaults to "https://github.com/$user/$repo/tree/%s"
-    diffUrlTemplate = null // defaults to "https://github.com/$user/$repo/compare/%s...%s"
+    )
+    sinceTag = "1.0.0"
+    skipTags = emptySet()
+    skipTagsRegex = emptyList()
+    releaseUrlTemplate = "https://github.com/$user/$repo/tree/%s"
+    diffUrlTemplate = "https://github.com/$user/$repo/compare/%s...%s"
     releaseUrlTagTransform = { it }
     diffUrlTagTransform = { it }
-    customTagByIssueNumber = [:]
+    customTagByIssueNumber = emptyMap()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
     useMilestoneAsTag = true
     timezone = ZoneId.of("GMT")
-    
+
     outputFile = file("${projectDir}/CHANGELOG.md")
     latestReleaseBodyFile = file("$buildDir/reports/changelog/latest-release-body.md")
 }
 ```
+
+All options use the [lazy configuration API](https://docs.gradle.org/current/userguide/lazy_configuration.html).
+In both the Kotlin and Groovy DSLs, assigning with `=` to a lazy property is equivalent to calling `.set()`,
+so the `=` syntax shown above works everywhere (`.set()` remains available too).
+The two tag transform functions are plain function properties rather than lazy properties, and also use `=`.
 
 - `githubUser`: your GitHub username
 

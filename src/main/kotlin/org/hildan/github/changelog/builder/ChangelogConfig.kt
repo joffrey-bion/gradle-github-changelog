@@ -56,7 +56,17 @@ data class ChangelogConfig(
     val sinceTag: String? = null,
     val skipTags: Set<String> = DEFAULT_SKIPPED_TAGS,
     val skipTagsRegex: List<Regex> = DEFAULT_SKIPPED_TAGS_REGEX,
+    /**
+     * The template for the URL of releases, used in the hyperlink on the title of each release.
+     * A `%s` placeholder is replaced by the tag of the release.
+     */
     val releaseUrlTemplate: String,
+    /**
+     * The template for the URL to the full diff of the release.
+     * 2 `%s` placeholders are replaced by the tag of the previous release and the current release, respectively.
+     * If you need to reverse the order, you may use `%1$s` for the "from" (previous) tag, and `%2$s` for the "to"
+     * (current) tag.
+     */
     val diffUrlTemplate: String,
     val releaseUrlTagTransform: (String) -> String = DEFAULT_RELEASE_URL_TAG_TRANSFORM,
     val diffUrlTagTransform: (String) -> String = DEFAULT_DIFF_URL_TAG_TRANSFORM,

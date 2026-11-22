@@ -2,7 +2,7 @@ package org.hildan.github.changelog
 
 import org.hildan.github.changelog.builder.ChangelogConfig
 import org.hildan.github.changelog.github.GitHubConfig
-import java.io.File
+import kotlin.io.path.Path
 
 fun main() {
     val gitHubConfig = GitHubConfig(
@@ -11,11 +11,11 @@ fun main() {
         token = System.getenv("GITHUB_TOKEN"),
     )
     val config = GitHubChangelogGeneratorConfig(
-        gitHubConfig,
-        ChangelogConfig(
+        gitHubConfig = gitHubConfig,
+        changelogConfig = ChangelogConfig(
             releaseUrlTemplate = gitHubConfig.releaseUrlTemplate,
             diffUrlTemplate = gitHubConfig.diffUrlTemplate,
         ),
     )
-    GitHubChangeLogGenerator(config).generate(File("CHANGELOG.md"))
+    GitHubChangeLogGenerator(config).generate(Path("CHANGELOG.md"))
 }
