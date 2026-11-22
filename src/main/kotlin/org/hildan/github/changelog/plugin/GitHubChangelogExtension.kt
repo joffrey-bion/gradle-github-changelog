@@ -61,8 +61,9 @@ open class GitHubChangelogExtension @Inject constructor(objectFactory: ObjectFac
     /**
      * Custom sections to classify the issues within each release.
      *
-     * The section definitions are used to build a label-to-section mapping. Issues are placed into a section according
-     * to the first of their labels that is associated to a section.
+     * The section definitions are used to build a label-to-section mapping. When several of an issue's labels are
+     * associated to sections, it is placed in the section with the smallest order, i.e. the one that appears first in
+     * the changelog.
      *
      * The provided custom sections are appended to the default sections (they don't replace them). However, if a custom
      * section is associated to a label that is usually handled by a default section, the custom section takes

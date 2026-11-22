@@ -104,6 +104,18 @@ class ChangeLogBuilderTest {
         This is the body of the release summary!
     """.trimIndent()
 
+    private val issue47breakingAndEnhancement = Issue(
+        number = 47,
+        title = "Breaking enhancement",
+        body = "Some issue description",
+        author = User("mike", "http://github.com/mike"),
+        closedAt = Instant.parse("2018-05-03T10:15:30.00Z"),
+        isPullRequest = false,
+        // enhancement is deliberately listed first to prove that section order wins, not label order
+        labels = setOf("enhancement", "breaking"),
+        url = "https://some.host/issue/47",
+    )
+
     private val releaseSummary180 = Issue(
         number = 100,
         title = "Release summary for 1.8.0",
@@ -413,6 +425,24 @@ class ChangeLogBuilderTest {
                     diffUrl = "https://github.com/someuser/somerepo/compare/$fakeInitSha...1.8.0-suffix",
                     releaseUrl = "https://github.com/someuser/somerepo/tree/tag-prefix-1.8.0",
                 ),
+            )
+        )
+        assertEquals(expectedChangeLog, actualChangeLog)
+    }
+
+    @Test
+    fun `breaking label takes precedence over enhancement when an issue has both`() {
+        val builder = ChangelogBuilder(defaultConfig)
+
+        val actualChangeLog = builder.createChangeLog(issues + issue47breakingAndEnhancement, tags)
+
+        val breakingSection = Section("Breaking changes:", 10, listOf(issue47breakingAndEnhancement))
+        val expectedChangeLog = expectedChangeLog.copy(
+            releases = listOf(
+                releaseUnreleased,
+                release200,
+                release182,
+                release180.copy(sections = listOf(breakingSection, unlabeledIssuesSection, oldBugsSection)),
             )
         )
         assertEquals(expectedChangeLog, actualChangeLog)

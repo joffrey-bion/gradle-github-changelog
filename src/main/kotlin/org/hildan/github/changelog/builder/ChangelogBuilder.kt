@@ -157,7 +157,10 @@ class ChangelogBuilder(private val config: ChangelogConfig) {
             .sortedBy { it.order }
 
     private fun findSection(issue: Issue): SectionDefinition =
-        issue.labels.asSequence().mapNotNull { sectionByLabel[it] }.firstOrNull() ?: defaultSection(issue)
+        issue.labels.asSequence()
+            .mapNotNull { sectionByLabel[it] }
+            .minByOrNull { it.order }
+            ?: defaultSection(issue)
 
     private fun defaultSection(issue: Issue): SectionDefinition = if (issue.isPullRequest) {
         config.defaultPrSection

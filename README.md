@@ -37,7 +37,8 @@ To see an example output, take a look at this project's [CHANGELOG.md](CHANGELOG
 
 Within a given release, issues are sorted into sections based on their labels.
 Each issue label can be associated to at most one section, but a section can correspond to several labels.
-An issue is placed into a section according to the first of its labels that is associated to a section.
+When several of an issue's labels are associated to sections, it is placed in the section with the smallest order,
+i.e. the one that appears first in the changelog (so `breaking` takes precedence over `enhancement`, for instance).
 
 The default sections and the associated labels are:
 
